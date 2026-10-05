@@ -1,0 +1,155 @@
+.settings-page {
+  padding-bottom: 30px;
+  width: 100%;
+}
+
+.settings-card {
+  padding: 24px 28px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 960px;
+
+  .settings-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--app-card-border);
+
+    .header-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--app-input-bg);
+      border: 1px solid var(--app-card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--ion-color-primary);
+      flex-shrink: 0;
+    }
+
+    h2 {
+      margin: 0 0 4px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      letter-spacing: -0.015em;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--app-subtext);
+    }
+  }
+
+  .settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      label {
+        font-size: 0.775rem;
+        font-weight: 600;
+        color: var(--ion-text-color);
+      }
+
+      .setting-hint {
+        font-size: 0.7rem;
+        color: var(--app-subtext);
+      }
+    }
+
+    .input-with-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .setting-input {
+        padding-right: 36px;
+      }
+
+      ion-icon {
+        position: absolute;
+        right: 12px;
+        color: var(--app-subtext);
+        font-size: 16px;
+        pointer-events: none;
+      }
+    }
+
+    .setting-input {
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--app-input-bg);
+      border: 1px solid var(--app-input-border);
+      color: var(--ion-text-color);
+      font-size: 0.825rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        border-color: var(--ion-color-primary);
+      }
+    }
+
+    .currency-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      .c-pill {
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: var(--app-input-bg);
+        border: 1px solid var(--app-card-border);
+        color: var(--app-subtext);
+        font-size: 0.775rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.active, &:hover {
+          background: var(--ion-color-primary);
+          color: #fff;
+          border-color: var(--ion-color-primary);
+        }
+      }
+    }
+
+    .settings-save-row {
+      padding-top: 12px;
+      border-top: 1px solid var(--app-card-border);
+
+      .save-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 20px;
+        border-radius: 9px;
+        background: var(--ion-color-primary);
+        color: #fff;
+        border: none;
+        font-size: 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        transition: all 0.2s ease;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(99, 102, 241, 0.45);
+        }
+      }
+    }
+  }
+}

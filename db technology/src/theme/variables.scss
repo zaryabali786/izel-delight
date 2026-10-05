@@ -1,0 +1,87 @@
+// Ionic Variables and Theming
+// Modern Indigo / Violet / Cyan Design System
+
+:root {
+  --ion-font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Primary: Indigo Accent */
+  --ion-color-primary: #6366f1;
+  --ion-color-primary-rgb: 99, 102, 241;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #4f46e5;
+  --ion-color-primary-tint: #818cf8;
+
+  /* Secondary: Cyan */
+  --ion-color-secondary: #06b6d4;
+  --ion-color-secondary-rgb: 6, 182, 212;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0891b2;
+  --ion-color-secondary-tint: #22d3ee;
+
+  /* Tertiary: Purple Violet */
+  --ion-color-tertiary: #a855f7;
+  --ion-color-tertiary-rgb: 168, 85, 247;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #9333ea;
+  --ion-color-tertiary-tint: #c084fc;
+
+  /* Success: Emerald */
+  --ion-color-success: #10b981;
+  --ion-color-success-rgb: 16, 185, 129;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #059669;
+  --ion-color-success-tint: #34d399;
+
+  /* Warning: Amber */
+  --ion-color-warning: #f59e0b;
+  --ion-color-warning-rgb: 245, 158, 11;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #d97706;
+  --ion-color-warning-tint: #fbbf24;
+
+  /* Danger: Rose */
+  --ion-color-danger: #f43f5e;
+  --ion-color-danger-rgb: 244, 63, 94;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #e11d48;
+  --ion-color-danger-tint: #fb7185;
+
+  /* Light Theme Surfaces */
+  --ion-background-color: #f8fafc;
+  --ion-background-color-rgb: 248, 250, 252;
+  --ion-text-color: #1e293b;
+  --ion-text-color-rgb: 30, 41, 59;
+
+  --app-card-bg: #ffffff;
+  --app-card-border: rgba(226, 232, 240, 0.9);
+  --app-card-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --app-input-bg: #f1f5f9;
+  --app-input-border: #e2e8f0;
+  --app-subtext: #64748b;
+  --app-muted: #94a3b8;
+  --app-glass-bg: rgba(255, 255, 255, 0.88);
+}
+
+/* Dark mode theme variables */
+body.dark,
+.dark {
+  --ion-background-color: #0b0f19;
+  --ion-background-color-rgb: 11, 15, 25;
+  --ion-text-color: #f1f5f9;
+  --ion-text-color-rgb: 241, 245, 249;
+
+  --app-card-bg: rgba(20, 28, 44, 0.75);
+  --app-card-border: rgba(255, 255, 255, 0.07);
+  --app-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --app-input-bg: rgba(15, 23, 42, 0.65);
+  --app-input-border: rgba(255, 255, 255, 0.1);
+  --app-subtext: #94a3b8;
+  --app-muted: #64748b;
+  --app-glass-bg: rgba(18, 24, 38, 0.85);
+}

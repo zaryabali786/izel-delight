@@ -1,0 +1,2796 @@
+{
+  "stores": [
+    {
+      "id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "user_id": "c20db019-bc3b-45ef-ba5f-460cb3233884",
+      "name": "zaryab",
+      "domain": "zaryab.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "logo_url": null,
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true
+      },
+      "created_at": "2026-10-02T11:00:28.575Z",
+      "updated_at": "2026-10-02T11:00:28.575Z"
+    },
+    {
+      "id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "name": "haris",
+      "domain": "haris.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "logo_url": null,
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true
+      },
+      "created_at": "2026-10-02T11:02:54.862Z",
+      "updated_at": "2026-10-02T11:02:54.862Z"
+    },
+    {
+      "id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "name": "moon",
+      "domain": "moon123.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "logo_url": null,
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true
+      },
+      "created_at": "2026-10-02T11:26:01.069Z",
+      "updated_at": "2026-10-02T11:26:01.069Z"
+    },
+    {
+      "id": "71162100-2429-4119-bc95-143dad8d1917",
+      "user_id": "5e1eee65-d6c1-4568-8a15-53b0a558c7a5",
+      "name": "Alpha Outlet",
+      "domain": "alphaoutlet.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "logo_url": null,
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true
+      },
+      "created_at": "2026-10-02T11:27:04.421Z",
+      "updated_at": "2026-10-02T11:27:04.421Z"
+    },
+    {
+      "id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "user_id": "0259e80e-6017-4478-95ca-19648d86addf",
+      "name": "Chic Boutique",
+      "domain": "chicboutique.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "logo_url": null,
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true
+      },
+      "created_at": "2026-10-02T11:27:32.449Z",
+      "updated_at": "2026-10-02T11:27:32.449Z"
+    },
+    {
+      "id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "user_id": "ef5fdbf1-40f7-4458-9cf9-6167785e755a",
+      "name": "Chic Boutique",
+      "domain": "chicboutique.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "logo_url": null,
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true
+      },
+      "created_at": "2026-10-02T11:28:17.957Z",
+      "updated_at": "2026-10-02T11:28:17.957Z"
+    },
+    {
+      "id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "user_id": "71fa9bd3-8da3-4a20-801b-0dd710f68a93",
+      "name": "Chic Boutique",
+      "domain": "chicboutique.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "logo_url": null,
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true
+      },
+      "created_at": "2026-10-02T11:29:07.889Z",
+      "updated_at": "2026-10-02T11:29:07.889Z"
+    },
+    {
+      "id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "name": "My Store",
+      "domain": "store.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true,
+        "theme_dark": true
+      },
+      "created_at": "2026-10-02T11:59:49.514Z",
+      "updated_at": "2026-10-02T11:59:49.514Z"
+    },
+    {
+      "id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "name": "My Store",
+      "domain": "store.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true,
+        "theme_dark": true
+      },
+      "created_at": "2026-10-02T11:59:50.559Z",
+      "updated_at": "2026-10-02T11:59:50.559Z"
+    },
+    {
+      "id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "name": "My Store",
+      "domain": "store.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true,
+        "ai_prompt": "You are the official WhatsApp AI Sales Executive for this store. Help customers find products, verify sizes and fabric, and place Cash on Delivery or Online orders politely in English or Urdu/Roman Urdu. Only quote exact prices and stock available in store."
+      },
+      "created_at": "2026-10-02T12:28:36.325Z",
+      "updated_at": "2026-10-02T12:28:36.325Z"
+    },
+    {
+      "id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "name": "My Store",
+      "domain": "store.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true,
+        "ai_prompt": "You are the official WhatsApp AI Sales Executive for this store. Help customers find products, verify sizes and fabric, and place Cash on Delivery or Online orders politely in English or Urdu/Roman Urdu. Only quote exact prices and stock available in store."
+      },
+      "created_at": "2026-10-02T12:45:26.783Z",
+      "updated_at": "2026-10-02T12:45:26.783Z"
+    },
+    {
+      "id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "name": "My Store",
+      "domain": "store.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true,
+        "ai_prompt": "You are the official WhatsApp AI Sales Executive for this store. Help customers find products, verify sizes and fabric, and place Cash on Delivery or Online orders politely in English or Urdu/Roman Urdu. Only quote exact prices and stock available in store."
+      },
+      "created_at": "2026-10-02T12:59:28.655Z",
+      "updated_at": "2026-10-02T12:59:28.655Z"
+    },
+    {
+      "id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "name": "My Store",
+      "domain": "store.myshopify.com",
+      "platform": "Shopify",
+      "currency": "PKR",
+      "currency_symbol": "PKR ",
+      "status": "active",
+      "settings": {
+        "notifications_enabled": true,
+        "auto_fraud_shield": true,
+        "ai_prompt": "You are the official WhatsApp AI Sales Executive for this store. Help customers find products, verify sizes and fabric, and place Cash on Delivery or Online orders politely in English or Urdu/Roman Urdu. Only quote exact prices and stock available in store."
+      },
+      "created_at": "2026-10-02T21:15:11.067Z",
+      "updated_at": "2026-10-02T21:15:11.067Z"
+    }
+  ],
+  "integrations": [
+    {
+      "id": "4607611f-dae3-448d-9254-f18fe89a88f3",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "user_id": "c20db019-bc3b-45ef-ba5f-460cb3233884",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T11:00:30.239Z"
+    },
+    {
+      "id": "b6808491-9c04-46ab-b721-8840e9859965",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "user_id": "c20db019-bc3b-45ef-ba5f-460cb3233884",
+      "provider": "meta_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:00:30.239Z"
+    },
+    {
+      "id": "9d07326f-3b70-4a50-a225-80cb75d67d6a",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "user_id": "c20db019-bc3b-45ef-ba5f-460cb3233884",
+      "provider": "tiktok_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:00:30.239Z"
+    },
+    {
+      "id": "574b4d14-981e-49a5-9414-897dd66dbf3d",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "user_id": "c20db019-bc3b-45ef-ba5f-460cb3233884",
+      "provider": "postex",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:00:30.239Z"
+    },
+    {
+      "id": "39d86c23-3f54-4cf2-99a8-e6ed862ebb8e",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "user_id": "c20db019-bc3b-45ef-ba5f-460cb3233884",
+      "provider": "trax",
+      "status": "disconnected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "6d873f42-b652-46c9-98c2-1544c6137acc",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "user_id": "c20db019-bc3b-45ef-ba5f-460cb3233884",
+      "provider": "google_ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:00:30.239Z"
+    },
+    {
+      "id": "99572ddc-be4b-40ea-96e9-c628e407a5c1",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "last_sync": "2026-10-02T12:21:17.465Z",
+        "metrics": [
+          {
+            "label": "Live Catalog",
+            "value": "1,450 SKUs"
+          },
+          {
+            "label": "Webhook Status",
+            "value": "99.9% Active"
+          },
+          {
+            "label": "Unfulfilled Orders",
+            "value": "42 Pending"
+          }
+        ]
+      },
+      "last_synced_at": "2026-10-02T12:21:17.909Z",
+      "updated_at": "2026-10-02T12:21:17.909Z"
+    },
+    {
+      "id": "e9f5e9ec-db4b-466f-b4bf-0fe479ba94f4",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "meta_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:02:55.576Z"
+    },
+    {
+      "id": "14947b27-55bf-4fe0-af9b-7b899208e21b",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "tiktok_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:02:55.576Z"
+    },
+    {
+      "id": "b98ab6e2-4dda-48a0-bf11-06221adb887b",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "postex",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:02:55.576Z"
+    },
+    {
+      "id": "60387c63-a9b2-48d9-921d-af3edf56b8e0",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "trax",
+      "status": "disconnected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "5128ad7e-d2ec-47f0-af2f-05bb7771e9a5",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "google_ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:02:55.577Z"
+    },
+    {
+      "id": "effaf18d-8c47-46b6-8c5b-16fa88df01c5",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "last_sync": "2026-10-02T13:16:01.492Z",
+        "metrics": [
+          {
+            "label": "Live Catalog",
+            "value": "1,450 SKUs"
+          },
+          {
+            "label": "Webhook Status",
+            "value": "99.9% Active"
+          },
+          {
+            "label": "Unfulfilled Orders",
+            "value": "42 Pending"
+          }
+        ]
+      },
+      "last_synced_at": "2026-10-02T13:16:01.892Z",
+      "updated_at": "2026-10-02T13:16:01.892Z"
+    },
+    {
+      "id": "85b264c2-5a97-4c63-b3b5-a7f1d3f2a469",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "meta_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:26:01.598Z"
+    },
+    {
+      "id": "fa1eaf4a-4bf4-4b25-8803-ae3b1455b907",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "tiktok_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:26:01.598Z"
+    },
+    {
+      "id": "482655f9-c66c-4591-bc28-f654493e8429",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "postex",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:26:01.598Z"
+    },
+    {
+      "id": "fa97cf77-4c04-4b09-ae32-112d2bff554d",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "trax",
+      "status": "disconnected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "1b191f0b-fd4a-4ffe-985c-bbcd2f343bc7",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "google_ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:26:01.598Z"
+    },
+    {
+      "id": "625fa1ec-e525-48dd-b24e-e7f50c25666d",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "user_id": "5e1eee65-d6c1-4568-8a15-53b0a558c7a5",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T11:27:05.273Z"
+    },
+    {
+      "id": "91677990-9387-434e-8d27-ddbda8adb7ba",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "user_id": "5e1eee65-d6c1-4568-8a15-53b0a558c7a5",
+      "provider": "meta_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:27:05.273Z"
+    },
+    {
+      "id": "32246ff3-a180-4d67-8ba8-1494bbcac30b",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "user_id": "5e1eee65-d6c1-4568-8a15-53b0a558c7a5",
+      "provider": "tiktok_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:27:05.273Z"
+    },
+    {
+      "id": "b37ee376-7cf8-4882-aff6-566ed2adbb9f",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "user_id": "5e1eee65-d6c1-4568-8a15-53b0a558c7a5",
+      "provider": "postex",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:27:05.273Z"
+    },
+    {
+      "id": "20c5a14e-ae57-4a0b-b77a-f20c4818500d",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "user_id": "5e1eee65-d6c1-4568-8a15-53b0a558c7a5",
+      "provider": "trax",
+      "status": "disconnected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "620878ee-a56a-4a4f-a07c-5e65835f5494",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "user_id": "5e1eee65-d6c1-4568-8a15-53b0a558c7a5",
+      "provider": "google_ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:27:05.273Z"
+    },
+    {
+      "id": "6114f784-9f2c-4f04-9d2e-8b928aad4f9b",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "user_id": "0259e80e-6017-4478-95ca-19648d86addf",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T11:27:32.938Z"
+    },
+    {
+      "id": "b1f7d4ae-0b6a-4b97-910b-dc46fbf097a3",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "user_id": "0259e80e-6017-4478-95ca-19648d86addf",
+      "provider": "meta_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:27:32.938Z"
+    },
+    {
+      "id": "dad513c4-642f-4922-9446-fc6a33ddc442",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "user_id": "0259e80e-6017-4478-95ca-19648d86addf",
+      "provider": "tiktok_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:27:32.938Z"
+    },
+    {
+      "id": "971ca4af-47dd-4351-b059-62e1de39ebe1",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "user_id": "0259e80e-6017-4478-95ca-19648d86addf",
+      "provider": "postex",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:27:32.938Z"
+    },
+    {
+      "id": "ea9fcde3-447b-4880-acde-769e43a4bcff",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "user_id": "0259e80e-6017-4478-95ca-19648d86addf",
+      "provider": "trax",
+      "status": "disconnected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "9ca416fc-95a7-49c1-8f9e-0573a8dda51d",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "user_id": "0259e80e-6017-4478-95ca-19648d86addf",
+      "provider": "google_ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:27:32.938Z"
+    },
+    {
+      "id": "05d1066f-97ce-491b-9382-42e836f8981e",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "user_id": "ef5fdbf1-40f7-4458-9cf9-6167785e755a",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T11:28:18.383Z"
+    },
+    {
+      "id": "bacc5867-0f1d-442f-9308-cacc5c6b2821",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "user_id": "ef5fdbf1-40f7-4458-9cf9-6167785e755a",
+      "provider": "meta_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:28:18.383Z"
+    },
+    {
+      "id": "0347d136-08e4-4db9-bbfb-545d3e9f80a8",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "user_id": "ef5fdbf1-40f7-4458-9cf9-6167785e755a",
+      "provider": "tiktok_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:28:18.383Z"
+    },
+    {
+      "id": "d8b9a7be-c04f-4dcd-b693-6042c0c23034",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "user_id": "ef5fdbf1-40f7-4458-9cf9-6167785e755a",
+      "provider": "postex",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:28:18.383Z"
+    },
+    {
+      "id": "2864f421-3400-4874-9e76-69bb6245ed6b",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "user_id": "ef5fdbf1-40f7-4458-9cf9-6167785e755a",
+      "provider": "trax",
+      "status": "disconnected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "c8ed0934-a5d5-4f6d-9fc2-7cafcbf69487",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "user_id": "ef5fdbf1-40f7-4458-9cf9-6167785e755a",
+      "provider": "google_ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:28:18.383Z"
+    },
+    {
+      "id": "3cc26565-aabb-4316-ad92-eb32288c5326",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "user_id": "71fa9bd3-8da3-4a20-801b-0dd710f68a93",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T11:29:08.334Z"
+    },
+    {
+      "id": "4fa436b6-9a03-4ccf-b669-679125835835",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "user_id": "71fa9bd3-8da3-4a20-801b-0dd710f68a93",
+      "provider": "meta_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:29:08.334Z"
+    },
+    {
+      "id": "9c537439-0362-4f73-ba1c-7f28e7e79587",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "user_id": "71fa9bd3-8da3-4a20-801b-0dd710f68a93",
+      "provider": "tiktok_ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:29:08.334Z"
+    },
+    {
+      "id": "443b8ecb-54ff-4f73-94b2-0c7591fae51a",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "user_id": "71fa9bd3-8da3-4a20-801b-0dd710f68a93",
+      "provider": "postex",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:29:08.334Z"
+    },
+    {
+      "id": "1bacf185-4081-47f3-aeb9-5716dd13ee44",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "user_id": "71fa9bd3-8da3-4a20-801b-0dd710f68a93",
+      "provider": "trax",
+      "status": "disconnected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "bb7fe646-eb0f-4f3a-97ca-cca29fd85c15",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "user_id": "71fa9bd3-8da3-4a20-801b-0dd710f68a93",
+      "provider": "google_ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:29:08.334Z"
+    },
+    {
+      "id": "f52c9eb1-357d-4cd6-a783-baceb184e444",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T11:59:49.514Z"
+    },
+    {
+      "id": "43b9e215-2ab8-4f5c-9430-7631cdcccbaa",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "meta-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:59:49.514Z"
+    },
+    {
+      "id": "e84310b6-d010-433c-84db-397d17ae0cfd",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "tiktok-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:59:49.514Z"
+    },
+    {
+      "id": "17eb4103-67db-4537-9f08-52e2af31d383",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "postex-courier",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:59:49.514Z"
+    },
+    {
+      "id": "ad0ce929-0207-4bb9-9ad1-142e6e26ea51",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "trax-logistics",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "7702101a-8b54-4dc1-bcfe-87507deb707e",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "google-ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:59:49.514Z"
+    },
+    {
+      "id": "29110b20-caf5-4993-a82b-24a42e5be0ac",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "snapchat-ads",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "69d35b80-6f63-4170-99f2-632976b9ecd9",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "user_id": "84233ac3-dc7a-4bbe-9e2b-d368362bf25d",
+      "provider": "whatsapp-business",
+      "status": "connected",
+      "config": {
+        "phone_number_id": "109284719283719",
+        "bot_active": true
+      },
+      "last_synced_at": "2026-10-02T11:59:49.514Z"
+    },
+    {
+      "id": "ae250fee-8e23-41a0-a719-bd6af966f748",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T11:59:50.559Z"
+    },
+    {
+      "id": "5433398c-9a58-43a1-ab41-eff2b12ca479",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "meta-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T11:59:50.559Z"
+    },
+    {
+      "id": "4945fd3e-e726-46b5-96aa-9db4ab0fb03c",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "tiktok-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T11:59:50.559Z"
+    },
+    {
+      "id": "7de4e86e-49b4-49bc-82a7-4ebc4778a4e4",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "postex-courier",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T11:59:50.559Z"
+    },
+    {
+      "id": "4bd727a6-6d66-45da-a06d-7d2afef0b30b",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "trax-logistics",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "bd9cf79a-46a0-4eaa-bb1c-224ea876bb7b",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "google-ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T11:59:50.559Z"
+    },
+    {
+      "id": "79817f3c-4235-42fd-b5ab-567626ac412e",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "snapchat-ads",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "e3342649-b631-4715-b968-e19c57b77954",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "user_id": "b2d18e3f-f100-4969-b05a-004628c318f6",
+      "provider": "whatsapp-business",
+      "status": "connected",
+      "config": {
+        "phone_number_id": "109284719283719",
+        "bot_active": true
+      },
+      "last_synced_at": "2026-10-02T11:59:50.559Z"
+    },
+    {
+      "id": "8f24ab4e-a13a-4f58-affd-403e16dfe3c3",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T12:28:36.325Z"
+    },
+    {
+      "id": "7500f568-d9de-4bb8-a17c-1645f7b56ecf",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "meta-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T12:28:36.325Z"
+    },
+    {
+      "id": "9deb7113-889a-4146-9ff8-838023011865",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "tiktok-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T12:28:36.325Z"
+    },
+    {
+      "id": "a1af3f35-a8f6-4949-9839-84a4bbfcb647",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "postex-courier",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T12:28:36.325Z"
+    },
+    {
+      "id": "b722313d-0089-4564-987d-422b4a17c32e",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "trax-logistics",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "5935f94f-1a15-4467-ab44-0df13369e45e",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "google-ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T12:28:36.325Z"
+    },
+    {
+      "id": "8101af47-0079-4953-ab94-e810ca6f6a47",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "snapchat-ads",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "e91e4774-230e-4f29-a12f-6e6b4de2db26",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "user_id": "test-ai-user-1790944114496",
+      "provider": "whatsapp-business",
+      "status": "connected",
+      "config": {
+        "phone_number_id": "109284719283719",
+        "bot_active": true
+      },
+      "last_synced_at": "2026-10-02T12:28:36.326Z"
+    },
+    {
+      "id": "69ff678f-5f87-413d-81d4-b558f8664a83",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T12:45:26.784Z"
+    },
+    {
+      "id": "44e5bf15-127e-477c-b4f6-5848d51f1db0",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "meta-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T12:45:26.784Z"
+    },
+    {
+      "id": "03cf8a68-2ef7-4f6e-9386-c159bf2ad94e",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "tiktok-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T12:45:26.784Z"
+    },
+    {
+      "id": "d561b1e4-b959-4cf8-92ba-a6a4483e1d5d",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "postex-courier",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T12:45:26.784Z"
+    },
+    {
+      "id": "87660739-6165-4135-8987-fe78d6925f66",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "trax-logistics",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "13c23352-7921-4938-89c9-b8be120f0eb9",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "google-ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T12:45:26.784Z"
+    },
+    {
+      "id": "f9320ddc-8df2-4f53-9777-aa4488088b1e",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "snapchat-ads",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "8e11766a-6f4a-4c30-ac20-6d5e3ad9cd92",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "user_id": "test-ai-user-1790945124913",
+      "provider": "whatsapp-business",
+      "status": "connected",
+      "config": {
+        "phone_number_id": "109284719283719",
+        "bot_active": true
+      },
+      "last_synced_at": "2026-10-02T12:45:26.784Z"
+    },
+    {
+      "id": "591ef853-64b1-465d-bce6-27f4baaf4ae0",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T12:59:28.655Z"
+    },
+    {
+      "id": "4bf4111f-c73a-4e01-aa3f-3104fab84cc2",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "meta-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T12:59:28.655Z"
+    },
+    {
+      "id": "d9c17960-739f-41be-8e6d-1bcbca75e82f",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "tiktok-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T12:59:28.655Z"
+    },
+    {
+      "id": "eb4b047a-c3b4-43b2-ab21-bee45fe031a4",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "postex-courier",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T12:59:28.655Z"
+    },
+    {
+      "id": "7a3cbfa3-aaf7-4d93-b336-948b5dab0277",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "trax-logistics",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "4d39c07f-4586-454f-8e24-076a97dca356",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "google-ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T12:59:28.655Z"
+    },
+    {
+      "id": "df9d989b-569d-4b8a-8c4b-46c087d48296",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "snapchat-ads",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "19a7922c-228b-44bf-9b54-1b354aff7655",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "user_id": "test-ai-user-1790945967642",
+      "provider": "whatsapp-business",
+      "status": "connected",
+      "config": {
+        "phone_number_id": "109284719283719",
+        "bot_active": true
+      },
+      "last_synced_at": "2026-10-02T12:59:28.656Z"
+    },
+    {
+      "id": "1cc99b9e-3ecd-40fe-a8c8-4382802429ee",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "google-ads",
+      "status": "connected",
+      "config": {
+        "last_sync": "2026-10-02T13:16:01.506Z",
+        "metrics": [
+          {
+            "label": "Shopping Feed",
+            "value": "Active"
+          },
+          {
+            "label": "PMax ROAS",
+            "value": "4.90x"
+          },
+          {
+            "label": "Search Intent",
+            "value": "High Intent"
+          }
+        ]
+      },
+      "last_synced_at": "2026-10-02T13:16:01.506Z",
+      "updated_at": "2026-10-02T13:16:01.506Z"
+    },
+    {
+      "id": "8d63191c-fa5c-4685-8668-4205564c98ff",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "postex-courier",
+      "status": "connected",
+      "config": {
+        "last_sync": "2026-10-02T13:16:01.501Z",
+        "metrics": [
+          {
+            "label": "In Transit",
+            "value": "1,240"
+          },
+          {
+            "label": "Delivered Rate",
+            "value": "89.4%"
+          },
+          {
+            "label": "RTO Saved",
+            "value": "PKR 420k"
+          }
+        ]
+      },
+      "last_synced_at": "2026-10-02T13:16:01.501Z",
+      "updated_at": "2026-10-02T13:16:01.501Z"
+    },
+    {
+      "id": "6b854393-0e2a-4cc6-8965-a862e83b3912",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "tiktok-ads",
+      "status": "connected",
+      "config": {
+        "last_sync": "2026-10-02T13:16:01.558Z",
+        "metrics": [
+          {
+            "label": "Pixel Stream",
+            "value": "Streaming"
+          },
+          {
+            "label": "Spark Ads",
+            "value": "8 Running"
+          },
+          {
+            "label": "Est. ROAS",
+            "value": "2.94x"
+          }
+        ]
+      },
+      "last_synced_at": "2026-10-02T13:16:01.559Z",
+      "updated_at": "2026-10-02T13:16:01.559Z"
+    },
+    {
+      "id": "77fb1838-267a-4aaf-84ab-c5b94c1123af",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "user_id": "30ea5fdf-e9ad-4692-8f58-5bd8c1e4f170",
+      "provider": "meta-ads",
+      "status": "connected",
+      "config": {
+        "last_sync": "2026-10-02T13:16:01.389Z",
+        "metrics": [
+          {
+            "label": "Blended ROAS",
+            "value": "3.82x"
+          },
+          {
+            "label": "Daily Spend",
+            "value": "PKR 85,000"
+          },
+          {
+            "label": "Active Ad Sets",
+            "value": "18 Winning"
+          }
+        ]
+      },
+      "last_synced_at": "2026-10-02T13:16:01.389Z",
+      "updated_at": "2026-10-02T13:16:01.389Z"
+    },
+    {
+      "id": "aed35bdf-58b4-4d91-b333-010f3f2d3946",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "shopify",
+      "status": "connected",
+      "config": {
+        "shop_domain": "store.myshopify.com",
+        "synced_products": 1450,
+        "webhook_active": true
+      },
+      "last_synced_at": "2026-10-02T21:15:11.067Z"
+    },
+    {
+      "id": "76c94d8a-93bd-4e8c-b59a-2d643d595f94",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "meta-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "908234120938471",
+        "roas_sync": true
+      },
+      "last_synced_at": "2026-10-02T21:15:11.067Z"
+    },
+    {
+      "id": "f4d9dc6f-d3ca-4f79-92c4-0284c376d7bf",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "tiktok-ads",
+      "status": "connected",
+      "config": {
+        "pixel_id": "TT-76541289",
+        "reels_tracking": true
+      },
+      "last_synced_at": "2026-10-02T21:15:11.067Z"
+    },
+    {
+      "id": "45e8d47a-d36c-4aba-866a-0382e628492b",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "postex-courier",
+      "status": "connected",
+      "config": {
+        "merchant_code": "PX-9921",
+        "auto_fraud_detect": true
+      },
+      "last_synced_at": "2026-10-02T21:15:11.067Z"
+    },
+    {
+      "id": "24612fec-7c43-4d5c-ae0c-33ee20d4a3aa",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "trax-logistics",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "1ae04c12-e56c-4ea5-b3d8-688f84d95ef8",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "google-ads",
+      "status": "connected",
+      "config": {
+        "conversion_id": "AW-9812034"
+      },
+      "last_synced_at": "2026-10-02T21:15:11.067Z"
+    },
+    {
+      "id": "99dc389a-f1cd-4848-addc-3bc61d08ff24",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "snapchat-ads",
+      "status": "not_connected",
+      "config": {},
+      "last_synced_at": null
+    },
+    {
+      "id": "f4e8b96b-b9de-4c07-9491-070733fd3367",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "user_id": "99999999-9999-9999-9999-999999999999",
+      "provider": "whatsapp-business",
+      "status": "connected",
+      "config": {
+        "phone_number_id": "109284719283719",
+        "bot_active": true
+      },
+      "last_synced_at": "2026-10-02T21:15:11.067Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "dd8c1dc0-ab97-452d-a655-c7657592d315",
+      "created_at": "2026-10-02T11:13:06.380Z",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "title": "Tampered Hack Product",
+      "sku": "HACK-01",
+      "price": 100,
+      "compare_at_price": null,
+      "stock": 0,
+      "vendor": "Shopify",
+      "category": "General",
+      "status": "draft",
+      "image_url": null,
+      "updated_at": "2026-10-02T11:13:06.380Z"
+    },
+    {
+      "id": "044fab91-8b2b-48ab-b0eb-e1421ab9a5a7",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "ef2753ed-31e2-44af-9f42-987f1c4f0305",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "0aa65c52-284a-42ed-93db-6e2f1b6dc846",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "3ac0df9a-254f-416a-b1d2-007ecd986d8c",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "4ad82f79-393f-44a0-a3d7-14c6e82a302f",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "985aa8d9-36f5-4aec-a214-7e8954bf179c",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "9cbd22bd-b34a-425f-89d5-0c1d02be4e47",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "e0b80fdf-a394-47bd-be19-8b097b48ceed",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "14a5bbae-a316-470e-92c1-8384446fc8e0",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "920ff613-a1a7-4744-ba87-6cf4d63569fd",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "9519a3ad-424b-44b7-a9e6-23898743e03e",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "b754547c-7ccd-40a6-8214-2d9cb597fc06",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "28723863-509b-49fa-b41a-f38e0fe8b94d",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "eee20b31-069d-4c2d-a96f-7be76c00a479",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "2cfffcda-59ae-4400-9138-9828f5669b94",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "08260071-7b8a-4c28-9fd1-2b269a5c945c",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "97052117-624d-46b8-8e4b-34bcabc1b19f",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "17ffc6e2-3462-4043-9962-23ade2078f17",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "9726f7ff-42d3-4d15-850e-363a496e8db9",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "8a62f398-bd03-485e-8b42-f0f096a59a9c",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "5d932879-a43c-4d6a-91a7-4059a869cf59",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "166fd173-4ef4-4e79-84a9-69096a5ef244",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "889a864d-4275-4262-b364-96b611851d2c",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "4c1dfb5e-2e01-4da0-81d8-7e9359308cce",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "75700339-5f19-45eb-a856-59cea9752180",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "title": "Embroidered Lawn 3-Piece Festive Set",
+      "sku": "IZL-LWN-001",
+      "price": 11450,
+      "compare_at_price": 13950,
+      "stock": 45,
+      "vendor": "In-House Studio",
+      "category": "Unstitched Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 2.1,
+      "rto_risk": "Low"
+    },
+    {
+      "id": "250e49a8-d0f2-4179-a888-53737e19d97f",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "title": "Chiffon Dupatta Luxury Pret Kurti",
+      "sku": "IZL-PRT-023",
+      "price": 7850,
+      "compare_at_price": 8950,
+      "stock": 78,
+      "vendor": "Pret Collection",
+      "category": "Ready-to-Wear",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 4.8,
+      "rto_risk": "Medium"
+    },
+    {
+      "id": "7f100fe9-35b0-4662-b6f5-22e9aa502658",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "title": "Raw Silk Festive Trousers & Kurti",
+      "sku": "IZL-SLK-109",
+      "price": 14200,
+      "compare_at_price": 16500,
+      "stock": 12,
+      "vendor": "Atelier Royal",
+      "category": "Festive Luxury",
+      "status": "active",
+      "image_url": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=400&q=80",
+      "returns_rate": 1.4,
+      "rto_risk": "Low"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "24051ff3-0c45-403e-9675-484a4012c4d0",
+      "store_id": "ca372ed8-79cc-4124-853e-1e7c141c5a01",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ]
+    },
+    {
+      "id": "ac8895c3-0e1f-4443-b27d-c76360b7fd62",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ],
+      "insights": {
+        "hasSufficientData": false,
+        "summary": "The store 'haris' has not generated any revenue or orders across all channels, indicating a lack of engagement or marketing activity. With no ad spend or logistics activity, immediate attention is needed to establish a marketing strategy and operational framework.",
+        "channelPerformance": [
+          {
+            "platform": "Meta Ads",
+            "status": "maintain",
+            "recommendation": "Start with a small budget to test audience engagement and optimize creatives."
+          },
+          {
+            "platform": "Google Ads",
+            "status": "maintain",
+            "recommendation": "Set up a basic search campaign targeting relevant keywords to drive initial traffic."
+          },
+          {
+            "platform": "TikTok Ads",
+            "status": "maintain",
+            "recommendation": "Consider creating engaging video content to attract younger demographics."
+          }
+        ],
+        "courierTelemetry": [
+          {
+            "courier": "PostEx Logistics",
+            "rating": "Watch",
+            "routingAdvice": "Monitor performance closely as no packages have been dispatched."
+          },
+          {
+            "courier": "Trax Logistics",
+            "rating": "Watch",
+            "routingAdvice": "Evaluate service reliability before scaling operations."
+          }
+        ],
+        "keyInsights": [
+          "No revenue generated across all channels indicates a need for immediate marketing initiatives.",
+          "With 0 orders and 0 ad spend, the store is not currently leveraging any digital marketing channels.",
+          "The store has only 3 SKUs listed, which may limit customer engagement and sales opportunities."
+        ],
+        "metrics": [
+          {
+            "label": "Blended ROAS",
+            "value": "Organic",
+            "status": "neutral",
+            "advice": "No paid ad spend to analyze efficiency."
+          },
+          {
+            "label": "Courier Delivery Success",
+            "value": "N/A",
+            "status": "neutral",
+            "advice": "No deliveries made to assess success."
+          },
+          {
+            "label": "WhatsApp Conversion",
+            "value": "0%",
+            "status": "poor",
+            "advice": "Need to improve engagement strategies to convert inquiries into sales."
+          },
+          {
+            "label": "Average Order Value",
+            "value": "PKR 0",
+            "status": "neutral",
+            "advice": "Establish a baseline by generating initial sales."
+          }
+        ],
+        "opportunities": [
+          "Establish a foundational marketing strategy to drive traffic and conversions.",
+          "Utilize WhatsApp for direct engagement and to build customer relationships."
+        ],
+        "risks": [
+          "Lack of engagement could lead to brand obscurity and missed market opportunities."
+        ],
+        "suggestions": [
+          "Launch a small-scale paid advertising campaign across Meta and Google to test audience response.",
+          "Optimize the WhatsApp channel by creating a catalog and promoting it through social media.",
+          "Evaluate and enhance the product catalog to ensure it meets customer needs and preferences."
+        ],
+        "channels": {
+          "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+          "has_sufficient_data": true,
+          "financials": {
+            "gross_revenue": 0,
+            "total_orders": 0,
+            "catalog_skus": 3
+          },
+          "ads": [
+            {
+              "platform": "Meta Ads (FB/Instagram)",
+              "platform_id": "meta-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            },
+            {
+              "platform": "Google Ads (Search/Shopping)",
+              "platform_id": "google-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            },
+            {
+              "platform": "TikTok Ads & Spark",
+              "platform_id": "tiktok-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            },
+            {
+              "platform": "Snapchat Ads",
+              "platform_id": "snapchat-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            }
+          ],
+          "couriers": [
+            {
+              "courier": "PostEx Logistics",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            },
+            {
+              "courier": "Trax Logistics",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            },
+            {
+              "courier": "Leopards Courier",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            },
+            {
+              "courier": "TCS Logistics",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            }
+          ],
+          "whatsapp": {
+            "total_conversations": 1,
+            "voice_notes": 0,
+            "orders_booked": 0,
+            "revenue_generated": 0,
+            "conversion_rate": 0
+          },
+          "shopify": {
+            "orders_count": 0,
+            "revenue": 0,
+            "catalog_skus": 3
+          }
+        }
+      },
+      "updated_at": "2026-10-02T13:02:53.992Z"
+    },
+    {
+      "id": "c90d99bf-23e3-41f8-b14f-6846c1d36a70",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ],
+      "insights": {
+        "hasSufficientData": false,
+        "summary": "The store 'moon' is currently not generating any revenue or orders across all channels, indicating a lack of engagement and activity. There are no investments in paid advertising, and logistics channels have not dispatched any packages, resulting in zero performance metrics.",
+        "channelPerformance": [
+          {
+            "platform": "Meta Ads",
+            "status": "maintain",
+            "recommendation": "Start with a minimal budget to test audience engagement and ad creatives."
+          },
+          {
+            "platform": "Google Ads",
+            "status": "maintain",
+            "recommendation": "Consider setting up a campaign with targeted keywords to drive traffic."
+          },
+          {
+            "platform": "TikTok Ads",
+            "status": "maintain",
+            "recommendation": "Create engaging video content to attract younger demographics."
+          }
+        ],
+        "courierTelemetry": [
+          {
+            "courier": "PostEx Logistics",
+            "rating": "Watch",
+            "routingAdvice": "Monitor performance closely once orders begin to flow."
+          },
+          {
+            "courier": "Trax Logistics",
+            "rating": "Watch",
+            "routingAdvice": "Evaluate service reliability as orders increase."
+          }
+        ],
+        "keyInsights": [
+          "No orders or revenue recorded, indicating an urgent need for a marketing strategy.",
+          "Active catalog size is limited to 3 SKUs, suggesting a need for product expansion.",
+          "Only 1 inquiry was handled via WhatsApp, highlighting potential for improved customer engagement."
+        ],
+        "metrics": [
+          {
+            "label": "Blended ROAS",
+            "value": "Organic",
+            "status": "not applicable",
+            "advice": "No ad spend to analyze efficiency."
+          },
+          {
+            "label": "Courier Delivery Success",
+            "value": "N/A",
+            "status": "not applicable",
+            "advice": "No deliveries have been made."
+          },
+          {
+            "label": "WhatsApp Conversion",
+            "value": "0%",
+            "status": "poor",
+            "advice": "Enhance engagement strategies to improve sales conversion."
+          },
+          {
+            "label": "Average Order Value",
+            "value": "PKR 0",
+            "status": "not applicable",
+            "advice": "No transactions to analyze."
+          }
+        ],
+        "opportunities": [
+          "Establish a baseline advertising budget to initiate brand awareness and customer acquisition.",
+          "Expand product catalog to attract a broader audience and increase order potential."
+        ],
+        "risks": [
+          "Lack of activity across all channels may lead to brand invisibility in a competitive market."
+        ],
+        "suggestions": [
+          "Launch a small-scale advertising campaign across Meta and Google to test market response.",
+          "Implement a customer engagement strategy on WhatsApp to convert inquiries into sales.",
+          "Consider diversifying product offerings to enhance the catalog and appeal to various customer segments."
+        ],
+        "channels": {
+          "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+          "has_sufficient_data": true,
+          "financials": {
+            "gross_revenue": 0,
+            "total_orders": 0,
+            "catalog_skus": 3
+          },
+          "ads": [
+            {
+              "platform": "Meta Ads (FB/Instagram)",
+              "platform_id": "meta-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            },
+            {
+              "platform": "Google Ads (Search/Shopping)",
+              "platform_id": "google-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            },
+            {
+              "platform": "TikTok Ads & Spark",
+              "platform_id": "tiktok-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            },
+            {
+              "platform": "Snapchat Ads",
+              "platform_id": "snapchat-ads",
+              "spend": 0,
+              "revenue": 0,
+              "roas": 0,
+              "clicks": 0,
+              "ctr": "0.0",
+              "cpc": 0,
+              "conversions": 0
+            }
+          ],
+          "couriers": [
+            {
+              "courier": "PostEx Logistics",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            },
+            {
+              "courier": "Trax Logistics",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            },
+            {
+              "courier": "Leopards Courier",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            },
+            {
+              "courier": "TCS Logistics",
+              "dispatched": 0,
+              "delivered": 0,
+              "in_transit": 0,
+              "returned_rto": 0,
+              "delivery_success_rate": 0,
+              "rto_rate": 0,
+              "cod_collected": 0,
+              "shipping_fees": 0
+            }
+          ],
+          "whatsapp": {
+            "total_conversations": 1,
+            "voice_notes": 0,
+            "orders_booked": 0,
+            "revenue_generated": 0,
+            "conversion_rate": 0
+          },
+          "shopify": {
+            "orders_count": 0,
+            "revenue": 0,
+            "catalog_skus": 3
+          }
+        }
+      },
+      "updated_at": "2026-10-02T13:11:57.183Z"
+    },
+    {
+      "id": "7dee9c87-e3bf-4dc0-8b04-a0238b02ab25",
+      "store_id": "71162100-2429-4119-bc95-143dad8d1917",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ]
+    },
+    {
+      "id": "e0bb5c78-4b31-4c2a-8fea-507dcb6376f9",
+      "store_id": "7fd08fd3-c57c-4683-aa88-98529af2a118",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ]
+    },
+    {
+      "id": "74e5b7d9-c797-4103-b3cc-bc43f2811937",
+      "store_id": "4e877d1a-7faa-428f-b2c6-a6f3d9886458",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ]
+    },
+    {
+      "id": "784ea6e4-8681-4812-b633-94e3ce082f4d",
+      "store_id": "c0b15b9c-ea92-494e-89a5-252ae8752004",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ]
+    },
+    {
+      "id": "d36ac83c-b1e0-4386-8992-2fc47599f4f7",
+      "store_id": "7c4fe16b-0c8b-4326-874c-2ce3fb2f75a1",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ]
+    },
+    {
+      "id": "df96fa87-e6f1-4878-b090-1c0ac86ff8ce",
+      "store_id": "36a84f09-c239-4dde-9c6b-92f7bf950f46",
+      "gross_revenue": 26332800,
+      "net_sales": 23752200,
+      "rto_loss": 2580600,
+      "cogs": 7899840,
+      "ad_spend": 6430000,
+      "courier_fees": 1236000,
+      "net_profit": 8031316,
+      "net_margin_pct": 30.5,
+      "total_orders": 2415,
+      "aov": 10900,
+      "channel_data": [
+        {
+          "channel": "Meta Ads (FB/IG)",
+          "spend": 4250000,
+          "revenue": 16235000,
+          "roas": 3.82,
+          "sharePct": 59.9
+        },
+        {
+          "channel": "TikTok Ads (Viral Reels)",
+          "spend": 1280000,
+          "revenue": 3763200,
+          "roas": 2.94,
+          "sharePct": 13.9
+        },
+        {
+          "channel": "Google Ads (PMax)",
+          "spend": 580000,
+          "revenue": 2842000,
+          "roas": 4.9,
+          "sharePct": 10.5
+        },
+        {
+          "channel": "Snapchat Ads",
+          "spend": 240000,
+          "revenue": 763200,
+          "roas": 3.18,
+          "sharePct": 2.8
+        },
+        {
+          "channel": "Organic & Direct",
+          "spend": 0,
+          "revenue": 2728400,
+          "roas": 0,
+          "sharePct": 12.9
+        }
+      ]
+    },
+    {
+      "id": "20bd8b70-e58d-450b-b538-8858c08eccc4",
+      "store_id": "6119abd9-9999-4e32-b8cc-8021d32ab094",
+      "gross_revenue": 0,
+      "net_sales": 0,
+      "rto_loss": 0,
+      "cogs": 0,
+      "ad_spend": 0,
+      "courier_fees": 0,
+      "net_profit": 0,
+      "net_margin_pct": 0,
+      "total_orders": 0,
+      "aov": 0,
+      "roas": 0,
+      "cac": 0,
+      "conversion_rate": 0,
+      "channel_data": [],
+      "insights": null,
+      "has_sufficient_data": false,
+      "updated_at": "2026-10-02T12:28:36.326Z"
+    },
+    {
+      "id": "7e71afbe-e381-4548-8862-a9c2c5df6655",
+      "store_id": "7c29fbd1-4efc-4378-a3ec-947dae18c180",
+      "gross_revenue": 0,
+      "net_sales": 0,
+      "rto_loss": 0,
+      "cogs": 0,
+      "ad_spend": 0,
+      "courier_fees": 0,
+      "net_profit": 0,
+      "net_margin_pct": 0,
+      "total_orders": 0,
+      "aov": 0,
+      "roas": 0,
+      "cac": 0,
+      "conversion_rate": 0,
+      "channel_data": [],
+      "insights": null,
+      "has_sufficient_data": false,
+      "updated_at": "2026-10-02T12:45:26.784Z"
+    },
+    {
+      "id": "caf566a8-4e23-47f2-917c-7fdf34177e51",
+      "store_id": "bf2b79e3-64fe-4b2c-b6fc-72073a80085c",
+      "gross_revenue": 0,
+      "net_sales": 0,
+      "rto_loss": 0,
+      "cogs": 0,
+      "ad_spend": 0,
+      "courier_fees": 0,
+      "net_profit": 0,
+      "net_margin_pct": 0,
+      "total_orders": 0,
+      "aov": 0,
+      "roas": 0,
+      "cac": 0,
+      "conversion_rate": 0,
+      "channel_data": [],
+      "insights": null,
+      "has_sufficient_data": false,
+      "updated_at": "2026-10-02T12:59:28.656Z"
+    },
+    {
+      "id": "971317a3-6a35-4ea4-b445-e58197d87c63",
+      "store_id": "bf52c2da-0355-4081-85a8-8aa1c9ebc697",
+      "gross_revenue": 0,
+      "net_sales": 0,
+      "rto_loss": 0,
+      "cogs": 0,
+      "ad_spend": 0,
+      "courier_fees": 0,
+      "net_profit": 0,
+      "net_margin_pct": 0,
+      "total_orders": 0,
+      "aov": 0,
+      "roas": 0,
+      "cac": 0,
+      "conversion_rate": 0,
+      "channel_data": [],
+      "insights": null,
+      "has_sufficient_data": false,
+      "updated_at": "2026-10-02T21:15:11.067Z"
+    }
+  ],
+  "orders": [],
+  "conversations": [
+    {
+      "id": "c769d01d-26fa-4788-853b-6ad6e4c1705a",
+      "store_id": "afda1a2f-e240-41fd-8fd6-243514652fea",
+      "customer_name": "Amina Tariq",
+      "customer_phone": "+92 300 8472910",
+      "city": "Lahore, Punjab",
+      "status": "Inquiry",
+      "unread_count": 0,
+      "messages": [
+        {
+          "id": "msg-init-1",
+          "sender": "customer",
+          "text": "Assalam-o-Alaikum! Are you currently taking Cash on Delivery orders for moon?",
+          "type": "text",
+          "timestamp": "10:15 AM",
+          "status": "read"
+        },
+        {
+          "id": "msg-init-2",
+          "sender": "ai",
+          "text": "Walaikum Assalam! Yes, we offer nationwide 100% Cash on Delivery across Pakistan with fast 2-3 business days delivery. How can I assist you with our catalog today? ✨",
+          "type": "text",
+          "timestamp": "10:16 AM",
+          "status": "read",
+          "isAiResponse": true
+        }
+      ],
+      "last_message": "Yes, we offer nationwide 100% Cash on Delivery across Pakistan.",
+      "last_timestamp": "10:16 AM",
+      "created_at": "2026-10-02T12:55:07.752Z",
+      "updated_at": "2026-10-02T12:55:07.752Z"
+    },
+    {
+      "id": "9ffb1296-85c6-478f-8260-1deaa016b969",
+      "store_id": "addae1f1-77be-468c-8dd3-3caa0396501c",
+      "customer_name": "Amina Tariq",
+      "customer_phone": "+92 300 8472910",
+      "city": "Lahore, Punjab",
+      "status": "Inquiry",
+      "unread_count": 0,
+      "messages": [
+        {
+          "id": "msg-init-1",
+          "sender": "customer",
+          "text": "Assalam-o-Alaikum! Are you currently taking Cash on Delivery orders for haris?",
+          "type": "text",
+          "timestamp": "10:15 AM",
+          "status": "read"
+        },
+        {
+          "id": "msg-init-2",
+          "sender": "ai",
+          "text": "Walaikum Assalam! Yes, we offer nationwide 100% Cash on Delivery across Pakistan with fast 2-3 business days delivery. How can I assist you with our catalog today? ✨",
+          "type": "text",
+          "timestamp": "10:16 AM",
+          "status": "read",
+          "isAiResponse": true
+        }
+      ],
+      "last_message": "Yes, we offer nationwide 100% Cash on Delivery across Pakistan.",
+      "last_timestamp": "10:16 AM",
+      "created_at": "2026-10-02T13:02:21.855Z",
+      "updated_at": "2026-10-02T13:02:21.855Z"
+    }
+  ],
+  "shipments": [],
+  "ad_metrics": []
+}

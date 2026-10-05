@@ -1,0 +1,254 @@
+<div class="growth-deck-page animate-fade-in">
+  <!-- Growth Deck Header & Interactive Scenario Switcher -->
+  <div class="growth-header-card glass-card">
+    <div class="scenario-header-row">
+      <div>
+        <div class="tenant-tag-row mb-8">
+          <span class="tenant-pill">
+            <span class="pulse-dot"></span>
+            Store Tenant: {{ analytics.activeStore()?.name || 'Primary Store' }}
+          </span>
+          <span class="revenue-badge" *ngIf="hasData()">
+            Current Baseline: PKR {{ currentRevenue() | number }}
+          </span>
+        </div>
+        <h2>Executive Product Scaling & Growth Deck</h2>
+        <p *ngIf="hasData()">
+          Algorithmic multi-channel forecast to scale monthly revenue from baseline PKR {{ currentRevenue() | number }} to target PKR {{ targetRevenue() | number }}.
+        </p>
+        <p *ngIf="!hasData()">
+          Grounded revenue scaling and multi-channel forecast model. Awaiting baseline order history.
+        </p>
+      </div>
+
+      <div class="scenario-switcher" *ngIf="hasData()">
+        <span class="sc-label">Model Scenario:</span>
+        <div class="sc-buttons">
+          <button
+            type="button"
+            class="sc-btn"
+            [class.active]="analytics.growthScenario() === 'conservative'"
+            (click)="analytics.setGrowthScenario('conservative')"
+          >
+            Conservative (1.35x)
+          </button>
+          <button
+            type="button"
+            class="sc-btn"
+            [class.active]="analytics.growthScenario() === 'target'"
+            (click)="analytics.setGrowthScenario('target')"
+          >
+            Target (1.85x)
+          </button>
+          <button
+            type="button"
+            class="sc-btn"
+            [class.active]="analytics.growthScenario() === 'aggressive'"
+            (click)="analytics.setGrowthScenario('aggressive')"
+          >
+            Aggressive (2.50x)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Milestone Forecast Stats (When data exists) -->
+    <div class="forecast-pills-row" *ngIf="hasData()">
+      <div class="f-box">
+        <span class="f-lbl">Target Revenue</span>
+        <span class="f-val text-primary">PKR {{ targetRevenue() | number }}</span>
+      </div>
+      <div class="f-box">
+        <span class="f-lbl">Projected Net Profit (28%)</span>
+        <span class="f-val text-success">PKR {{ projectedProfit() | number }}</span>
+      </div>
+      <div class="f-box">
+        <span class="f-lbl">Target MER</span>
+        <span class="f-val">4.20x</span>
+      </div>
+      <div class="f-box">
+        <span class="f-lbl">RTO Target Buffer</span>
+        <span class="f-val text-emerald">Max 7.0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATE A: NOT ENOUGH DATA YET -->
+  <div class="empty-growth-card glass-card mb-24" *ngIf="!hasData()">
+    <div class="empty-icon">
+      <ion-icon name="information-circle-outline"></ion-icon>
+    </div>
+    <div class="empty-content">
+      <div class="badge-pill badge-warning mb-8">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        Zero Fabrication Policy
+      </div>
+      <h3>Not enough data yet for {{ analytics.activeStore()?.name || 'this store' }}</h3>
+      <p class="empty-text">
+        Multi-channel scaling forecasts and capital allocation projections require real store order history and Shopify catalog data. Because this store currently has 0 orders recorded, metric forecasts remain uncalculated rather than displaying fake numbers.
+      </p>
+
+      <div class="store-stats-pills">
+        <div class="stat-pill">
+          <span class="stat-dot" [class.active]="analytics.catalogProducts().length > 0"></span>
+          <span>Catalog SKUs: <strong>{{ analytics.catalogProducts().length }}</strong></span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-dot" [class.active]="analytics.storeOrders().length > 0"></span>
+          <span>Synced Orders: <strong>{{ analytics.storeOrders().length }}</strong></span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-dot" [class.active]="currentRevenue() > 0"></span>
+          <span>Recorded Revenue: <strong>PKR {{ currentRevenue() | number }}</strong></span>
+        </div>
+      </div>
+
+      <div class="empty-action-buttons">
+        <button type="button" class="btn-primary" (click)="analytics.openWhatsAppModal()">
+          <ion-icon name="chatbubbles-outline"></ion-icon>
+          Simulate Customer WhatsApp Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATE B: REAL DATA GROUNDED GROWTH DECK -->
+  <ng-container *ngIf="hasData()">
+    <!-- Marginal Budget Reallocation Engine (Next PKR 500k Spend) -->
+    <div class="growth-card-section glass-card mb-24">
+      <div class="section-card-header">
+        <div>
+          <span class="section-tag">CAPITAL ALLOCATION ENGINE</span>
+          <h3 class="t-title">Marginal Budget Reallocation (Next PKR 500,000 Capital)</h3>
+          <p class="t-desc">Autonomous machine learning recommendation allocating incremental ad spend across Meta, TikTok, Google & Snapchat for maximum ROAS.</p>
+        </div>
+        <div class="badge-pill badge-primary">
+          <ion-icon name="wallet-outline"></ion-icon>
+          Target Output: 3.90x MER
+        </div>
+      </div>
+
+      <div class="reallocation-cards-grid">
+        <div class="realloc-card" *ngFor="let item of analytics.budgetReallocations()">
+          <div class="realloc-top">
+            <div class="realloc-title-group">
+              <span class="realloc-platform-badge" [class]="item.platform.toLowerCase()">{{ item.platform }}</span>
+              <h4 class="realloc-name">{{ item.channel }}</h4>
+            </div>
+            <span class="impact-chip">{{ item.impactScore }}</span>
+          </div>
+
+          <div class="realloc-money-row">
+            <div>
+              <span class="r-lbl">Recommended Capital</span>
+              <div class="r-val text-primary">PKR {{ item.allocationAmount | number }}</div>
+            </div>
+            <div class="r-pct-badge">{{ item.allocationPct }}% Share</div>
+          </div>
+
+          <div class="realloc-progress-bar">
+            <div class="realloc-fill" [style.width.%]="item.allocationPct"></div>
+          </div>
+
+          <div class="realloc-stats-grid">
+            <div class="r-stat">
+              <span class="rs-lbl">Marginal ROAS:</span>
+              <strong class="text-success">{{ item.marginalRoas }}x</strong>
+            </div>
+            <div class="r-stat">
+              <span class="rs-lbl">Est. Revenue:</span>
+              <strong>PKR {{ item.projectedRevenue | number }}</strong>
+            </div>
+          </div>
+
+          <p class="realloc-desc">{{ item.focusArea }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 30-60-90 Day Sprint Roadmap -->
+    <div class="roadmap-timeline mb-24">
+      <h3 class="sub-section-title">30-60-90 Day Scaling Execution Roadmap</h3>
+      <div class="sprint-cards-grid">
+        <div class="sprint-card glass-card" *ngFor="let sprint of analytics.growthRoadmap()">
+          <div class="sprint-top">
+            <span class="sprint-badge" [class.active]="sprint.status === 'In Progress'">{{ sprint.status }}</span>
+            <span class="sprint-phase">{{ sprint.phase }}</span>
+          </div>
+          <h4 class="sprint-theme">{{ sprint.theme }}</h4>
+          <div class="sprint-numbers">
+            <div>
+              <span class="s-sub">Target Sales:</span>
+              <strong>{{ sprint.targetRevenue }}</strong>
+            </div>
+            <div>
+              <span class="s-sub">Net Profit:</span>
+              <strong class="text-success">{{ sprint.projectedProfit }}</strong>
+            </div>
+          </div>
+
+          <div class="sprint-deliverables">
+            <div class="deliv-item" *ngFor="let item of sprint.deliverables">
+              <ion-icon name="checkmark-circle"></ion-icon>
+              <span>{{ item }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Scaling Quadrants from Live Catalog -->
+    <div class="growth-quadrant-grid" *ngIf="analytics.catalogProducts().length > 0">
+      <div class="quadrant-card glass-card star-card">
+        <div class="quadrant-top">
+          <span class="q-icon">🌟</span>
+          <h3>Scale Aggressively (Star SKUs)</h3>
+          <span class="q-badge">High Velocity</span>
+        </div>
+        <p>Top performers in {{ analytics.activeStore()?.name }} catalog with active inventory. Increase paid ad spend.</p>
+        <div class="q-prod-list">
+          <div class="q-item" *ngFor="let prod of starProducts()">
+            <strong>{{ prod.name }}</strong>
+            <span>Price: PKR {{ prod.price | number }} • Stock: {{ prod.stockLeft }} units</span>
+          </div>
+          <div class="q-item" *ngIf="starProducts().length === 0">
+            <span>No catalog products synchronized yet.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quadrant-card glass-card optimize-card">
+        <div class="quadrant-top">
+          <span class="q-icon">⚡</span>
+          <h3>Optimize & Creative Refresh</h3>
+          <span class="q-badge">Mid Velocity</span>
+        </div>
+        <p>Stable demand catalog articles. Deploy new TikTok Reels and customer WhatsApp engagement.</p>
+        <div class="q-prod-list">
+          <div class="q-item" *ngFor="let prod of optimizeProducts()">
+            <strong>{{ prod.name }}</strong>
+            <span>Price: PKR {{ prod.price | number }} • Stock: {{ prod.stockLeft }} units</span>
+          </div>
+          <div class="q-item" *ngIf="optimizeProducts().length === 0">
+            <span>No catalog items in this quadrant.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quadrant-card glass-card rto-risk-card">
+        <div class="quadrant-top">
+          <span class="q-icon">🛡️</span>
+          <h3>COD Protection & Advance Verification</h3>
+          <span class="q-badge">Protection Active</span>
+        </div>
+        <p>Orders flagged for distant zones or high order values. Automated WhatsApp confirmation sent before dispatch.</p>
+        <div class="q-prod-list">
+          <div class="q-item">
+            <strong>Automated WhatsApp Confirmation</strong>
+            <span class="text-success">Active on all COD bookings via gpt-4o-mini</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

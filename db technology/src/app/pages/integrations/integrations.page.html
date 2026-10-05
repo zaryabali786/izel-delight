@@ -1,0 +1,1136 @@
+<div class="integrations-page animate-fade-in">
+  <!-- Integrations Hero Banner -->
+  <div class="integrations-hero glass-card">
+    <div class="hero-left">
+      <div class="badge-pill badge-primary">
+        <ion-icon name="layers-outline"></ion-icon>
+        Multi-Channel Growth Engine
+      </div>
+      <h1 class="hero-heading">
+        Connected Channels & <span class="gradient-text">Pakistani COD Couriers</span>
+      </h1>
+      <p class="hero-desc">
+        Complete ingestion pipeline connecting your Shopify storefront, paid ad channels (Meta, Google, TikTok, Snapchat), WhatsApp Business Cloud API, and all major Pakistani Cash on Delivery (COD) couriers (PostEx, Trax, Leopards, TCS, Call Courier, M&P, Rider) for automated delivery telemetry & RTO prediction.
+      </p>
+    </div>
+    <div class="hero-right">
+      <div class="sync-status-card glass-card">
+        <div class="sync-icon-spin" [class.spin-fast]="isSyncingAll()">
+          <ion-icon name="sync-outline"></ion-icon>
+        </div>
+        <div class="sync-info-block">
+          <div class="sync-count">{{ storeService.activeStore()?.name || 'Active Store' }}</div>
+          <div class="sync-label">{{ storeService.activeStore()?.domain || 'Multi-Tenant SaaS' }}</div>
+        </div>
+        <button
+          type="button"
+          class="btn-sync-all"
+          [disabled]="isSyncingAll()"
+          (click)="syncAll()"
+          title="Synchronize all connected channels for active store"
+        >
+          <ion-icon name="refresh-outline" [class.spin-fast]="isSyncingAll()"></ion-icon>
+          <span>{{ isSyncingAll() ? 'Syncing...' : 'Sync All Channels' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pakistani COD Fleet Overview Banner -->
+  <div class="cod-overview-card glass-card">
+    <div class="cod-header-row">
+      <div class="flag-title">
+        <span class="pak-flag">🇵🇰</span>
+        <div>
+          <h3 class="cod-title">Pakistani Cash on Delivery (COD) Multi-Courier Fleet</h3>
+          <span class="cod-sub">Isolated telemetry for {{ storeService.activeStore()?.name || 'Active Store' }} across PostEx, Trax, Leopards, TCS, Call Courier, M&P & Rider</span>
+        </div>
+      </div>
+      <div class="badge-pill badge-success">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        RTO Engine Active
+      </div>
+    </div>
+
+    <div class="cod-stats-strip">
+      <div class="strip-item">
+        <span class="s-val">{{ analytics.storeOrders().length }}</span>
+        <span class="s-lbl">Parcels in Transit</span>
+      </div>
+      <div class="strip-item">
+        <span class="s-val text-primary">{{ analytics.storeMetricsData()?.gross_revenue ? ('PKR ' + (analytics.storeMetricsData()?.gross_revenue | number)) : 'PKR 0' }}</span>
+        <span class="s-lbl">Cash to be Collected</span>
+      </div>
+      <div class="strip-item">
+        <span class="s-val text-success">{{ analytics.storeOrders().length > 0 ? '91.4%' : '—' }}</span>
+        <span class="s-lbl">Avg Delivery Success</span>
+      </div>
+      <div class="strip-item">
+        <span class="s-val text-emerald">{{ analytics.storeOrders().length > 0 ? '7.2%' : '—' }}</span>
+        <span class="s-lbl">Net RTO Rate</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Navigation Tabs for Integrations -->
+  <div class="integration-filter-bar">
+    <div class="filter-pills">
+      <button
+        type="button"
+        class="f-pill"
+        [class.active]="integrationFilter === 'all'"
+        (click)="integrationFilter = 'all'"
+      >
+        All Integrations ({{ analytics.integrations().length }})
+      </button>
+      <button
+        type="button"
+        class="f-pill"
+        [class.active]="integrationFilter === 'couriers'"
+        (click)="integrationFilter = 'couriers'"
+      >
+        🇵🇰 Pakistani COD Couriers (7)
+      </button>
+      <button
+        type="button"
+        class="f-pill"
+        [class.active]="integrationFilter === 'ad_store'"
+        (click)="integrationFilter = 'ad_store'"
+      >
+        Channels & Storefront (6)
+      </button>
+    </div>
+  </div>
+
+  <!-- Integrations Card Grid -->
+  <div class="integrations-grid">
+    <!-- 1. SHOPIFY CARD -->
+    <div class="integration-card glass-card card-shopify" *ngIf="integrationFilter === 'all' || integrationFilter === 'ad_store'">
+      <div class="card-top-row">
+        <div class="brand-avatar shopify-bg" title="Shopify">
+          <img src="assets/logos/shopify_hq.webp" alt="Shopify" class="brand-logo-img shopify-img" />
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('shopify')">
+          <span class="live-dot" *ngIf="isItemConnected('shopify') && !isItemSyncing('shopify')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('shopify')"></span>
+          <span>{{ getIntegrationStatusLabel('shopify') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <h3 class="card-name">Shopify</h3>
+        <span class="card-category">E-Commerce Storefront</span>
+      </div>
+
+      <div class="highlight-summary-box shopify-highlight">
+        <ion-icon name="cube-outline"></ion-icon>
+        <span class="summary-text"><strong>{{ getIntegration('shopify')?.primaryInfo || 'Live catalog ready' }}</strong></span>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Store:</span>
+        <span class="account-val">{{ storeService.activeStore()?.domain || 'store.myshopify.com' }}</span>
+      </div>
+
+      <div class="mini-metrics-row">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('shopify') ? '1,450' : '—' }}</span>
+          <span class="m-lbl">SKUs Synced</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('shopify') ? '99.9%' : '—' }}</span>
+          <span class="m-lbl">Webhook Active</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('shopify') ? '42' : '—' }}</span>
+          <span class="m-lbl">Pending Orders</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <!-- Connected State: Sync Now + Configure -->
+        <ng-container *ngIf="isItemConnected('shopify') && !isItemSyncing('shopify')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('shopify')"
+            title="Trigger Live Cloud Sync"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('shopify')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure API</span>
+          </button>
+        </ng-container>
+
+        <!-- Syncing State -->
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('shopify')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Live Catalog...</span>
+        </button>
+
+        <!-- Disconnected State -->
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('shopify') && !isItemSyncing('shopify')"
+          (click)="openConfig('shopify')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Shopify Store</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. META ADS CARD -->
+    <div class="integration-card glass-card card-meta" *ngIf="integrationFilter === 'all' || integrationFilter === 'ad_store'">
+      <div class="card-top-row">
+        <div class="brand-avatar meta-bg" title="Meta Ads">
+          <svg viewBox="0 0 16 16" width="28" height="28" fill="none" aria-label="Meta Ads">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.217 5.243C9.145 3.988 10.171 3 11.483 3 13.96 3 16 6.153 16.001 9.907c0 2.29-.986 3.725-2.757 3.725-1.543 0-2.395-.866-3.924-3.424l-.667-1.123-.118-.197a55 55 0 0 0-.53-.877l-1.178 2.08c-1.673 2.925-2.615 3.541-3.923 3.541C1.086 13.632 0 12.217 0 9.973 0 6.388 1.995 3 4.598 3q.477-.001.924.122c.31.086.611.22.913.407.577.359 1.154.915 1.782 1.714m1.516 2.224q-.378-.615-.727-1.133L9 6.326c.845-1.305 1.543-1.954 2.372-1.954 1.723 0 3.102 2.537 3.102 5.653 0 1.188-.39 1.877-1.195 1.877-.773 0-1.142-.51-2.61-2.87zM4.846 4.756c.725.1 1.385.634 2.34 2.001A212 212 0 0 0 5.551 9.3c-1.357 2.126-1.826 2.603-2.581 2.603-.777 0-1.24-.682-1.24-1.9 0-2.602 1.298-5.264 2.846-5.264q.137 0 .27.018" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('meta-ads')">
+          <span class="live-dot" *ngIf="isItemConnected('meta-ads') && !isItemSyncing('meta-ads')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('meta-ads')"></span>
+          <span>{{ getIntegrationStatusLabel('meta-ads') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <h3 class="card-name">Meta Ads</h3>
+        <span class="card-category">Paid Acquisition (FB/Insta)</span>
+      </div>
+
+      <div class="highlight-summary-box meta-highlight">
+        <span class="summary-prefix">Ad Account:</span>
+        <strong class="summary-text">{{ storeService.activeStore()?.name || 'Active Store' }} - Primary</strong>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Account ID:</span>
+        <span class="account-val">{{ isItemConnected('meta-ads') ? 'act_89410928301' : 'Not Linked' }}</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('meta-ads')">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('meta-ads') ? '3.82x' : '—' }}</span>
+          <span class="m-lbl">Blended ROAS</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('meta-ads') && analytics.storeMetricsData()?.ad_spend ? ('PKR ' + (analytics.storeMetricsData()?.ad_spend | number)) : (isItemConnected('meta-ads') ? 'PKR 0' : '—') }}</span>
+          <span class="m-lbl">Daily Budget</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('meta-ads') ? '18' : '—' }}</span>
+          <span class="m-lbl">Active Ad Sets</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('meta-ads') && !isItemSyncing('meta-ads')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('meta-ads')"
+            title="Sync Meta Ads metrics"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('meta-ads')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Token</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('meta-ads')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Meta Pixel...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('meta-ads') && !isItemSyncing('meta-ads')"
+          (click)="openConfig('meta-ads')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Meta Ads API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. GOOGLE ADS CARD -->
+    <div class="integration-card glass-card card-google" *ngIf="integrationFilter === 'all' || integrationFilter === 'ad_store'">
+      <div class="card-top-row">
+        <div class="brand-avatar google-bg" title="Google Ads">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-label="Google Ads">
+            <path d="M23.464 16.929L15.463 3.072c-1.105-1.913-3.551-2.569-5.464-1.465-1.914 1.105-2.569 3.551-1.465 5.465l8.001 13.856c1.105 1.914 3.551 2.569 5.465 1.465 1.913-1.104 2.569-3.551 1.464-5.464z" fill="#4285F4"/>
+            <path d="M7.514 4.844L1.565 15.148A4.5 4.5 0 0 1 4 14.43c2.56-.008 4.625 2.158 4.494 4.715l3.217-5.572-3.609-6.25c-.45-.78-.633-1.64-.588-2.479z" fill="#FBBC04"/>
+            <circle cx="4" cy="18.93" r="4" fill="#34A853"/>
+          </svg>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('google-ads')">
+          <span class="live-dot" *ngIf="isItemConnected('google-ads') && !isItemSyncing('google-ads')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('google-ads')"></span>
+          <span>{{ getIntegrationStatusLabel('google-ads') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <h3 class="card-name">Google Ads</h3>
+        <span class="card-category">Search & Performance Max</span>
+      </div>
+
+      <p class="card-description">
+        Connect Google Ads to link Google Shopping product catalogs, Search campaigns, and track high-intent search purchase attribution.
+      </p>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('google-ads')">
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('google-ads') ? 'Synced' : '—' }}</span>
+          <span class="m-lbl">Shopping Feed</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('google-ads') ? '4.90x' : '—' }}</span>
+          <span class="m-lbl">PMax ROAS</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('google-ads') ? 'High Intent' : '—' }}</span>
+          <span class="m-lbl">Attribution</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('google-ads') && !isItemSyncing('google-ads')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('google-ads')"
+            title="Sync Google Ads catalog & spend"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('google-ads')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure API</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('google-ads')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Google Ads...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('google-ads') && !isItemSyncing('google-ads')"
+          (click)="openConfig('google-ads')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Google Ads API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. TIKTOK ADS CARD -->
+    <div class="integration-card glass-card card-tiktok" *ngIf="integrationFilter === 'all' || integrationFilter === 'ad_store'">
+      <div class="card-top-row">
+        <div class="brand-avatar tiktok-bg" title="TikTok Ads">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-label="TikTok Ads">
+            <path d="M19.3 5.56a5.1 5.1 0 0 1-.44-.04 5.8 5.8 0 0 1-4.04-3.63h-2.8v13.57a2.9 2.9 0 1 1-2.06-2.8V9.74a5.84 5.84 0 1 0 4.86 5.73V8.53a8.67 8.67 0 0 0 4.48 1.7V7.31a5.8 5.8 0 0 1 0-1.75z" transform="translate(-1, -0.7)" fill="#00F2FE"/>
+            <path d="M19.3 5.56a5.1 5.1 0 0 1-.44-.04 5.8 5.8 0 0 1-4.04-3.63h-2.8v13.57a2.9 2.9 0 1 1-2.06-2.8V9.74a5.84 5.84 0 1 0 4.86 5.73V8.53a8.67 8.67 0 0 0 4.48 1.7V7.31a5.8 5.8 0 0 1 0-1.75z" transform="translate(1, 0.7)" fill="#FE2C55"/>
+            <path d="M19.3 5.56a5.1 5.1 0 0 1-.44-.04 5.8 5.8 0 0 1-4.04-3.63h-2.8v13.57a2.9 2.9 0 1 1-2.06-2.8V9.74a5.84 5.84 0 1 0 4.86 5.73V8.53a8.67 8.67 0 0 0 4.48 1.7V7.31a5.8 5.8 0 0 1 0-1.75z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('tiktok-ads')">
+          <span class="live-dot" *ngIf="isItemConnected('tiktok-ads') && !isItemSyncing('tiktok-ads')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('tiktok-ads')"></span>
+          <span>{{ getIntegrationStatusLabel('tiktok-ads') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <h3 class="card-name">TikTok Ads</h3>
+        <span class="card-category">Short-Form Video Ads</span>
+      </div>
+
+      <div class="highlight-summary-box tiktok-highlight">
+        <span class="summary-text">{{ isItemConnected('tiktok-ads') ? 'Live event stream active: Ingesting ad pixel data' : 'Ready to link TikTok Business API' }}</span>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Campaign Type:</span>
+        <span class="account-val">Video Spark Ads & Creator Whitelisting</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('tiktok-ads')">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('tiktok-ads') ? 'Streaming' : '—' }}</span>
+          <span class="m-lbl">Pixel Stream</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('tiktok-ads') ? '8 Running' : '—' }}</span>
+          <span class="m-lbl">Spark Ads</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('tiktok-ads') ? '2.94x' : '—' }}</span>
+          <span class="m-lbl">Est. ROAS</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('tiktok-ads') && !isItemSyncing('tiktok-ads')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('tiktok-ads')"
+            title="Sync TikTok Pixel conversions"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('tiktok-ads')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Pixel</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('tiktok-ads')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing TikTok Stream...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('tiktok-ads') && !isItemSyncing('tiktok-ads')"
+          (click)="openConfig('tiktok-ads')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect TikTok Ads API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 5. SNAPCHAT ADS CARD -->
+    <div class="integration-card glass-card card-snapchat" *ngIf="integrationFilter === 'all' || integrationFilter === 'ad_store'">
+      <div class="card-top-row">
+        <div class="brand-avatar snap-bg" title="Snapchat Ads">
+          <img src="assets/logos/snapchat_clean.png" alt="Snapchat" class="brand-logo-img snapchat-img" />
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('snapchat-ads')">
+          <span class="live-dot" *ngIf="isItemConnected('snapchat-ads') && !isItemSyncing('snapchat-ads')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('snapchat-ads')"></span>
+          <span>{{ getIntegrationStatusLabel('snapchat-ads') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <h3 class="card-name">Snapchat Ads</h3>
+        <span class="card-category">Story & Spotlight Ads</span>
+      </div>
+
+      <p class="card-description">
+        Connect Snapchat Pixel to scale dynamic collection ads and acquire Pakistani Gen-Z consumers browsing mobile Spotlight stories.
+      </p>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('snapchat-ads')">
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('snapchat-ads') ? 'Connected' : '—' }}</span>
+          <span class="m-lbl">Snap Pixel</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('snapchat-ads') ? 'Active' : '—' }}</span>
+          <span class="m-lbl">Catalog Sync</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('snapchat-ads') ? '42,000' : '—' }}</span>
+          <span class="m-lbl">Reach</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('snapchat-ads') && !isItemSyncing('snapchat-ads')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('snapchat-ads')"
+            title="Sync Snapchat catalog"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('snapchat-ads')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Snap</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('snapchat-ads')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Snap Pixel...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary snap-connect"
+          *ngIf="!isItemConnected('snapchat-ads') && !isItemSyncing('snapchat-ads')"
+          (click)="openConfig('snapchat-ads')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Snap Pixel & Marketing API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 6. WHATSAPP BUSINESS CLOUD API CARD -->
+    <div class="integration-card glass-card card-whatsapp" *ngIf="integrationFilter === 'all' || integrationFilter === 'ad_store'">
+      <div class="card-top-row">
+        <div class="brand-avatar whatsapp-bg" title="WhatsApp Business Cloud API">
+          <ion-icon name="logo-whatsapp" class="brand-wa-icon"></ion-icon>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('whatsapp-business')">
+          <span class="live-dot" *ngIf="isItemConnected('whatsapp-business') && !isItemSyncing('whatsapp-business')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('whatsapp-business')"></span>
+          <span>{{ getIntegrationStatusLabel('whatsapp-business') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">WhatsApp Business</h3>
+          <span class="wa-pill">Cloud API</span>
+        </div>
+        <span class="card-category">Conversational Commerce & AI Bot</span>
+      </div>
+
+      <div class="highlight-summary-box whatsapp-highlight">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <span class="summary-text"><strong>{{ isItemConnected('whatsapp-business') ? 'Meta Cloud API v20.0 Active' : 'Configure Cloud API credentials' }}</strong></span>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Business Account:</span>
+        <span class="account-val">{{ isItemConnected('whatsapp-business') ? '+92 300 1234567 • Automated COD & Inquiries' : 'Not Configured' }}</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('whatsapp-business')">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('whatsapp-business') ? '18,420' : '—' }}</span>
+          <span class="m-lbl">Chats (Mo)</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('whatsapp-business') ? '94.2%' : '—' }}</span>
+          <span class="m-lbl">COD Verified</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-emerald">{{ isItemConnected('whatsapp-business') ? '78.5%' : '—' }}</span>
+          <span class="m-lbl">AI Deflection</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('whatsapp-business') && !isItemSyncing('whatsapp-business')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('whatsapp-business')"
+            title="Sync WhatsApp messages and bot"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('whatsapp-business')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Cloud API</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('whatsapp-business')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Cloud API...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('whatsapp-business') && !isItemSyncing('whatsapp-business')"
+          (click)="openConfig('whatsapp-business')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect WhatsApp Cloud API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 7. POSTEX COURIER CARD (PAKISTAN) -->
+    <div class="integration-card glass-card card-postex" *ngIf="integrationFilter === 'all' || integrationFilter === 'couriers'">
+      <div class="card-top-row">
+        <div class="brand-avatar postex-bg" title="PostEx Courier">
+          <svg viewBox="0 0 36 36" width="28" height="28" fill="none" aria-label="PostEx">
+            <path d="M9 5h9c5.2 0 8.8 3.3 8.8 8s-3.6 8-8.8 8h-3.8v10H9V5zm5.2 4.6v6.8H18c2.4 0 4.2-1.4 4.2-3.4s-1.8-3.4-4.2-3.4h-3.8z" fill="#FFFFFF"/>
+            <circle cx="28.5" cy="27" r="4.2" fill="#00E599"/>
+          </svg>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('postex-courier')">
+          <span class="live-dot" *ngIf="isItemConnected('postex-courier') && !isItemSyncing('postex-courier')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('postex-courier')"></span>
+          <span>{{ getIntegrationStatusLabel('postex-courier') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">PostEx Courier</h3>
+          <span class="country-pill">🇵🇰 Pakistan COD</span>
+        </div>
+        <span class="card-category">Cash on Delivery & Automated RTO Engine</span>
+      </div>
+
+      <div class="postex-heart-quote">
+        <div class="quote-icon">❤️</div>
+        <div class="quote-text">
+          <strong>"The pulse of your COD RTO intelligence engine"</strong>
+          <span>Real-time COD validation & Return-to-Origin prediction engine</span>
+        </div>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Merchant ID:</span>
+        <span class="account-val">{{ isItemConnected('postex-courier') ? 'PEX-8921 • Automated Webhooks Active' : 'Not Connected' }}</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('postex-courier')">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('postex-courier') ? '1,240' : '—' }}</span>
+          <span class="m-lbl">In Transit</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('postex-courier') ? '89.4%' : '—' }}</span>
+          <span class="m-lbl">Delivered Rate</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-emerald">{{ isItemConnected('postex-courier') && analytics.storeMetricsData()?.gross_revenue ? ('PKR ' + (analytics.storeMetricsData()?.gross_revenue | number)) : (isItemConnected('postex-courier') ? 'PKR 0' : '—') }}</span>
+          <span class="m-lbl">COD Revenue</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('postex-courier') && !isItemSyncing('postex-courier')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('postex-courier')"
+            title="Sync PostEx COD telemetry"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('postex-courier')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Token</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('postex-courier')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing PostEx Shipments...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('postex-courier') && !isItemSyncing('postex-courier')"
+          (click)="openConfig('postex-courier')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect PostEx API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 8. TRAX LOGISTICS CARD (PAKISTAN) -->
+    <div class="integration-card glass-card card-trax" *ngIf="integrationFilter === 'all' || integrationFilter === 'couriers'">
+      <div class="card-top-row">
+        <div class="brand-avatar trax-bg" title="Trax Logistics">
+          <svg viewBox="0 0 36 36" width="28" height="28" fill="none" aria-label="Trax Logistics">
+            <path d="M5 18L17 5h7.5L12.5 18l12 13H17L5 18z" fill="#FF5500"/>
+            <path d="M17 18L26.5 7h5L22 18l9.5 11h-5L17 18z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('trax-logistics')">
+          <span class="live-dot" *ngIf="isItemConnected('trax-logistics') && !isItemSyncing('trax-logistics')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('trax-logistics')"></span>
+          <span>{{ getIntegrationStatusLabel('trax-logistics') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">Trax Logistics</h3>
+          <span class="country-pill">450+ Cities</span>
+        </div>
+        <span class="card-category">Nationwide COD Logistics & Bulk Dispatch</span>
+      </div>
+
+      <div class="highlight-summary-box trax-highlight">
+        <ion-icon name="paper-plane-outline"></ion-icon>
+        <span class="summary-text"><strong>{{ isItemConnected('trax-logistics') ? 'Trax Sonic COD API: 840 packages in transit' : 'Connect Trax Sonic API' }}</strong></span>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Merchant:</span>
+        <span class="account-val">{{ isItemConnected('trax-logistics') ? 'TRX-99214 • Remittance synced Tue & Fri' : 'Not Connected' }}</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('trax-logistics')">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('trax-logistics') ? '840' : '—' }}</span>
+          <span class="m-lbl">In Transit</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('trax-logistics') ? '88.2%' : '—' }}</span>
+          <span class="m-lbl">Delivered Rate</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('trax-logistics') ? 'Bi-Weekly' : '—' }}</span>
+          <span class="m-lbl">COD Remittance</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('trax-logistics') && !isItemSyncing('trax-logistics')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('trax-logistics')"
+            title="Sync Trax parcels & remittances"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('trax-logistics')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Trax</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('trax-logistics')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Trax Shipments...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('trax-logistics') && !isItemSyncing('trax-logistics')"
+          (click)="openConfig('trax-logistics')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Trax Logistics</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 9. LEOPARDS COURIER CARD (PAKISTAN) -->
+    <div class="integration-card glass-card card-leopards" *ngIf="integrationFilter === 'all' || integrationFilter === 'couriers'">
+      <div class="card-top-row">
+        <div class="brand-avatar leopards-bg" title="Leopards Courier">
+          <img src="assets/logos/leopards.png" alt="Leopards Courier" class="brand-logo-img leopards-img" />
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('leopards-courier')">
+          <span class="live-dot" *ngIf="isItemConnected('leopards-courier') && !isItemSyncing('leopards-courier')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('leopards-courier')"></span>
+          <span>{{ getIntegrationStatusLabel('leopards-courier') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">Leopards Courier</h3>
+          <span class="country-pill">Air & Overland</span>
+        </div>
+        <span class="card-category">Nationwide COD Express Fleet</span>
+      </div>
+
+      <div class="highlight-summary-box leopards-highlight">
+        <ion-icon name="airplane-outline"></ion-icon>
+        <span class="summary-text"><strong>{{ isItemConnected('leopards-courier') ? 'Leopards Express COD: 520 packages in transit' : 'Link Leopards Courier API' }}</strong></span>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Account:</span>
+        <span class="account-val">{{ isItemConnected('leopards-courier') ? 'LEP-39201 • Air cargo routing active' : 'Not Connected' }}</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('leopards-courier')">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('leopards-courier') ? '520' : '—' }}</span>
+          <span class="m-lbl">In Transit</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('leopards-courier') ? '86.8%' : '—' }}</span>
+          <span class="m-lbl">Success Rate</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('leopards-courier') && analytics.storeMetricsData()?.gross_revenue ? ('PKR ' + (analytics.storeMetricsData()?.gross_revenue | number)) : (isItemConnected('leopards-courier') ? 'PKR 0' : '—') }}</span>
+          <span class="m-lbl">Weekly COD</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('leopards-courier') && !isItemSyncing('leopards-courier')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('leopards-courier')"
+            title="Sync Leopards shipments"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('leopards-courier')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Leopards</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('leopards-courier')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Leopards...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('leopards-courier') && !isItemSyncing('leopards-courier')"
+          (click)="openConfig('leopards-courier')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Leopards API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 10. TCS EXPRESS COD CARD (PAKISTAN) -->
+    <div class="integration-card glass-card card-tcs" *ngIf="integrationFilter === 'all' || integrationFilter === 'couriers'">
+      <div class="card-top-row">
+        <div class="brand-avatar tcs-bg" title="TCS Express">
+          <img src="assets/logos/tcs.png" alt="TCS Express" class="brand-logo-img tcs-img" />
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('tcs-courier')">
+          <span class="live-dot" *ngIf="isItemConnected('tcs-courier') && !isItemSyncing('tcs-courier')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('tcs-courier')"></span>
+          <span>{{ getIntegrationStatusLabel('tcs-courier') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">TCS Express (COD)</h3>
+          <span class="tcs-pill">Tier-1 Express</span>
+        </div>
+        <span class="card-category">Premier Pakistani Courier & Express Cargo</span>
+      </div>
+
+      <p class="card-description">
+        Link TCS Yayvo COD API for 24-hour next-day overland & aviation deliveries across 850+ Pakistani express centers.
+      </p>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('tcs-courier')">
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('tcs-courier') ? '850+' : '—' }}</span>
+          <span class="m-lbl">Express Hubs</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('tcs-courier') ? '24h' : '—' }}</span>
+          <span class="m-lbl">Service Level</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('tcs-courier') ? '94.1%' : '—' }}</span>
+          <span class="m-lbl">COD Success</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('tcs-courier') && !isItemSyncing('tcs-courier')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('tcs-courier')"
+            title="Sync TCS shipments"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('tcs-courier')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure TCS</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('tcs-courier')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing TCS Cargo...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn tcs-connect"
+          *ngIf="!isItemConnected('tcs-courier') && !isItemSyncing('tcs-courier')"
+          (click)="openConfig('tcs-courier')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect TCS COD API</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 11. CALL COURIER CARD (PAKISTAN) -->
+    <div class="integration-card glass-card card-callcourier" *ngIf="integrationFilter === 'all' || integrationFilter === 'couriers'">
+      <div class="card-top-row">
+        <div class="brand-avatar call-bg" title="Call Courier">
+          <svg viewBox="0 0 36 36" width="28" height="28" fill="none" aria-label="Call Courier">
+            <circle cx="18" cy="18" r="14" stroke="#F37023" stroke-width="2.5" stroke-dasharray="22 6"/>
+            <path d="M11 13.5l7-4 7 4-7 4-7-4z" fill="#FFFFFF"/>
+            <path d="M11 15.2l7 4v7.8l-7-4v-7.8z" fill="#E2E8F0"/>
+            <path d="M18 19.2l7-4v7.8l-7 4v-7.8z" fill="#CBD5E1"/>
+            <path d="M26 15l4-2.5v5l-4 2.5v-5z" fill="#F37023"/>
+          </svg>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('call-courier')">
+          <span class="live-dot" *ngIf="isItemConnected('call-courier') && !isItemSyncing('call-courier')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('call-courier')"></span>
+          <span>{{ getIntegrationStatusLabel('call-courier') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">Call Courier</h3>
+          <span class="country-pill">Swift COD</span>
+        </div>
+        <span class="card-category">Pakistani E-Commerce Specialist Courier</span>
+      </div>
+
+      <div class="highlight-summary-box call-highlight">
+        <ion-icon name="paper-plane-outline"></ion-icon>
+        <span class="summary-text"><strong>{{ isItemConnected('call-courier') ? 'Call Courier Portal: 310 parcels live' : 'Connect Call Courier' }}</strong></span>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Merchant:</span>
+        <span class="account-val">{{ isItemConnected('call-courier') ? 'CC-4102 • Direct Shopify API auto-booking' : 'Not Connected' }}</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('call-courier')">
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('call-courier') ? '310' : '—' }}</span>
+          <span class="m-lbl">In Transit</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('call-courier') ? '87.5%' : '—' }}</span>
+          <span class="m-lbl">Success Rate</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('call-courier') ? '48h' : '—' }}</span>
+          <span class="m-lbl">Return Swift</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('call-courier') && !isItemSyncing('call-courier')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('call-courier')"
+            title="Sync Call Courier parcels"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('call-courier')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Secret</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('call-courier')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Call Courier...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('call-courier') && !isItemSyncing('call-courier')"
+          (click)="openConfig('call-courier')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Call Courier</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 12. M&P EXPRESS LOGISTICS CARD (PAKISTAN) -->
+    <div class="integration-card glass-card card-mnp" *ngIf="integrationFilter === 'all' || integrationFilter === 'couriers'">
+      <div class="card-top-row">
+        <div class="brand-avatar mnp-bg" title="M&P Express">
+          <img src="assets/logos/mnp.png" alt="M&P Express Logistics" class="brand-logo-img mnp-img" />
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('mnp-courier')">
+          <span class="live-dot" *ngIf="isItemConnected('mnp-courier') && !isItemSyncing('mnp-courier')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('mnp-courier')"></span>
+          <span>{{ getIntegrationStatusLabel('mnp-courier') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">M&P Express Logistics</h3>
+          <span class="mnp-pill">Muller & Phipps</span>
+        </div>
+        <span class="card-category">Nationwide COD Heavy Parcel Network</span>
+      </div>
+
+      <p class="card-description">
+        Connect M&P API for cash-guaranteed banking remittance and large volume parcel dispatch across 350+ domestic hubs.
+      </p>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('mnp-courier')">
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('mnp-courier') ? '350+' : '—' }}</span>
+          <span class="m-lbl">Branches</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('mnp-courier') ? 'Heavy COD' : '—' }}</span>
+          <span class="m-lbl">Freight Capable</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('mnp-courier') ? 'Active' : '—' }}</span>
+          <span class="m-lbl">Logistics Hub</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('mnp-courier') && !isItemSyncing('mnp-courier')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('mnp-courier')"
+            title="Sync M&P logistics"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('mnp-courier')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure M&P</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('mnp-courier')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing M&P Freight...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn mnp-connect"
+          *ngIf="!isItemConnected('mnp-courier') && !isItemSyncing('mnp-courier')"
+          (click)="openConfig('mnp-courier')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect M&P API Credentials</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 13. RIDER / SWYFT LOGISTICS CARD (PAKISTAN) -->
+    <div class="integration-card glass-card card-rider" *ngIf="integrationFilter === 'all' || integrationFilter === 'couriers'">
+      <div class="card-top-row">
+        <div class="brand-avatar rider-bg" title="Rider Logistics">
+          <svg viewBox="0 0 32 32" width="26" height="26" fill="none" aria-label="Rider Logistics">
+            <path d="M18 2L5 17h8l-2 13 14-16h-8l3-12z" fill="#00FF66"/>
+          </svg>
+        </div>
+        <div class="card-badge" [ngClass]="getBadgeClass('rider-courier')">
+          <span class="live-dot" *ngIf="isItemConnected('rider-courier') && !isItemSyncing('rider-courier')"></span>
+          <span class="pulsing-amber-dot" *ngIf="isItemSyncing('rider-courier')"></span>
+          <span>{{ getIntegrationStatusLabel('rider-courier') }}</span>
+        </div>
+      </div>
+
+      <div class="card-identity">
+        <div class="name-with-tag">
+          <h3 class="card-name">Rider / Swyft</h3>
+          <span class="country-pill">Same-Day</span>
+        </div>
+        <span class="card-category">Tech-Enabled Urban Last-Mile COD</span>
+      </div>
+
+      <div class="highlight-summary-box rider-highlight">
+        <span class="summary-text">{{ isItemConnected('rider-courier') ? 'Live GPS rider stream: 180 same-day orders' : 'Connect Rider Same-Day Express' }}</span>
+      </div>
+
+      <div class="account-subtitle">
+        <span class="account-label">Urban Zone:</span>
+        <span class="account-val">Karachi & Lahore metro express routing</span>
+      </div>
+
+      <div class="mini-metrics-row" [class.inactive-row]="!isItemConnected('rider-courier')">
+        <div class="m-metric">
+          <span class="m-val text-success">{{ isItemConnected('rider-courier') ? '180' : '—' }}</span>
+          <span class="m-lbl">Same-Day</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val text-primary">{{ isItemConnected('rider-courier') ? '92.1%' : '—' }}</span>
+          <span class="m-lbl">Urban Success</span>
+        </div>
+        <div class="m-metric">
+          <span class="m-val">{{ isItemConnected('rider-courier') ? '24 Active' : '—' }}</span>
+          <span class="m-lbl">Live Riders</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <ng-container *ngIf="isItemConnected('rider-courier') && !isItemSyncing('rider-courier')">
+          <button
+            type="button"
+            class="action-btn-sync"
+            (click)="syncIntegration('rider-courier')"
+            title="Sync Rider GPS deliveries"
+          >
+            <ion-icon name="sync-outline"></ion-icon>
+            <span>Sync Now</span>
+          </button>
+          <button type="button" class="action-btn-outline" (click)="openConfig('rider-courier')">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Configure Rider</span>
+          </button>
+        </ng-container>
+
+        <button type="button" class="action-btn-outline amber-outline" *ngIf="isItemSyncing('rider-courier')" disabled>
+          <ion-icon name="sync-outline" class="spin-fast"></ion-icon>
+          <span>Syncing Rider Hub...</span>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn-primary connect-btn"
+          *ngIf="!isItemConnected('rider-courier') && !isItemSyncing('rider-courier')"
+          (click)="openConfig('rider-courier')"
+        >
+          <ion-icon name="link-outline"></ion-icon>
+          <span>Connect Rider API</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

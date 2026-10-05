@@ -1,0 +1,393 @@
+<ion-content [fullscreen]="true" [scrollY]="false" class="dashboard-root">
+  <!-- Glowing Background Ambient Elements -->
+  <div class="ambient-glow orb-1"></div>
+  <div class="ambient-glow orb-2"></div>
+  <div class="ambient-glow orb-3"></div>
+
+  <div class="app-layout">
+    <!-- Desktop & Mobile Sidebar -->
+    <aside class="sidebar-wrapper" [class.mobile-open]="isSidebarOpenMobile">
+      <div class="sidebar-backdrop" (click)="toggleMobileSidebar()"></div>
+
+      <div class="sidebar-inner glass-card">
+        <!-- Brand Logo Header -->
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <ion-icon name="sparkles-outline"></ion-icon>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">DB Tech <span class="gradient-text">Nexus</span></span>
+            <span class="brand-sub">Multi-Store SaaS Engine</span>
+          </div>
+        </div>
+
+        <!-- Navigation Menu Items -->
+        <nav class="sidebar-nav">
+          <div class="nav-group-title">MAIN NAVIGATION</div>
+
+          <!-- 1. Overview -->
+          <a
+            routerLink="/dashboard/overview"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="grid-outline"></ion-icon>
+            </div>
+            <span class="item-label">Overview</span>
+          </a>
+
+          <!-- 2. AI Analytics -->
+          <a
+            routerLink="/dashboard/ai-analytics"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="sparkles-outline"></ion-icon>
+            </div>
+            <span class="item-label">AI Analytics</span>
+            <span class="ai-spark-pill">4 Triggers</span>
+          </a>
+
+          <!-- 3. Growth Deck -->
+          <a
+            routerLink="/dashboard/growth-deck"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="trending-up-outline"></ion-icon>
+            </div>
+            <span class="item-label">Growth Deck</span>
+            <span class="growth-delta">+34%</span>
+          </a>
+
+          <!-- 4. Orders Pipeline (Shopify & WhatsApp) -->
+          <a
+            routerLink="/dashboard/orders"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="receipt-outline"></ion-icon>
+            </div>
+            <span class="item-label">Orders Pipeline</span>
+            <span class="orders-count-pill" *ngIf="analytics.storeOrders().length > 0">
+              {{ analytics.storeOrders().length }}
+            </span>
+          </a>
+
+          <!-- 5. Synced Catalog -->
+          <a
+            routerLink="/dashboard/catalog"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="bag-handle-outline"></ion-icon>
+            </div>
+            <span class="item-label">Products Catalog</span>
+            <span class="catalog-sync-pill">Live</span>
+          </a>
+
+          <!-- 5. Integrations -->
+          <a
+            routerLink="/dashboard/integrations"
+            routerLinkActive="active active-highlighted"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="layers-outline"></ion-icon>
+            </div>
+            <span class="item-label">Integrations</span>
+            <span class="pulse-indicator-pill">Live</span>
+          </a>
+
+          <div class="nav-divider"></div>
+          <div class="nav-group-title">PREFERENCES</div>
+
+          <!-- 6. Settings -->
+          <a
+            routerLink="/dashboard/settings"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="settings-outline"></ion-icon>
+            </div>
+            <span class="item-label">Settings</span>
+          </a>
+        </nav>
+
+        <!-- Sidebar Bottom: Dynamic Store Switcher & User Profile -->
+        <div class="sidebar-bottom">
+          <!-- Active Store Card (Clickable to switch stores) -->
+          <div class="store-switcher-box">
+            <button
+              type="button"
+              class="store-mini-card store-clickable"
+              (click)="toggleSidebarStoreSwitcher($event)"
+              title="Switch or Add Store"
+            >
+              <div class="store-avatar">
+                <span>{{ getStoreInitials(storeService.activeStore()?.name || 'ST') }}</span>
+              </div>
+              <div class="store-info">
+                <span class="store-name">{{ storeService.activeStore()?.name || 'My Store' }}</span>
+                <span class="store-domain">{{ storeService.activeStore()?.domain || 'store.myshopify.com' }}</span>
+              </div>
+              <ion-icon name="chevron-down-outline" class="store-chevron" [class.rotated]="showSidebarStoreSwitcher"></ion-icon>
+            </button>
+
+            <!-- Store Switcher Flyout Dropdown (Sidebar) -->
+            <div class="store-flyout" *ngIf="showSidebarStoreSwitcher">
+              <div class="store-flyout-header">
+                <span>Your Stores ({{ storeService.stores().length }})</span>
+                <span class="badge-saas">SaaS Multi-Store</span>
+              </div>
+
+              <div class="store-list">
+                <button
+                  type="button"
+                  *ngFor="let s of storeService.stores()"
+                  class="store-item"
+                  [class.is-active]="s.id === storeService.activeStore()?.id"
+                  (click)="selectStore(s)"
+                >
+                  <div class="store-item-avatar">
+                    {{ getStoreInitials(s.name) }}
+                  </div>
+                  <div class="store-item-details">
+                    <span class="store-item-name">{{ s.name }}</span>
+                    <span class="store-item-domain">{{ s.domain }}</span>
+                  </div>
+                  <ion-icon
+                    name="checkmark-outline"
+                    class="store-check"
+                    *ngIf="s.id === storeService.activeStore()?.id"
+                  ></ion-icon>
+                </button>
+              </div>
+
+              <div class="store-flyout-footer">
+                <button type="button" class="btn-add-store" (click)="openCreateStoreModal()">
+                  <ion-icon name="add-outline"></ion-icon>
+                  <span>Add New Store</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-user">
+            <img [src]="user?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'" alt="Avatar" class="user-avatar-mini" />
+            <div class="user-info">
+              <span class="user-name">{{ user?.name || 'Store Owner' }}</span>
+              <span class="user-role">{{ user?.role || 'SaaS Admin' }}</span>
+            </div>
+            <button type="button" class="user-logout-btn" (click)="handleLogout()" title="Log out">
+              <ion-icon name="log-out-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Work Area -->
+    <div class="main-viewport">
+      <!-- High-Precision Route Navigation Loading Bar -->
+      <div class="route-progress-track" [class.is-loading]="isNavigating">
+        <div class="route-progress-indicator"></div>
+      </div>
+
+      <!-- Top Application Header Bar -->
+      <header class="top-appbar glass-card">
+        <div class="appbar-left">
+          <!-- Mobile Drawer Toggle -->
+          <button type="button" class="mobile-menu-btn" (click)="toggleMobileSidebar()" aria-label="Toggle Navigation">
+            <ion-icon name="menu-outline"></ion-icon>
+          </button>
+
+          <!-- Breadcrumb / View Title with Smooth Crossfade -->
+          <div class="view-header-title" [class.title-animate]="titleAnimate">
+            <span class="section-tag">
+              {{ storeService.activeStore()?.name ? storeService.activeStore()?.name?.toUpperCase() : 'STORE' }}
+            </span>
+            <h2 class="view-title">{{ currentTitle }}</h2>
+          </div>
+        </div>
+
+        <div class="appbar-right">
+          <!-- Active Store Quick Switcher Dropdown Container (Header) -->
+          <div class="header-store-container">
+            <button
+              type="button"
+              class="store-header-pill"
+              (click)="toggleHeaderStoreSwitcher($event)"
+              title="Active Store Tenant"
+            >
+              <div class="store-badge-icon">
+                <ion-icon name="storefront-outline"></ion-icon>
+              </div>
+              <span class="store-header-name">{{ storeService.activeStore()?.name || 'Loading Store...' }}</span>
+              <span class="store-platform-tag">{{ storeService.activeStore()?.platform || 'Shopify' }}</span>
+              <ion-icon name="chevron-down-outline" class="store-pill-chevron" [class.rotated]="showHeaderStoreSwitcher"></ion-icon>
+            </button>
+
+            <!-- Backdrop to close on click outside -->
+            <div class="store-backdrop" *ngIf="showHeaderStoreSwitcher" (click)="showHeaderStoreSwitcher = false"></div>
+
+            <!-- Header Store Flyout Dropdown -->
+            <div class="store-flyout header-store-flyout" *ngIf="showHeaderStoreSwitcher">
+              <div class="store-flyout-header">
+                <span>Your Stores ({{ storeService.stores().length }})</span>
+                <span class="badge-saas">SaaS Multi-Store</span>
+              </div>
+
+              <div class="store-list">
+                <button
+                  type="button"
+                  *ngFor="let s of storeService.stores()"
+                  class="store-item"
+                  [class.is-active]="s.id === storeService.activeStore()?.id"
+                  (click)="selectStore(s)"
+                >
+                  <div class="store-item-avatar">
+                    {{ getStoreInitials(s.name) }}
+                  </div>
+                  <div class="store-item-details">
+                    <span class="store-item-name">{{ s.name }}</span>
+                    <span class="store-item-domain">{{ s.domain }}</span>
+                  </div>
+                  <ion-icon
+                    name="checkmark-outline"
+                    class="store-check"
+                    *ngIf="s.id === storeService.activeStore()?.id"
+                  ></ion-icon>
+                </button>
+              </div>
+
+              <div class="store-flyout-footer">
+                <button type="button" class="btn-add-store" (click)="openCreateStoreModal()">
+                  <ion-icon name="add-outline"></ion-icon>
+                  <span>Add New Store</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Store Quick Action -->
+          <button
+            type="button"
+            class="add-store-quick-btn"
+            (click)="openCreateStoreModal()"
+            title="Create New Store"
+          >
+            <ion-icon name="add-outline"></ion-icon>
+            <span class="hide-mobile">New Store</span>
+          </button>
+
+          <!-- Dark/Light Theme Switcher -->
+          <button
+            type="button"
+            class="control-icon-btn"
+            (click)="authService.toggleTheme()"
+            [title]="authService.isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+          >
+            <ion-icon [name]="authService.isDarkMode() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+          </button>
+
+          <!-- Notifications Bell -->
+          <div class="notif-box">
+            <button
+              type="button"
+              class="control-icon-btn"
+              (click)="toggleNotifications()"
+              title="Notifications"
+              [class.active]="showNotificationsModal"
+            >
+              <ion-icon name="notifications-outline"></ion-icon>
+              <span class="notif-bubble" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
+            </button>
+
+            <!-- Backdrop to click outside -->
+            <div class="notif-backdrop" *ngIf="showNotificationsModal" (click)="showNotificationsModal = false"></div>
+
+            <!-- Notification Popover -->
+            <div class="notif-flyout" *ngIf="showNotificationsModal">
+              <div class="flyout-header">
+                <div class="flyout-title-wrap">
+                  <h4>Notifications</h4>
+                  <span class="notif-count-badge">3 New</span>
+                </div>
+                <div class="flyout-actions">
+                  <button type="button" class="close-flyout-btn" (click)="showNotificationsModal = false" aria-label="Close notifications">
+                    <ion-icon name="close-outline"></ion-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flyout-list">
+                <!-- 1. Shopify -->
+                <div class="flyout-item">
+                  <div class="flyout-icon emerald">
+                    <ion-icon name="cube-outline"></ion-icon>
+                  </div>
+                  <div class="flyout-body">
+                    <div class="flyout-item-top">
+                      <span class="flyout-item-source">Store Connected</span>
+                      <span class="flyout-item-time">Active</span>
+                    </div>
+                    <p class="flyout-item-desc">
+                      Store "{{ storeService.activeStore()?.name || 'Active Store' }}" telemetry sync established.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 2. TikTok -->
+                <div class="flyout-item">
+                  <div class="flyout-icon amber">
+                    <ion-icon name="sync-outline"></ion-icon>
+                  </div>
+                  <div class="flyout-body">
+                    <div class="flyout-item-top">
+                      <span class="flyout-item-source">TikTok Ads Pixel</span>
+                      <span class="flyout-item-time">Active</span>
+                    </div>
+                    <p class="flyout-item-desc">Ingesting real-time pixel event stream for viral campaign.</p>
+                  </div>
+                </div>
+
+                <!-- 3. Courier -->
+                <div class="flyout-item">
+                  <div class="flyout-icon indigo">
+                    <ion-icon name="shield-checkmark-outline"></ion-icon>
+                  </div>
+                  <div class="flyout-body">
+                    <div class="flyout-item-top">
+                      <span class="flyout-item-source">COD Courier Engine</span>
+                      <span class="flyout-item-time">Live</span>
+                    </div>
+                    <p class="flyout-item-desc">Fraud protection & RTO risk detection active for this store.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flyout-footer">
+                <a routerLink="/dashboard/settings" (click)="showNotificationsModal = false" class="flyout-link">
+                  Manage Store Integrations & Alert Rules
+                  <ion-icon name="settings-outline"></ion-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Child Page Work Viewport -->
+      <div class="content-scroll-container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</ion-content>

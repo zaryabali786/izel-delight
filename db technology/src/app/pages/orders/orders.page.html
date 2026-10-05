@@ -1,0 +1,276 @@
+<div class="orders-page animate-fade-in">
+  <!-- Orders Header & Store Identity -->
+  <div class="orders-header-card glass-card mb-24">
+    <div class="header-top-row">
+      <div>
+        <div class="tenant-tag-row mb-8">
+          <span class="tenant-pill">
+            <span class="pulse-dot"></span>
+            Store Tenant: {{ activeStore()?.name || 'Primary Store' }}
+          </span>
+          <span class="sync-live-badge">
+            <ion-icon name="sync-outline"></ion-icon>
+            Live Webhook & Socket Sync
+          </span>
+        </div>
+        <h2>Unified Multi-Channel Orders Pipeline</h2>
+        <p>Live stream of incoming customer orders across WhatsApp Conversational AI and Shopify Storefront.</p>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="btn-secondary" (click)="refreshOrders()">
+          <ion-icon name="sync-outline"></ion-icon>
+          <span>Refresh Orders</span>
+        </button>
+        <button type="button" class="btn-primary" (click)="analytics.openWhatsAppModal()">
+          <ion-icon name="logo-whatsapp"></ion-icon>
+          <span>Simulate WhatsApp Order</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Orders Telemetry Stats Strip -->
+    <div class="orders-stats-strip">
+      <div class="stat-box">
+        <span class="s-lbl">Total Real Orders</span>
+        <span class="s-val">{{ totalOrdersCount() }}</span>
+        <span class="s-sub">All Synchronized Channels</span>
+      </div>
+      <div class="stat-box whatsapp-accent">
+        <span class="s-lbl">WhatsApp AI Orders</span>
+        <span class="s-val text-success">{{ whatsappOrdersCount() }}</span>
+        <span class="s-sub">Tag: Order from WhatsApp</span>
+      </div>
+      <div class="stat-box">
+        <span class="s-lbl">Shopify Orders</span>
+        <span class="s-val text-primary">{{ shopifyOrdersCount() }}</span>
+        <span class="s-sub">Shopify Admin Webhooks</span>
+      </div>
+      <div class="stat-box">
+        <span class="s-lbl">Gross Recorded GMV</span>
+        <span class="s-val text-emerald">PKR {{ totalRevenue() | number }}</span>
+        <span class="s-sub">Zero Mock / 100% Real DB</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <div class="controls-card glass-card mb-24">
+    <div class="filter-pills-row">
+      <button
+        type="button"
+        class="filter-pill-btn"
+        [class.active]="activeFilter() === 'all'"
+        (click)="setFilter('all')"
+      >
+        <ion-icon name="receipt-outline"></ion-icon>
+        <span>All Channels ({{ totalOrdersCount() }})</span>
+      </button>
+
+      <button
+        type="button"
+        class="filter-pill-btn whatsapp-filter"
+        [class.active]="activeFilter() === 'whatsapp'"
+        (click)="setFilter('whatsapp')"
+      >
+        <ion-icon name="logo-whatsapp"></ion-icon>
+        <span>Order from WhatsApp ({{ whatsappOrdersCount() }})</span>
+      </button>
+
+      <button
+        type="button"
+        class="filter-pill-btn shopify-filter"
+        [class.active]="activeFilter() === 'shopify'"
+        (click)="setFilter('shopify')"
+      >
+        <ion-icon name="bag-handle-outline"></ion-icon>
+        <span>Shopify Orders ({{ shopifyOrdersCount() }})</span>
+      </button>
+    </div>
+
+    <div class="search-box-wrapper">
+      <ion-icon name="search-outline" class="search-icon"></ion-icon>
+      <input
+        type="text"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Search by Order #, Customer Name, Phone, City, Product..."
+        class="search-input"
+      />
+      <span class="search-count" *ngIf="searchQuery()">
+        {{ filteredOrders().length }} matches
+      </span>
+    </div>
+  </div>
+
+  <!-- ORDERS TABLE OR EMPTY STATE -->
+  <div class="table-container glass-card">
+    <div class="table-header">
+      <div>
+        <h3 class="t-title">Synchronized Orders Registry</h3>
+        <p class="t-desc">
+          Displaying {{ filteredOrders().length }} of {{ totalOrdersCount() }} total orders for {{ activeStore()?.name }}.
+        </p>
+      </div>
+
+      <div class="badge-pill badge-primary">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        Store Isolated Telemetry
+      </div>
+    </div>
+
+    <!-- STATE A: EMPTY STATE -->
+    <div class="empty-orders-view" *ngIf="filteredOrders().length === 0">
+      <div class="empty-icon-box">
+        <ion-icon name="receipt-outline"></ion-icon>
+      </div>
+      <h4>No orders found</h4>
+      <p *ngIf="totalOrdersCount() === 0">
+        No orders have been recorded for {{ activeStore()?.name }} yet. You can simulate a WhatsApp AI customer order right now or connect your Shopify storefront in the Integrations tab.
+      </p>
+      <p *ngIf="totalOrdersCount() > 0 && filteredOrders().length === 0">
+        No orders match your filter criteria or search query "{{ searchQuery() }}".
+      </p>
+
+      <div class="empty-actions">
+        <button type="button" class="btn-primary" (click)="analytics.openWhatsAppModal()">
+          <ion-icon name="chatbubbles-outline"></ion-icon>
+          Simulate Customer Order via WhatsApp
+        </button>
+        <button type="button" class="btn-secondary" *ngIf="searchQuery()" (click)="searchQuery.set(''); activeFilter.set('all')">
+          Clear Search Filter
+        </button>
+      </div>
+    </div>
+
+    <!-- STATE B: POPULATED ORDERS TABLE -->
+    <div class="responsive-table-wrapper" *ngIf="filteredOrders().length > 0">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order # & ID</th>
+            <th>Source Channel Tag</th>
+            <th>Customer & Contact</th>
+            <th>Destination Address</th>
+            <th>Items & Quantities</th>
+            <th>Total Amount</th>
+            <th>Payment Details</th>
+            <th>Order Status</th>
+            <th>Courier Fulfillment</th>
+            <th>Date & Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders()">
+            <!-- Order # & Shopify Ref -->
+            <td>
+              <div class="order-id-cell">
+                <strong class="order-num">{{ order.order_number }}</strong>
+                <span class="shopify-sync-chip" *ngIf="order.shopify_order_id">
+                  Shopify: #{{ order.shopify_order_id }}
+                </span>
+                <span class="order-uuid">{{ order.id.slice(0, 8) }}...</span>
+              </div>
+            </td>
+
+            <!-- Channel Tag / Badge (Specifically highlighted as requested) -->
+            <td>
+              <!-- Tag: Order from WhatsApp -->
+              <span class="channel-tag tag-whatsapp" *ngIf="order.channel === 'whatsapp'">
+                <ion-icon name="logo-whatsapp"></ion-icon>
+                <span>Order from WhatsApp</span>
+              </span>
+
+              <!-- Tag: Shopify Storefront -->
+              <span class="channel-tag tag-shopify" *ngIf="order.channel === 'shopify'">
+                <ion-icon name="bag-handle-outline"></ion-icon>
+                <span>Shopify Storefront</span>
+              </span>
+            </td>
+
+            <!-- Customer Details -->
+            <td>
+              <div class="customer-cell">
+                <span class="customer-name">{{ order.customer_name || 'Walk-in Customer' }}</span>
+                <span class="customer-phone">{{ order.customer_phone }}</span>
+                <span class="customer-email" *ngIf="order.customer_email">{{ order.customer_email }}</span>
+              </div>
+            </td>
+
+            <!-- Address & City -->
+            <td>
+              <div class="address-cell">
+                <span class="city-name">{{ order.city }}</span>
+                <span class="full-addr" title="{{ order.address }}">{{ order.address }}</span>
+              </div>
+            </td>
+
+            <!-- Items Breakdown -->
+            <td>
+              <div class="items-cell">
+                <div class="item-line" *ngFor="let it of order.items">
+                  <span class="item-title">{{ it.title }}</span>
+                  <span class="item-qty">&times;{{ it.quantity }}</span>
+                  <span class="item-price">PKR {{ it.price | number }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Total Amount -->
+            <td>
+              <strong class="total-amount">PKR {{ order.total_amount | number }}</strong>
+            </td>
+
+            <!-- Payment Method & Status -->
+            <td>
+              <div class="payment-cell">
+                <span
+                  class="pay-method"
+                  [class.method-cod]="order.payment_method === 'cod'"
+                  [class.method-online]="order.payment_method === 'online'"
+                >
+                  {{ order.payment_method.toUpperCase() }}
+                </span>
+                <span
+                  class="pay-status"
+                  [class.status-paid]="order.payment_status === 'paid'"
+                  [class.status-pending]="order.payment_status === 'pending'"
+                >
+                  {{ order.payment_status }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Order Status -->
+            <td>
+              <span
+                class="order-status-pill"
+                [class.status-unfulfilled]="order.order_status === 'unfulfilled'"
+                [class.status-fulfilled]="order.order_status === 'fulfilled'"
+                [class.status-delivered]="order.order_status === 'delivered'"
+              >
+                {{ order.order_status }}
+              </span>
+            </td>
+
+            <!-- Courier Logistics Tracking -->
+            <td>
+              <div class="courier-cell">
+                <span class="courier-name">
+                  <ion-icon name="navigate-outline"></ion-icon>
+                  {{ order.courier_name || 'PostEx Logistics' }}
+                </span>
+                <span class="tracking-id" *ngIf="order.tracking_number">{{ order.tracking_number }}</span>
+              </div>
+            </td>
+
+            <!-- Date -->
+            <td>
+              <span class="order-date">{{ order.created_at | date:'short' }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

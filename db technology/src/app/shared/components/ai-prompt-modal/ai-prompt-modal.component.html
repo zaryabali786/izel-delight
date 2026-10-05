@@ -1,0 +1,171 @@
+<!-- ========================================================================= -->
+<!-- ROOT VIEWPORT AI PRODUCT PROMPT TRAINING MODAL (OVERLAYS HEADER & SIDEBAR) -->
+<!-- ========================================================================= -->
+<div
+  class="ai-modal-overlay"
+  [class.dark-theme]="authService.isDarkMode()"
+  *ngIf="analytics.showAiPromptModal()"
+  (click)="closeModal()"
+  (wheel)="$event.stopPropagation(); $event.preventDefault()"
+>
+  <div
+    class="ai-modal-dialog glass-card ai-prompt-dialog"
+    [class.dark-theme]="authService.isDarkMode()"
+    (click)="$event.stopPropagation()"
+    (wheel)="$event.stopPropagation()"
+  >
+    <!-- Modal Header -->
+    <div class="ai-modal-header">
+      <div class="header-title-box">
+        <div class="ai-prompt-icon-badge">
+          <ion-icon name="sparkles" class="ai-sparkle-icon"></ion-icon>
+          <span class="ai-sparkle-dot"></span>
+        </div>
+        <div class="header-texts">
+          <div class="title-with-pill">
+            <h2 class="modal-title">AI Product Prompt Training</h2>
+            <span class="ai-engine-pill">
+              <span class="pulse-violet-dot"></span>
+              AI Knowledge Ingestion Active
+            </span>
+          </div>
+          <span class="modal-subtitle">
+            Train neural models with SKU-specific domain context for automated customer inquiries and ad generation
+          </span>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="modal-close-btn"
+        (click)="closeModal()"
+        aria-label="Close Modal"
+        [disabled]="isTrainingAi"
+      >
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Modal Body (Compact & Non-Scrollable) -->
+    <div class="ai-modal-body">
+      <!-- 1. Compact Product Context Strip -->
+      <div class="compact-product-strip" *ngIf="analytics.aiPromptProduct() as prod">
+        <img [src]="prod.image" [alt]="prod.title" class="c-prod-img" />
+        <div class="c-prod-details">
+          <div class="c-prod-meta-line">
+            <span class="c-prod-sku">{{ prod.sku }}</span>
+            <span class="c-prod-cat">{{ prod.category }}</span>
+            <span class="c-prod-stock">{{ prod.inventoryQuantity }} units in stock</span>
+          </div>
+          <h3 class="c-prod-title">{{ prod.title }}</h3>
+        </div>
+        <div class="c-prod-price-box">
+          <span class="c-price-lbl">Selling Price</span>
+          <span class="c-price-val">{{ analytics.currencySymbol() }}{{ prod.price | number }}</span>
+        </div>
+      </div>
+
+      <!-- 2. AI Workflow Explanation Box -->
+      <div class="ai-workflow-banner">
+        <div class="workflow-icon">
+          <ion-icon name="sparkles"></ion-icon>
+        </div>
+        <div class="workflow-text">
+          <strong>Automated Customer Inquiries & Ad Creative Knowledge Base:</strong>
+          <p>
+            When customers inquire about this product across sales channels or AI drafts new marketing campaigns, the model references this custom prompt context to automatically provide accurate, high-converting details (fabric specs, sizing fit, delivery estimates, and exchange policies).
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. AI Quick Suggestion Knowledge Chips -->
+      <div class="ai-chips-row">
+        <span class="chips-label">⚡ Click to insert product knowledge guidelines:</span>
+        <div class="chips-scroll-group">
+          <button
+            type="button"
+            *ngFor="let t of promptTemplates"
+            class="ai-knowledge-chip"
+            (click)="appendPromptTemplate(t.text)"
+          >
+            <span>{{ t.label }}</span>
+            <ion-icon name="add-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. Textarea Input -->
+      <div class="ai-prompt-container">
+        <div class="ai-prompt-head">
+          <label for="aiRootProductPrompt" class="ai-input-label">
+            <ion-icon name="hardware-chip-outline"></ion-icon>
+            <span>Product Knowledge & AI Response Guidelines (Prompt):</span>
+          </label>
+          <button
+            type="button"
+            class="ai-clear-btn"
+            *ngIf="analytics.aiPromptText()"
+            (click)="clearPrompt()"
+          >
+            Clear Text
+          </button>
+        </div>
+
+        <textarea
+          id="aiRootProductPrompt"
+          class="ai-prompt-area"
+          rows="4"
+          [value]="analytics.aiPromptText()"
+          (input)="analytics.aiPromptText.set($any($event.target).value)"
+          placeholder="Specify key product specifications (e.g. 100% fine combed cotton lawn, breathable, guaranteed color-fast), sizing recommendations, delivery turnaround (2-3 days COD), or promotional discount guidelines to train the AI model..."
+        ></textarea>
+
+        <div class="ai-prompt-subline">
+          <div class="ai-readiness">
+            <span class="ai-dot" [class.live]="analytics.aiPromptText().trim().length >= 20"></span>
+            <span class="ai-status-msg" *ngIf="analytics.aiPromptText().trim().length === 0">
+              AI model using standard store-wide product fallback
+            </span>
+            <span class="ai-status-msg live" *ngIf="analytics.aiPromptText().trim().length >= 20">
+              AI Knowledge Base Trained & Active for Product Inquiries
+            </span>
+          </div>
+          <span class="ai-chars">{{ analytics.aiPromptText().length }} chars</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="ai-modal-footer">
+      <div class="ai-footer-status">
+        <span *ngIf="analytics.aiPromptProduct()?.aiPromptUpdatedAt">
+          Last trained: <strong>{{ analytics.aiPromptProduct()?.aiPromptUpdatedAt }}</strong>
+        </span>
+        <span *ngIf="!analytics.aiPromptProduct()?.aiPromptUpdatedAt">
+          Model Status: <em>Awaiting Custom Product Prompt</em>
+        </span>
+      </div>
+
+      <div class="footer-btn-actions">
+        <button
+          type="button"
+          class="modal-btn-cancel"
+          (click)="closeModal()"
+          [disabled]="isTrainingAi"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="modal-btn-save ai-save-btn"
+          (click)="saveAiPrompt()"
+          [disabled]="isTrainingAi || analytics.aiPromptText().trim().length < 5"
+        >
+          <ion-icon name="sparkles" *ngIf="!isTrainingAi"></ion-icon>
+          <ion-icon name="sparkles" class="spin-anim" *ngIf="isTrainingAi"></ion-icon>
+          <span *ngIf="!isTrainingAi">Save & Train AI Model</span>
+          <span *ngIf="isTrainingAi">Training AI Model...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,522 @@
+<div class="catalog-page animate-fade-in">
+  <!-- 1. Header Hero with Store Sync Health & Stats -->
+  <div class="catalog-hero glass-card">
+    <div class="hero-left">
+      <div class="badge-pill badge-success">
+        <span class="pulse-dot"></span>
+        <span>Shopify GraphQL Webhook Connected</span>
+      </div>
+      <h1 class="hero-heading">Shopify Synced <span class="gradient-text">Catalog Matrix</span></h1>
+      <p class="hero-desc">
+        Real-time bidirectional catalog synchronization with <strong>{{ storeService.activeStore()?.name || 'Active Store' }}</strong> ({{ storeService.activeStore()?.domain || 'myshopify.com' }}). Tracks inventory levels, profit margins, Net RTO risk, and ad channel attribution per SKU.
+      </p>
+    </div>
+
+    <div class="hero-right">
+      <div class="sync-action-card">
+        <div class="sync-info">
+          <span class="sync-label">Last Webhook Stream</span>
+          <span class="sync-time">2 mins ago (Live)</span>
+        </div>
+        <button
+          type="button"
+          class="sync-btn"
+          (click)="syncCatalog()"
+          [disabled]="isSyncing()"
+          title="Force Sync with Shopify Admin API"
+        >
+          <ion-icon name="sync-outline" [class.spin-anim]="isSyncing()"></ion-icon>
+          <span>{{ isSyncing() ? 'Syncing...' : 'Sync Catalog' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. KPI Micro-Bar -->
+  <div class="catalog-stats-grid">
+    <div class="stat-card glass-card">
+      <div class="stat-icon indigo">
+        <ion-icon name="bag-handle-outline"></ion-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-lbl">Total Synced SKUs</span>
+        <span class="stat-val">1,450</span>
+        <span class="stat-sub">Active in Shopify</span>
+      </div>
+    </div>
+
+    <div class="stat-card glass-card">
+      <div class="stat-icon emerald">
+        <ion-icon name="trending-up-outline"></ion-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-lbl">Tracked Revenue</span>
+        <span class="stat-val">{{ analytics.currencySymbol() }}62.4M</span>
+        <span class="stat-sub">+34.8% vs last month</span>
+      </div>
+    </div>
+
+    <div class="stat-card glass-card">
+      <div class="stat-icon amber">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-lbl">Low Stock Alerts</span>
+        <span class="stat-val text-warning">{{ catalogStats().lowStockCount }} SKUs</span>
+        <span class="stat-sub">Below 50 units</span>
+      </div>
+    </div>
+
+    <div class="stat-card glass-card">
+      <div class="stat-icon purple">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-lbl">Average Ad ROAS</span>
+        <span class="stat-val text-primary">{{ catalogStats().avgRoas }}x</span>
+        <span class="stat-sub">Cross-Channel Blended</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Search Bar & Filter Controls (oper serach ka option) -->
+  <div class="controls-card glass-card">
+    <div class="search-sort-row">
+      <!-- Search Box with Clear Button -->
+      <div class="search-box-wrapper">
+        <ion-icon name="search-outline" class="search-icon"></ion-icon>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search by product name, SKU (e.g. LDP-303), barcode, or category..."
+          [value]="searchQuery()"
+          (input)="onSearchInput($event)"
+        />
+        <button
+          type="button"
+          class="clear-search-btn"
+          *ngIf="searchQuery()"
+          (click)="clearSearch()"
+          aria-label="Clear Search"
+        >
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Quick Sorting Dropdown -->
+      <div class="sort-controls">
+        <span class="sort-lbl">Sort:</span>
+        <div class="sort-btn-group">
+          <button
+            type="button"
+            class="sort-pill"
+            [class.active]="sortBy() === 'revenue'"
+            (click)="toggleSort('revenue')"
+          >
+            Revenue
+            <ion-icon [name]="sortBy() === 'revenue' && sortDirection() === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+          </button>
+          <button
+            type="button"
+            class="sort-pill"
+            [class.active]="sortBy() === 'roas'"
+            (click)="toggleSort('roas')"
+          >
+            ROAS
+            <ion-icon [name]="sortBy() === 'roas' && sortDirection() === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+          </button>
+          <button
+            type="button"
+            class="sort-pill"
+            [class.active]="sortBy() === 'rto'"
+            (click)="toggleSort('rto')"
+          >
+            RTO %
+            <ion-icon [name]="sortBy() === 'rto' && sortDirection() === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+          </button>
+          <button
+            type="button"
+            class="sort-pill"
+            [class.active]="sortBy() === 'stock'"
+            (click)="toggleSort('stock')"
+          >
+            Stock
+            <ion-icon [name]="sortBy() === 'stock' && sortDirection() === 'asc' ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="category-pills-row">
+      <div class="pills-scroll-track">
+        <button
+          type="button"
+          *ngFor="let cat of categories"
+          class="category-pill-btn"
+          [class.active]="selectedCategory() === cat"
+          (click)="setCategory(cat)"
+        >
+          {{ cat }}
+        </button>
+      </div>
+
+      <!-- Stock Status Filter -->
+      <div class="stock-filter-selector">
+        <button
+          type="button"
+          class="stock-toggle-btn"
+          [class.active]="selectedStockStatus() === 'all'"
+          (click)="setStockStatus('all')"
+        >
+          All Stock
+        </button>
+        <button
+          type="button"
+          class="stock-toggle-btn warning"
+          [class.active]="selectedStockStatus() === 'low_stock'"
+          (click)="setStockStatus('low_stock')"
+        >
+          Low Stock
+        </button>
+        <button
+          type="button"
+          class="stock-toggle-btn danger"
+          [class.active]="selectedStockStatus() === 'out_of_stock'"
+          (click)="setStockStatus('out_of_stock')"
+        >
+          Out of Stock
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State when Search has no matches -->
+  <div class="empty-results-card glass-card" *ngIf="filteredProducts().length === 0">
+    <div class="empty-icon">
+      <ion-icon name="search-outline"></ion-icon>
+    </div>
+    <h3>No Products Found</h3>
+    <p>No products match your search "{{ searchQuery() }}". Try searching by SKU or resetting filters.</p>
+    <button type="button" class="reset-filter-btn" (click)="clearSearch(); setCategory('All'); setStockStatus('all')">
+      Reset All Filters
+    </button>
+  </div>
+
+  <!-- 4. DESKTOP VIEW: High-Precision Enterprise Data Table -->
+  <div class="desktop-table-container glass-card" *ngIf="filteredProducts().length > 0">
+    <div class="table-responsive">
+      <table class="catalog-table">
+        <thead>
+          <tr>
+            <th class="th-prod">Product & SKU</th>
+            <th>Category</th>
+            <th>Selling Price</th>
+            <th>Margin %</th>
+            <th>Inventory Level</th>
+            <th>ROAS</th>
+            <th>Net RTO %</th>
+            <th>Top Ad Channel</th>
+            <th class="th-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of paginatedProducts()" class="product-row">
+            <!-- Product Preview -->
+            <td class="td-prod">
+              <div class="prod-identity-cell">
+                <img [src]="product.image" [alt]="product.title" class="prod-thumb" loading="lazy" />
+                <div class="prod-meta">
+                  <span class="prod-title">{{ product.title }}</span>
+                  <div class="prod-tags-row">
+                    <span class="sku-badge">{{ product.sku }}</span>
+                    <span class="shopify-id-pill" title="Shopify Product GID">Synced</span>
+                    <span class="ai-trained-chip" *ngIf="product.aiPromptTrained" title="AI Training Prompt Active">
+                      <ion-icon name="sparkles"></ion-icon>
+                      <span>AI Active</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Category -->
+            <td>
+              <span class="category-tag">{{ product.category }}</span>
+            </td>
+
+            <!-- Pricing -->
+            <td>
+              <div class="price-cell">
+                <span class="current-price">{{ analytics.currencySymbol() }}{{ product.price | number:'1.0-0' }}</span>
+                <span class="compare-price" *ngIf="product.compareAtPrice">
+                  {{ analytics.currencySymbol() }}{{ product.compareAtPrice | number:'1.0-0' }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Margin -->
+            <td>
+              <span class="margin-badge" [class.high]="product.margin >= 55" [class.mid]="product.margin < 55">
+                {{ product.margin }}%
+              </span>
+            </td>
+
+            <!-- Inventory with Micro Progress Bar -->
+            <td>
+              <div class="stock-cell">
+                <div class="stock-info-row">
+                  <span class="stock-units" [class.text-danger]="product.inventoryQuantity === 0" [class.text-warning]="product.inventoryQuantity > 0 && product.inventoryQuantity <= 50">
+                    {{ product.inventoryQuantity === 0 ? 'Out of Stock' : (product.inventoryQuantity + ' units') }}
+                  </span>
+                  <span class="stock-state-dot" [class.green]="product.inventoryQuantity > 50" [class.amber]="product.inventoryQuantity > 0 && product.inventoryQuantity <= 50" [class.red]="product.inventoryQuantity === 0"></span>
+                </div>
+                <div class="stock-bar-track">
+                  <div
+                    class="stock-bar-fill"
+                    [style.width.%]="product.inventoryQuantity === 0 ? 0 : (product.inventoryQuantity > 500 ? 100 : (product.inventoryQuantity / 5))"
+                    [class.fill-green]="product.inventoryQuantity > 50"
+                    [class.fill-amber]="product.inventoryQuantity > 0 && product.inventoryQuantity <= 50"
+                    [class.fill-red]="product.inventoryQuantity === 0"
+                  ></div>
+                </div>
+              </div>
+            </td>
+
+            <!-- ROAS -->
+            <td>
+              <span class="roas-pill" [class.winner]="product.roas >= 4.5">
+                {{ product.roas }}x
+              </span>
+            </td>
+
+            <!-- Net RTO % -->
+            <td>
+              <span class="rto-badge" [class.safe]="product.rtoStatus === 'Low'" [class.moderate]="product.rtoStatus === 'Moderate'" [class.danger]="product.rtoStatus === 'High Risk'">
+                {{ product.rtoRate }}%
+              </span>
+            </td>
+
+            <!-- Top Ad Channel -->
+            <td>
+              <span class="channel-pill">{{ product.topAdChannel }}</span>
+            </td>
+
+            <!-- Quick Actions -->
+            <td class="td-action">
+              <div class="actions-group">
+                <button
+                  type="button"
+                  class="wa-action-btn"
+                  (click)="openWhatsAppModal(product)"
+                  title="View WhatsApp Customer Inquiries & AI Chat History"
+                >
+                  <ion-icon name="logo-whatsapp"></ion-icon>
+                  <span class="wa-btn-text">WhatsApp</span>
+                </button>
+                <button
+                  type="button"
+                  class="ai-action-btn"
+                  [class.trained]="product.aiPromptTrained"
+                  (click)="openAiPromptModal(product)"
+                  [title]="product.aiPromptTrained ? 'AI Model Trained • Click to view or edit prompt & hyperparameters' : 'Train AI Model with Custom Product Prompt'"
+                >
+                  <ion-icon name="sparkles"></ion-icon>
+                  <span class="ai-btn-text">{{ product.aiPromptTrained ? 'Trained' : 'Train AI' }}</span>
+                </button>
+                <button
+                  type="button"
+                  class="action-btn"
+                  (click)="openShopifyProduct(product)"
+                  title="View in Shopify Admin"
+                >
+                  <ion-icon name="open-outline"></ion-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 5. DESKTOP PAGINATION: Elegant Numerical Pagination Bar -->
+    <div class="desktop-pagination-bar">
+      <div class="pagination-info">
+        <span>
+          Showing <strong>{{ (currentPage() - 1) * pageSize() + 1 }}</strong> to
+          <strong>{{ (currentPage() * pageSize()) > filteredProducts().length ? filteredProducts().length : (currentPage() * pageSize()) }}</strong>
+          of <strong>{{ filteredProducts().length }}</strong> products
+        </span>
+
+        <div class="page-size-picker">
+          <span>Rows:</span>
+          <button
+            type="button"
+            class="size-pill"
+            [class.active]="pageSize() === 8"
+            (click)="changePageSize(8)"
+          >
+            8
+          </button>
+          <button
+            type="button"
+            class="size-pill"
+            [class.active]="pageSize() === 12"
+            (click)="changePageSize(12)"
+          >
+            12
+          </button>
+          <button
+            type="button"
+            class="size-pill"
+            [class.active]="pageSize() === 16"
+            (click)="changePageSize(16)"
+          >
+            16
+          </button>
+        </div>
+      </div>
+
+      <div class="pagination-buttons">
+        <button
+          type="button"
+          class="nav-page-btn prev"
+          [disabled]="currentPage() === 1"
+          (click)="prevPage()"
+          aria-label="Previous Page"
+        >
+          <ion-icon name="chevron-back-outline"></ion-icon>
+          <span>Previous</span>
+        </button>
+
+        <div class="page-numbers-group">
+          <ng-container *ngFor="let p of getPageNumbers()">
+            <button
+              *ngIf="p !== '...'"
+              type="button"
+              class="num-page-btn"
+              [class.active]="currentPage() === p"
+              (click)="goToPage(+p)"
+            >
+              {{ p }}
+            </button>
+            <span *ngIf="p === '...'" class="dots-separator">...</span>
+          </ng-container>
+        </div>
+
+        <button
+          type="button"
+          class="nav-page-btn next"
+          [disabled]="currentPage() === totalPages()"
+          (click)="nextPage()"
+          aria-label="Next Page"
+        >
+          <span>Next</span>
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. MOBILE VIEW: Touch-Friendly Product Cards Grid (< 768px) -->
+  <div class="mobile-products-grid" *ngIf="filteredProducts().length > 0">
+    <div class="mobile-product-card glass-card" *ngFor="let product of paginatedProducts()">
+      <div class="m-card-header">
+        <img [src]="product.image" [alt]="product.title" class="m-thumb" loading="lazy" />
+        <div class="m-header-info">
+          <span class="m-category">{{ product.category }}</span>
+          <h4 class="m-title">{{ product.title }}</h4>
+          <div class="m-sku-row">
+            <span class="m-sku-badge">{{ product.sku }}</span>
+            <span class="m-sync-dot" title="Shopify Synced"></span>
+            <span class="m-ai-chip" *ngIf="product.aiPromptTrained" title="AI Model Prompt Active">
+              <ion-icon name="sparkles"></ion-icon>
+              <span>AI Active</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4-Box Micro Stats Matrix -->
+      <div class="m-stats-matrix">
+        <div class="m-stat-box">
+          <span class="m-stat-lbl">Price</span>
+          <span class="m-stat-val">{{ analytics.currencySymbol() }}{{ product.price | number:'1.0-0' }}</span>
+        </div>
+        <div class="m-stat-box">
+          <span class="m-stat-lbl">Margin</span>
+          <span class="m-stat-val text-success">{{ product.margin }}%</span>
+        </div>
+        <div class="m-stat-box">
+          <span class="m-stat-lbl">ROAS</span>
+          <span class="m-stat-val text-primary">{{ product.roas }}x</span>
+        </div>
+        <div class="m-stat-box">
+          <span class="m-stat-lbl">Net RTO</span>
+          <span class="m-stat-val" [class.text-danger]="product.rtoStatus === 'High Risk'">{{ product.rtoRate }}%</span>
+        </div>
+      </div>
+
+      <!-- Stock & Action Row -->
+      <div class="m-card-footer">
+        <div class="m-stock-indicator">
+          <span class="m-dot" [class.green]="product.inventoryQuantity > 50" [class.amber]="product.inventoryQuantity > 0 && product.inventoryQuantity <= 50" [class.red]="product.inventoryQuantity === 0"></span>
+          <span class="m-stock-txt">{{ product.inventoryQuantity === 0 ? 'Out of Stock' : (product.inventoryQuantity + ' units') }}</span>
+        </div>
+        <div class="m-actions-wrapper">
+          <button
+            type="button"
+            class="m-wa-btn"
+            (click)="openWhatsAppModal(product)"
+            title="View WhatsApp Customer Inquiries & AI Chat History"
+          >
+            <ion-icon name="logo-whatsapp"></ion-icon>
+            <span>WhatsApp</span>
+          </button>
+          <button
+            type="button"
+            class="m-ai-btn"
+            [class.trained]="product.aiPromptTrained"
+            (click)="openAiPromptModal(product)"
+          >
+            <ion-icon name="sparkles"></ion-icon>
+            <span>{{ product.aiPromptTrained ? 'Trained' : 'Train AI' }}</span>
+          </button>
+          <button type="button" class="m-open-btn" (click)="openShopifyProduct(product)" title="View in Shopify Admin">
+            <ion-icon name="open-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. MOBILE PAGINATION: Compact Floating Sticky Bottom Control Bar -->
+  <div class="mobile-pagination-bar glass-card" *ngIf="filteredProducts().length > 0">
+    <button
+      type="button"
+      class="m-page-btn prev"
+      [disabled]="currentPage() === 1"
+      (click)="prevPage()"
+      aria-label="Previous Page"
+    >
+      <ion-icon name="chevron-back-outline"></ion-icon>
+      <span>Prev</span>
+    </button>
+
+    <div class="m-page-indicator">
+      <span class="m-page-count">Page <strong>{{ currentPage() }}</strong> of <strong>{{ totalPages() }}</strong></span>
+      <span class="m-total-items">({{ filteredProducts().length }} items)</span>
+    </div>
+
+    <button
+      type="button"
+      class="m-page-btn next"
+      [disabled]="currentPage() === totalPages()"
+      (click)="nextPage()"
+      aria-label="Next Page"
+    >
+      <span>Next</span>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+  </div>
+</div>

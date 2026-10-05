@@ -1,0 +1,383 @@
+<div class="ai-analytics-page animate-fade-in">
+  <!-- AI Hero Banner with Store Identity & Live Engine Status -->
+  <div class="ai-banner glass-card">
+    <div class="ai-glow-icon">
+      <ion-icon name="sparkles-outline"></ion-icon>
+    </div>
+    <div class="ai-banner-content">
+      <div class="ai-banner-text">
+        <div class="tenant-tag-row">
+          <span class="tenant-pill">
+            <span class="pulse-dot"></span>
+            Store Tenant: {{ analytics.activeStore()?.name || 'Primary Store' }}
+          </span>
+          <span class="model-badge">
+            <ion-icon name="hardware-chip-outline"></ion-icon>
+            gpt-4o-mini • Multi-Channel RAG Telemetry
+          </span>
+        </div>
+        <h2>Autonomous Multi-Channel AI Growth & Telemetry Engine</h2>
+        <p>Real-time cross-channel attribution synthesizing live data from Paid Ads (Meta, Google, TikTok, Snapchat), Courier Logistics (PostEx, Trax, Leopards, TCS), WhatsApp Conversational AI, and Shopify Catalog.</p>
+      </div>
+      <div class="ai-banner-actions">
+        <button
+          type="button"
+          class="re-audit-btn"
+          [disabled]="analytics.isGeneratingGrowthInsights()"
+          (click)="runAiAudit()"
+        >
+          <ion-icon name="sync-outline" [class.spin]="analytics.isGeneratingGrowthInsights()"></ion-icon>
+          <span>{{ analytics.isGeneratingGrowthInsights() ? 'Analyzing Multi-Channel...' : 'Run gpt-4o-mini Audit' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATE A: NOT ENOUGH DATA YET -->
+  <div class="empty-telemetry-card glass-card mb-24" *ngIf="!analytics.aiGrowthInsights()?.hasSufficientData">
+    <div class="empty-telemetry-icon">
+      <ion-icon name="information-circle-outline"></ion-icon>
+    </div>
+    <div class="empty-telemetry-body">
+      <div class="badge-pill badge-warning mb-8">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        Zero Fabrication Enforced
+      </div>
+      <h3>Not enough data yet for {{ analytics.activeStore()?.name || 'this store' }}</h3>
+      <p class="empty-desc">
+        {{ analytics.aiGrowthInsights()?.summary || 'The AI engine strictly analyzes real database records. Because no completed orders or active ad telemetry have been synced for this store tenant yet, cross-channel ROAS, CAC, and delivery metrics remain uncalculated rather than displaying fake numbers.' }}
+      </p>
+
+      <div class="telemetry-checklist">
+        <div class="check-item">
+          <span class="check-dot" [class.active]="analytics.catalogProducts().length > 0"></span>
+          <span class="check-lbl">Catalog Vector Embeddings:</span>
+          <strong>{{ analytics.catalogProducts().length }} SKUs Embedded</strong>
+        </div>
+        <div class="check-item">
+          <span class="check-dot" [class.active]="analytics.storeOrders().length > 0"></span>
+          <span class="check-lbl">Live Orders Synchronized:</span>
+          <strong>{{ analytics.storeOrders().length }} Orders</strong>
+        </div>
+        <div class="check-item">
+          <span class="check-dot" [class.active]="(analytics.storeMetricsData()?.ad_spend || 0) > 0"></span>
+          <span class="check-lbl">Ad Spend Telemetry:</span>
+          <strong>PKR {{ (analytics.storeMetricsData()?.ad_spend || 0) | number }}</strong>
+        </div>
+      </div>
+
+      <div class="empty-actions-row">
+        <button type="button" class="btn-primary-action" (click)="runAiAudit()">
+          <ion-icon name="sync-outline"></ion-icon>
+          Re-Check Live Telemetry
+        </button>
+        <button type="button" class="btn-secondary-action" (click)="analytics.openWhatsAppModal()">
+          <ion-icon name="chatbubbles-outline"></ion-icon>
+          Test WhatsApp AI Order Flow
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATE B: REAL MULTI-CHANNEL DATA GROUNDED INSIGHTS (gpt-4o-mini) -->
+  <ng-container *ngIf="analytics.aiGrowthInsights()?.hasSufficientData">
+    <!-- 1. Executive AI Summary -->
+    <div class="executive-summary-card glass-card mb-24">
+      <div class="exec-header">
+        <div class="exec-title-group">
+          <span class="badge-pill badge-primary">
+            <ion-icon name="sparkles-outline"></ion-icon>
+            gpt-4o-mini Cross-Channel Audit
+          </span>
+          <h3>Executive Business Intelligence Summary</h3>
+        </div>
+        <span class="time-stamp">Live Telemetry Synchronized</span>
+      </div>
+      <p class="exec-text">{{ analytics.aiGrowthInsights()?.summary }}</p>
+    </div>
+
+    <!-- 2. Paid Advertising Channels Performance & AI Optimization Advice -->
+    <div class="table-container glass-card mb-24" *ngIf="analytics.aiGrowthInsights()?.channels?.ads?.length">
+      <div class="table-header">
+        <div>
+          <span class="section-tag">MULTI-CHANNEL ATTRIBUTION</span>
+          <h3 class="t-title">Paid Advertising Channels & Pixel Telemetry</h3>
+          <p class="t-desc">Cross-channel ad spend telemetry across Meta, Google, TikTok, and Snapchat paired with gpt-4o-mini budget allocation recommendations.</p>
+        </div>
+        <div class="badge-pill badge-primary">
+          <ion-icon name="megaphone-outline"></ion-icon>
+          Paid Ads Telemetry Active
+        </div>
+      </div>
+
+      <div class="responsive-table-wrapper">
+        <table class="growth-table">
+          <thead>
+            <tr>
+              <th>Ad Platform & Pixel</th>
+              <th>Ad Spend</th>
+              <th>Attributed Revenue</th>
+              <th>ROAS</th>
+              <th>CTR</th>
+              <th>Conversions</th>
+              <th>AI Capital Allocation</th>
+              <th>gpt-4o-mini Strategic Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ad of analytics.aiGrowthInsights()?.channels?.ads">
+              <td>
+                <div class="platform-cell">
+                  <ion-icon name="videocam-outline" class="platform-icon"></ion-icon>
+                  <strong>{{ ad.platform }}</strong>
+                </div>
+              </td>
+              <td>PKR {{ ad.spend | number }}</td>
+              <td class="revenue-cell">PKR {{ ad.revenue | number }}</td>
+              <td>
+                <span class="roas-pill" [class.high]="ad.roas >= 3.5" [class.moderate]="ad.roas >= 2.0 && ad.roas < 3.5">
+                  {{ ad.roas }}x
+                </span>
+              </td>
+              <td>
+                <span class="metric-num text-primary">{{ ad.ctr }}%</span>
+              </td>
+              <td>
+                <strong>{{ ad.conversions }} orders</strong>
+              </td>
+              <td>
+                <span
+                  class="action-badge"
+                  [class.scale]="getPlatformStatus(ad.platform) === 'scale'"
+                  [class.maintain]="getPlatformStatus(ad.platform) === 'maintain'"
+                  [class.optimize]="getPlatformStatus(ad.platform) === 'optimize'"
+                >
+                  {{ getPlatformStatus(ad.platform).toUpperCase() }}
+                </span>
+              </td>
+              <td class="advice-cell">
+                <span class="advice-text">{{ getPlatformRecommendation(ad.platform) }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. Courier Logistics & COD Return Rate Telemetry -->
+    <div class="table-container glass-card mb-24" *ngIf="analytics.aiGrowthInsights()?.channels?.couriers?.length">
+      <div class="table-header">
+        <div>
+          <span class="section-tag">COURIER DISPATCH & COD LOGISTICS</span>
+          <h3 class="t-title">Courier Logistics Performance & RTO Telemetry</h3>
+          <p class="t-desc">Live dispatch success rates, in-transit parcels, and return risk telemetry across premier Pakistani couriers.</p>
+        </div>
+        <div class="badge-pill badge-success">
+          <ion-icon name="cube-outline"></ion-icon>
+          Fulfillment Grounded
+        </div>
+      </div>
+
+      <div class="responsive-table-wrapper">
+        <table class="growth-table">
+          <thead>
+            <tr>
+              <th>Courier Partner</th>
+              <th>Dispatched</th>
+              <th>Delivered</th>
+              <th>In-Transit</th>
+              <th>Delivery Success</th>
+              <th>RTO Return Rate</th>
+              <th>COD Cash Collected</th>
+              <th>gpt-4o-mini Smart Routing Advice</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let courier of analytics.aiGrowthInsights()?.channels?.couriers">
+              <td>
+                <div class="courier-cell-group">
+                  <ion-icon name="navigate-outline" class="courier-icon"></ion-icon>
+                  <strong>{{ courier.courier }}</strong>
+                </div>
+              </td>
+              <td>{{ courier.dispatched }} pkgs</td>
+              <td class="text-success font-bold">{{ courier.delivered }}</td>
+              <td>{{ courier.in_transit }} pkgs</td>
+              <td>
+                <div class="rate-progress">
+                  <div class="rate-bar">
+                    <div class="rate-fill" [style.width.%]="courier.delivery_success_rate"></div>
+                  </div>
+                  <span class="rate-num">{{ courier.delivery_success_rate }}%</span>
+                </div>
+              </td>
+              <td>
+                <span
+                  class="rto-badge"
+                  [class.low]="courier.rto_rate < 10"
+                  [class.mod]="courier.rto_rate >= 10 && courier.rto_rate < 16"
+                  [class.high]="courier.rto_rate >= 16"
+                >
+                  {{ courier.rto_rate }}% RTO
+                </span>
+              </td>
+              <td class="revenue-cell">PKR {{ courier.cod_collected | number }}</td>
+              <td class="advice-cell">
+                <span class="advice-text">{{ getCourierAdvice(courier.courier) }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. WhatsApp Conversational AI Channel Card -->
+    <div class="whatsapp-channel-card glass-card mb-24" *ngIf="analytics.aiGrowthInsights()?.channels?.whatsapp">
+      <div class="channel-card-top">
+        <div class="channel-title-row">
+          <div class="channel-icon-pill whatsapp-bg">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+          </div>
+          <div>
+            <h3>WhatsApp Conversational Sales Channel (gpt-4o-mini + Whisper)</h3>
+            <p>Direct conversational sales, catalog vector retrieval, and automated COD booking performance.</p>
+          </div>
+        </div>
+        <button type="button" class="btn-chat-open" (click)="analytics.openWhatsAppModal()">
+          <ion-icon name="chatbubbles-outline"></ion-icon>
+          Open Inquiries Console
+        </button>
+      </div>
+
+      <div class="whatsapp-kpi-grid">
+        <div class="wa-kpi-box">
+          <span class="wa-lbl">Total Customer Inquiries</span>
+          <span class="wa-val">{{ analytics.aiGrowthInsights()?.channels?.whatsapp?.total_conversations }}</span>
+          <span class="wa-sub">100% Vector RAG Indexed</span>
+        </div>
+        <div class="wa-kpi-box">
+          <span class="wa-lbl">Whisper Voice Notes Transcribed</span>
+          <span class="wa-val text-primary">{{ analytics.aiGrowthInsights()?.channels?.whatsapp?.voice_notes }}</span>
+          <span class="wa-sub">OpenAI Whisper-1 STT</span>
+        </div>
+        <div class="wa-kpi-box">
+          <span class="wa-lbl">Direct WhatsApp Orders Booked</span>
+          <span class="wa-val text-success">{{ analytics.aiGrowthInsights()?.channels?.whatsapp?.orders_booked }}</span>
+          <span class="wa-sub">COD & Online Payments</span>
+        </div>
+        <div class="wa-kpi-box">
+          <span class="wa-lbl">WhatsApp Channel Revenue</span>
+          <span class="wa-val text-emerald">PKR {{ (analytics.aiGrowthInsights()?.channels?.whatsapp?.revenue_generated || 0) | number }}</span>
+          <span class="wa-sub">Conversion Rate: {{ analytics.aiGrowthInsights()?.channels?.whatsapp?.conversion_rate }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Core Telemetry Metrics Grid (ROAS, Delivery Success, Conversion Rate, AOV) -->
+    <div class="telemetry-metrics-grid mb-24" *ngIf="analytics.aiGrowthInsights()?.metrics?.length">
+      <div class="telemetry-card glass-card" *ngFor="let m of analytics.aiGrowthInsights()?.metrics">
+        <div class="metric-top">
+          <span class="metric-lbl">{{ m.label }}</span>
+          <span
+            class="status-pill"
+            [class.status-good]="m.status === 'good'"
+            [class.status-warn]="m.status === 'warning'"
+            [class.status-danger]="m.status === 'critical'"
+            [class.status-neutral]="m.status === 'neutral'"
+          >
+            {{ m.status.toUpperCase() }}
+          </span>
+        </div>
+        <div class="metric-val">{{ m.value }}</div>
+        <p class="metric-advice">{{ m.advice }}</p>
+      </div>
+    </div>
+
+    <!-- 6. Key Telemetry Insights -->
+    <div class="insights-section glass-card mb-24" *ngIf="analytics.aiGrowthInsights()?.keyInsights?.length">
+      <div class="section-card-header">
+        <div>
+          <span class="section-tag">EMPIRICAL DISCOVERIES</span>
+          <h3 class="t-title">Key Cross-Channel Telemetry Insights</h3>
+          <p class="t-desc">Grounded observations derived from cross-referencing paid ad ROAS, courier dispatch velocity, and WhatsApp sales.</p>
+        </div>
+        <div class="badge-pill badge-success">
+          <ion-icon name="bulb-outline"></ion-icon>
+          {{ analytics.aiGrowthInsights()?.keyInsights?.length }} Key Discoveries
+        </div>
+      </div>
+
+      <div class="insights-cards-grid">
+        <div class="insight-box" *ngFor="let insight of analytics.aiGrowthInsights()?.keyInsights; let idx = index">
+          <div class="insight-number">0{{ idx + 1 }}</div>
+          <div class="insight-content">
+            <p>{{ insight }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Strategic Opportunities & Downside Protections -->
+    <div class="strategy-grid mb-24">
+      <!-- Opportunities -->
+      <div class="strategy-card glass-card opp-card" *ngIf="analytics.aiGrowthInsights()?.opportunities?.length">
+        <div class="strat-header">
+          <div class="strat-icon opp-icon">
+            <ion-icon name="rocket-outline"></ion-icon>
+          </div>
+          <div>
+            <h4>High-Growth Opportunities</h4>
+            <p>Cross-channel capital reallocation & scaling levers</p>
+          </div>
+        </div>
+        <ul class="strat-list">
+          <li *ngFor="let opp of analytics.aiGrowthInsights()?.opportunities">
+            <ion-icon name="checkmark-circle" class="text-success"></ion-icon>
+            <span>{{ opp }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Risks & Protections -->
+      <div class="strategy-card glass-card risk-card" *ngIf="analytics.aiGrowthInsights()?.risks?.length">
+        <div class="strat-header">
+          <div class="strat-icon risk-icon">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+          </div>
+          <div>
+            <h4>Downside Risks & Protections</h4>
+            <p>Vulnerabilities detected across fulfillment, inventory, and CAC</p>
+          </div>
+        </div>
+        <ul class="strat-list">
+          <li *ngFor="let risk of analytics.aiGrowthInsights()?.risks">
+            <ion-icon name="warning-outline" class="text-danger"></ion-icon>
+            <span>{{ risk }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 8. Actionable Strategic Suggestions -->
+    <div class="suggestions-card glass-card mb-24" *ngIf="analytics.aiGrowthInsights()?.suggestions?.length">
+      <div class="section-card-header">
+        <div>
+          <span class="section-tag">TACTICAL ROADMAP</span>
+          <h3 class="t-title">Autonomous Action Recommendations</h3>
+          <p class="t-desc">Step-by-step actions prioritized by projected return on capital and operational efficiency.</p>
+        </div>
+      </div>
+
+      <div class="suggestions-list">
+        <div class="sugg-item" *ngFor="let item of analytics.aiGrowthInsights()?.suggestions; let i = index">
+          <div class="sugg-badge">Step {{ i + 1 }}</div>
+          <div class="sugg-text">{{ item }}</div>
+          <button type="button" class="sugg-action-btn">
+            <ion-icon name="flash-outline"></ion-icon>
+            <span>Apply Suggestion</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

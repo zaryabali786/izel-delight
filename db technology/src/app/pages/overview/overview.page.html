@@ -1,0 +1,309 @@
+<div class="overview-page animate-fade-in">
+  <!-- Top Active Store & AI Telemetry Banner -->
+  <div class="store-hero-pill glass-card mb-20">
+    <div class="hero-left">
+      <div class="store-status-icon">
+        <ion-icon name="cube-outline"></ion-icon>
+      </div>
+      <div>
+        <h2 class="active-store-title">{{ storeService.activeStore()?.name || 'Active Store' }}</h2>
+        <span class="active-store-sub">
+          {{ storeService.activeStore()?.domain }} • {{ storeService.activeStore()?.platform }} Multi-Tenant Sandbox
+        </span>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button type="button" class="btn-hero-action" (click)="openWhatsAppConversationModal()">
+        <ion-icon name="logo-whatsapp"></ion-icon>
+        <span>Open WhatsApp AI Inquiries</span>
+      </button>
+      <a routerLink="/dashboard/catalog" class="btn-hero-action btn-catalog">
+        <ion-icon name="layers-outline"></ion-icon>
+        <span>Store Catalog ({{ analytics.shopifyProducts().length }})</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- "Not enough data yet" Banner when Store has 0 Orders & 0 Revenue -->
+  <div class="empty-data-banner glass-card mb-24" *ngIf="analytics.financialWaterfall.totalOrders === 0 && analytics.financialWaterfall.grossRevenue === 0">
+    <div class="banner-icon-box">
+      <ion-icon name="information-circle-outline"></ion-icon>
+    </div>
+    <div class="banner-body">
+      <h3>Not enough data yet for {{ storeService.activeStore()?.name }}</h3>
+      <p>
+        No transactional orders or ad spend have been recorded for this isolated store tenant yet.
+        Connect your Shopify storefront in <strong>Integrations</strong> or send an inquiry in the <strong>WhatsApp AI Inquiries</strong> modal to generate real orders and activate predictive telemetry.
+      </p>
+    </div>
+    <div class="banner-btn-group">
+      <a routerLink="/dashboard/integrations" class="btn-banner-link">
+        <span>Connect Shopify / Channels</span>
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </a>
+    </div>
+  </div>
+
+  <!-- Top KPI Stat Cards (Real Store Data) -->
+  <div class="kpi-grid">
+    <div class="kpi-card glass-card">
+      <div class="kpi-top">
+        <span class="kpi-lbl">Gross Revenue (GMV)</span>
+        <span class="badge-pill" [class.badge-success]="analytics.financialWaterfall.grossRevenue > 0" [class.badge-neutral]="analytics.financialWaterfall.grossRevenue === 0">
+          {{ analytics.financialWaterfall.grossRevenue > 0 ? 'Live Telemetry' : 'No Data' }}
+        </span>
+      </div>
+      <div class="kpi-value">
+        <span *ngIf="analytics.financialWaterfall.grossRevenue > 0">PKR {{ analytics.financialWaterfall.grossRevenue | number }}</span>
+        <span *ngIf="analytics.financialWaterfall.grossRevenue === 0" class="text-subtle">PKR 0</span>
+      </div>
+      <div class="kpi-footer">Across {{ analytics.shopifyProducts().length }} active store SKUs</div>
+    </div>
+
+    <div class="kpi-card glass-card">
+      <div class="kpi-top">
+        <span class="kpi-lbl">True Net Profit</span>
+        <span class="badge-pill" [class.badge-success]="analytics.financialWaterfall.netProfit > 0" [class.badge-neutral]="analytics.financialWaterfall.netProfit <= 0">
+          {{ analytics.financialWaterfall.netMarginPct }}% Margin
+        </span>
+      </div>
+      <div class="kpi-value" [class.text-success]="analytics.financialWaterfall.netProfit > 0">
+        PKR {{ analytics.financialWaterfall.netProfit | number }}
+      </div>
+      <div class="kpi-footer">After COGS, Ads & Courier fulfillment</div>
+    </div>
+
+    <div class="kpi-card glass-card">
+      <div class="kpi-top">
+        <span class="kpi-lbl">Blended MER & ROAS</span>
+        <span class="badge-pill badge-primary">Meta + Google + TikTok</span>
+      </div>
+      <div class="kpi-value text-primary">
+        <span *ngIf="analytics.financialWaterfall.blendedMER > 0">{{ analytics.financialWaterfall.blendedMER }}x MER</span>
+        <span *ngIf="analytics.financialWaterfall.blendedMER === 0" class="text-subtle">0.00x</span>
+      </div>
+      <div class="kpi-footer">Total Ad Spend: PKR {{ analytics.financialWaterfall.adSpend | number }}</div>
+    </div>
+
+    <div class="kpi-card glass-card">
+      <div class="kpi-top">
+        <span class="kpi-lbl">Store Orders</span>
+        <span class="badge-pill badge-success">Shopify & WhatsApp</span>
+      </div>
+      <div class="kpi-value text-emerald">
+        {{ analytics.financialWaterfall.totalOrders }}
+      </div>
+      <div class="kpi-footer">{{ shopifyOrdersCount() }} Shopify • {{ whatsappOrdersCount() }} WhatsApp</div>
+    </div>
+  </div>
+
+  <!-- Unit Economics Strip -->
+  <div class="unit-economics-bar glass-card">
+    <div class="u-metric">
+      <span class="u-title">Average Order Value (AOV)</span>
+      <span class="u-value">
+        {{ analytics.financialWaterfall.averageOrderValue > 0 ? ('PKR ' + (analytics.financialWaterfall.averageOrderValue | number)) : 'Not enough data yet' }}
+      </span>
+    </div>
+    <div class="u-metric">
+      <span class="u-title">Customer CAC</span>
+      <span class="u-value">
+        {{ analytics.financialWaterfall.blendedCAC > 0 ? ('PKR ' + (analytics.financialWaterfall.blendedCAC | number)) : 'Not enough data yet' }}
+      </span>
+    </div>
+    <div class="u-metric">
+      <span class="u-title">Total Processed Orders</span>
+      <span class="u-value text-success">{{ analytics.storeOrders().length }} Orders</span>
+    </div>
+    <div class="u-metric">
+      <span class="u-title">Active Catalog Size</span>
+      <span class="u-value text-primary">{{ analytics.shopifyProducts().length }} SKUs</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       SHOPIFY ORDERS & WHATSAPP ORDERS SECTION
+       ======================================================== -->
+  <div class="table-container glass-card mb-24">
+    <div class="table-header">
+      <div>
+        <h3 class="t-title">Store Orders Pipeline (Shopify & WhatsApp AI)</h3>
+        <p class="t-desc">Multi-channel order ingestion linked by storeId with real-time status and COD courier tracking.</p>
+      </div>
+
+      <!-- Channel Filter Pills -->
+      <div class="channel-filter-tabs">
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="orderChannelFilter() === 'all'"
+          (click)="setOrderChannelFilter('all')"
+        >
+          All Orders ({{ analytics.storeOrders().length }})
+        </button>
+        <button
+          type="button"
+          class="tab-btn btn-shopify"
+          [class.active]="orderChannelFilter() === 'shopify'"
+          (click)="setOrderChannelFilter('shopify')"
+        >
+          <ion-icon name="cart-outline"></ion-icon>
+          Shopify ({{ shopifyOrdersCount() }})
+        </button>
+        <button
+          type="button"
+          class="tab-btn btn-wa"
+          [class.active]="orderChannelFilter() === 'whatsapp'"
+          (click)="setOrderChannelFilter('whatsapp')"
+        >
+          <ion-icon name="logo-whatsapp"></ion-icon>
+          WhatsApp AI ({{ whatsappOrdersCount() }})
+        </button>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="responsive-table-wrapper" *ngIf="filteredOrders().length > 0">
+      <table class="growth-table orders-table">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Channel</th>
+            <th>Customer</th>
+            <th>Product / Items</th>
+            <th>Total Amount</th>
+            <th>Payment</th>
+            <th>Order Status</th>
+            <th>Courier / Tracking</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders()">
+            <td>
+              <div class="order-id-cell">
+                <strong>{{ order.order_number }}</strong>
+                <span class="ref-sub" *ngIf="order.shopify_order_id">Shopify #{{ order.shopify_order_id }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="channel-badge" [class.badge-shopify]="order.channel === 'shopify'" [class.badge-wa]="order.channel === 'whatsapp'">
+                <ion-icon [name]="order.channel === 'whatsapp' ? 'logo-whatsapp' : 'cart-outline'"></ion-icon>
+                <span>{{ order.channel === 'whatsapp' ? 'WhatsApp AI' : 'Shopify' }}</span>
+              </span>
+            </td>
+            <td>
+              <div class="customer-info-cell">
+                <span class="cust-name">{{ order.customer_name }}</span>
+                <span class="cust-phone">{{ order.customer_phone }}</span>
+                <span class="cust-city">{{ order.city }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="items-cell">
+                <div class="item-line" *ngFor="let it of order.items">
+                  <span class="it-title">{{ it.title }}</span>
+                  <span class="it-qty">x{{ it.quantity }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <strong class="total-amount">PKR {{ order.total_amount | number }}</strong>
+            </td>
+            <td>
+              <div class="payment-cell">
+                <span class="pay-method" [class.method-cod]="order.payment_method === 'cod'" [class.method-online]="order.payment_method === 'online'">
+                  {{ order.payment_method.toUpperCase() }}
+                </span>
+                <span class="pay-status" [class.status-paid]="order.payment_status === 'paid'" [class.status-pending]="order.payment_status === 'pending'">
+                  {{ order.payment_status }}
+                </span>
+              </div>
+            </td>
+            <td>
+              <span class="order-status-pill" [class.status-unfulfilled]="order.order_status === 'unfulfilled'" [class.status-shipped]="order.order_status === 'fulfilled'" [class.status-delivered]="order.order_status === 'delivered'">
+                {{ order.order_status }}
+              </span>
+            </td>
+            <td>
+              <div class="courier-cell">
+                <span class="courier-name">{{ order.courier_name || 'PostEx Logistics' }}</span>
+                <span class="tracking-id" *ngIf="order.tracking_number">{{ order.tracking_number }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="order-date">{{ order.created_at | date:'shortDate' }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State for Orders -->
+    <div class="empty-orders-state" *ngIf="filteredOrders().length === 0">
+      <div class="empty-icon-circle">
+        <ion-icon name="cart-outline"></ion-icon>
+      </div>
+      <h4>Not enough orders yet for this store</h4>
+      <p>
+        When customers place orders on your Shopify store or book via WhatsApp AI, they will automatically appear here in real time.
+      </p>
+      <button type="button" class="btn-create-test-wa" (click)="openWhatsAppConversationModal()">
+        <ion-icon name="logo-whatsapp"></ion-icon>
+        <span>Test WhatsApp AI Ordering</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Financial P&L Waterfall Card (Real Dynamic Data) -->
+  <div class="pnl-waterfall-card glass-card mb-24" *ngIf="analytics.financialWaterfall.grossRevenue > 0">
+    <div class="pnl-header">
+      <div>
+        <h3 class="pnl-title">Store True Net Profit & Loss (P&L Waterfall)</h3>
+        <p class="pnl-desc">Accurate real-time deduction of RTO return friction, manufacturing COGS, ad spend, and courier fulfillment.</p>
+      </div>
+      <div class="pnl-net-badge">
+        <span>Net Margin: <strong>{{ analytics.financialWaterfall.netMarginPct }}%</strong></span>
+      </div>
+    </div>
+
+    <div class="waterfall-bars-grid">
+      <div class="wf-item positive">
+        <span class="wf-label">Gross Sales</span>
+        <span class="wf-amount">+PKR {{ analytics.financialWaterfall.grossRevenue | number }}</span>
+        <div class="wf-bar" style="height: 100%;"></div>
+        <span class="wf-pct">100%</span>
+      </div>
+      <div class="wf-item negative">
+        <span class="wf-label">RTO Returns</span>
+        <span class="wf-amount">-PKR {{ analytics.financialWaterfall.rtoLoss | number }}</span>
+        <div class="wf-bar" style="height: 10%;"></div>
+        <span class="wf-pct">-{{ analytics.financialWaterfall.grossRevenue > 0 ? ((analytics.financialWaterfall.rtoLoss / analytics.financialWaterfall.grossRevenue) * 100).toFixed(1) : 0 }}%</span>
+      </div>
+      <div class="wf-item neutral">
+        <span class="wf-label">Net Sales</span>
+        <span class="wf-amount">PKR {{ analytics.financialWaterfall.netSales | number }}</span>
+        <div class="wf-bar" style="height: 85%;"></div>
+        <span class="wf-pct">Net GMV</span>
+      </div>
+      <div class="wf-item negative">
+        <span class="wf-label">Product COGS</span>
+        <span class="wf-amount">-PKR {{ analytics.financialWaterfall.cogs | number }}</span>
+        <div class="wf-bar" style="height: 35%;"></div>
+        <span class="wf-pct">Estimated COGS</span>
+      </div>
+      <div class="wf-item negative">
+        <span class="wf-label">Ad Spend</span>
+        <span class="wf-amount">-PKR {{ analytics.financialWaterfall.adSpend | number }}</span>
+        <div class="wf-bar" style="height: 25%;"></div>
+        <span class="wf-pct">Paid Acquisition</span>
+      </div>
+      <div class="wf-item profit">
+        <span class="wf-label">True Net Profit</span>
+        <span class="wf-amount">PKR {{ analytics.financialWaterfall.netProfit | number }}</span>
+        <div class="wf-bar" style="height: 45%;"></div>
+        <span class="wf-pct">{{ analytics.financialWaterfall.netMarginPct }}% Margin</span>
+      </div>
+    </div>
+  </div>
+</div>

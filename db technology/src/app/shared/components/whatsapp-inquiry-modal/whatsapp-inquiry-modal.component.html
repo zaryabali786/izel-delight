@@ -1,0 +1,349 @@
+<div
+  class="wa-modal-overlay"
+  [class.dark-theme]="authService.isDarkMode()"
+  *ngIf="analytics.showWhatsAppModal()"
+  (click)="onBackdropClick($event)"
+  (wheel)="stopPropagation($event)"
+>
+  <div
+    class="wa-modal-dialog"
+    [class.dark-theme]="authService.isDarkMode()"
+    (click)="stopPropagation($event)"
+  >
+    <!-- Hidden Audio File Picker for Voice Message Ingestion -->
+    <input
+      type="file"
+      #audioFileInput
+      style="display: none"
+      accept="audio/*"
+      (change)="onAudioFileSelected($event)"
+    />
+
+    <!-- ========================================================
+         LEFT SIDEBAR: CONVERSATION LIST (WEB WHATSAPP STYLE)
+         ======================================================== -->
+    <div class="wa-sidebar" [class.mobile-hidden]="showMobileChatThread">
+      <!-- SIDEBAR HEADER -->
+      <div class="wa-sidebar-header">
+        <div class="header-user-info">
+          <div class="wa-brand-avatar">
+            <ion-icon name="logo-whatsapp"></ion-icon>
+            <span class="live-pulse-dot"></span>
+          </div>
+          <div class="header-titles">
+            <h3 class="wa-title">{{ storeService.activeStore()?.name || 'Store' }} AI</h3>
+            <span class="wa-sub">gpt-4o-mini • Vector RAG Active</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn-sidebar-close" (click)="closeModal()" aria-label="Close modal">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+
+      <!-- ACTIVE PRODUCT CONTEXT CARD -->
+      <div class="sidebar-product-banner" *ngIf="analytics.activeWhatsAppProduct() as prod">
+        <img [src]="prod.image" [alt]="prod.title" class="product-thumb" />
+        <div class="product-info">
+          <div class="product-tag-row">
+            <span class="sku-tag">{{ prod.sku }}</span>
+            <span class="price-tag">{{ analytics.currencySymbol() }}{{ prod.price | number:'1.0-0' }}</span>
+          </div>
+          <h4 class="product-title" [title]="prod.title">{{ prod.title }}</h4>
+          <span class="ai-trained-badge">
+            <ion-icon name="sparkles"></ion-icon>
+            RAG Vector Ingestion Active
+          </span>
+        </div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div class="sidebar-search-box">
+        <div class="search-input-wrapper">
+          <ion-icon name="search-outline" class="search-icon"></ion-icon>
+          <input
+            type="text"
+            class="search-input"
+            [(ngModel)]="searchQuery"
+            placeholder="Search conversations by name or phone..."
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <!-- CONVERSATIONS LIST -->
+      <div class="sidebar-chats-list">
+        <div
+          class="chat-list-item"
+          *ngFor="let conv of filteredConversations"
+          [class.active]="analytics.activeSelectedConversation()?.id === conv.id"
+          (click)="selectConversation(conv)"
+        >
+          <div class="chat-avatar-wrapper">
+            <img [src]="conv.avatar" [alt]="conv.customerName" class="customer-avatar" />
+            <span class="online-indicator"></span>
+          </div>
+
+          <div class="chat-item-content">
+            <div class="chat-row-top">
+              <span class="customer-name">{{ conv.customerName }}</span>
+              <span class="chat-timestamp">{{ conv.lastTimestamp }}</span>
+            </div>
+
+            <div class="chat-phone-row">
+              <span class="customer-phone">{{ conv.customerPhone }}</span>
+              <span
+                class="status-pill"
+                [class.pill-success]="conv.statusType === 'success'"
+                [class.pill-info]="conv.statusType === 'info'"
+                [class.pill-warning]="conv.statusType === 'warning'"
+              >
+                {{ conv.status }}
+              </span>
+            </div>
+
+            <div class="chat-row-bottom">
+              <p class="last-message-snippet">
+                <ion-icon name="checkmark-done-outline" class="double-ticks-read"></ion-icon>
+                <span>{{ conv.lastMessage }}</span>
+              </p>
+              <span class="unread-badge" *ngIf="conv.unreadCount">{{ conv.unreadCount }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-chats-state" *ngIf="filteredConversations.length === 0">
+          <ion-icon name="search-outline"></ion-icon>
+          <span>No customer conversations found for this store.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         RIGHT CHAT PANE: REAL-TIME CONVERSATION THREAD
+         ======================================================== -->
+    <div class="wa-chat-pane" [class.mobile-visible]="showMobileChatThread">
+      <ng-container *ngIf="analytics.activeSelectedConversation() as activeChat; else noChatSelected">
+        <!-- CHAT TOP HEADER -->
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <button type="button" class="btn-mobile-back" (click)="backToChatList()" aria-label="Back to chats">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </button>
+
+            <div class="chat-header-avatar">
+              <img [src]="activeChat.avatar" [alt]="activeChat.customerName" class="avatar-img" />
+              <span class="online-dot"></span>
+            </div>
+
+            <div class="chat-header-titles">
+              <div class="name-status-row">
+                <h4 class="active-customer-name">{{ activeChat.customerName }}</h4>
+                <span class="customer-city-pill">{{ activeChat.city }}</span>
+              </div>
+              <span class="chat-presence">
+                <span class="presence-dot"></span>
+                {{ activeChat.customerPhone }} • Online • <strong>🤖 gpt-4o-mini Active</strong>
+              </span>
+            </div>
+          </div>
+
+          <div class="chat-header-right">
+            <div class="active-product-tag" *ngIf="analytics.activeWhatsAppProduct() as prod" [title]="prod.title">
+              <ion-icon name="cube-outline"></ion-icon>
+              <span>{{ prod.title }}</span>
+            </div>
+
+            <button type="button" class="btn-chat-close" (click)="closeModal()" title="Close Modal">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- SCROLLABLE CHAT MESSAGES THREAD (WHATSAPP DOODLE PATTERN BG) -->
+        <div class="chat-messages-viewport" #chatScrollArea>
+          <!-- ENCRYPTION & PRODUCT CONTEXT NOTICE BANNER -->
+          <div class="thread-info-banner">
+            <div class="banner-chip">
+              <ion-icon name="shield-checkmark-outline"></ion-icon>
+              <span>End-to-End Encrypted Session • {{ storeService.activeStore()?.name }} AI</span>
+            </div>
+            <div class="product-inquiry-alert" *ngIf="analytics.activeWhatsAppProduct() as prod">
+              <img [src]="prod.image" [alt]="prod.title" class="alert-thumb" />
+              <div class="alert-text">
+                <span class="alert-label">Customer inquiring about:</span>
+                <strong class="alert-prod-title">{{ prod.title }}</strong>
+                <span class="alert-price">SKU: {{ prod.sku }} • {{ analytics.currencySymbol() }}{{ prod.price | number:'1.0-0' }} • Nationwide COD</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- DATE SEPARATOR -->
+          <div class="chat-date-separator">
+            <span class="date-chip">TODAY</span>
+          </div>
+
+          <!-- MESSAGE BUBBLES -->
+          <div class="messages-flow">
+            <div
+              class="message-bubble-row"
+              *ngFor="let msg of activeChat.messages"
+              [class.row-incoming]="msg.sender === 'customer'"
+              [class.row-outgoing]="msg.sender === 'ai'"
+            >
+              <div class="bubble-container" [class.bubble-customer]="msg.sender === 'customer'" [class.bubble-ai]="msg.sender === 'ai'">
+                <!-- AI Badge Header inside Outgoing Bubble -->
+                <div class="ai-bubble-badge" *ngIf="msg.sender === 'ai'">
+                  <ion-icon name="sparkles"></ion-icon>
+                  <span>AI Automated Response</span>
+                </div>
+
+                <!-- Voice Note Transcription Badge if Voice Message -->
+                <div class="voice-transcription-pill" *ngIf="msg.type === 'voice'">
+                  <ion-icon name="volume-high-outline"></ion-icon>
+                  <span>Voice Note (Whisper STT)</span>
+                </div>
+
+                <!-- Message Text Body -->
+                <p class="bubble-text">{{ msg.text }}</p>
+
+                <!-- Matched Products RAG Carousel inside AI Bubble -->
+                <div class="matched-products-preview" *ngIf="msg.matched_products && msg.matched_products.length > 0">
+                  <div class="matched-tag-header">
+                    <ion-icon name="cube-outline"></ion-icon>
+                    <span>Matched Store Articles:</span>
+                  </div>
+                  <div class="matched-cards-row">
+                    <div class="matched-card" *ngFor="let p of msg.matched_products">
+                      <img [src]="p.image || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=120&q=80'" class="matched-thumb" alt="Product" />
+                      <div class="matched-details">
+                        <span class="matched-title">{{ p.title }}</span>
+                        <span class="matched-price">{{ analytics.currencySymbol() }}{{ p.price | number:'1.0-0' }}</span>
+                        <button type="button" class="btn-quick-order" (click)="orderProductFromCard(p)">
+                          <ion-icon name="cash-outline"></ion-icon>
+                          <span>Order COD</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Order Confirmation Badge if Order Booked -->
+                <div class="order-booked-badge" *ngIf="msg.order_id">
+                  <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  <span>Order Confirmed & Scheduled for Courier Dispatch</span>
+                </div>
+
+                <!-- Bubble Metadata (Timestamp & Checkmarks) -->
+                <div class="bubble-meta">
+                  <span class="bubble-time">{{ msg.timestamp }}</span>
+                  <ion-icon
+                    name="checkmark-done-outline"
+                    class="double-ticks-blue"
+                    *ngIf="msg.sender === 'ai'"
+                  ></ion-icon>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Generating / Typing Indicator -->
+            <div class="message-bubble-row row-outgoing" *ngIf="analytics.isSendingWhatsApp()">
+              <div class="bubble-container bubble-ai typing-bubble">
+                <div class="typing-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <span class="typing-text">AI is searching store catalog & replying...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK INQUIRY SUGGESTION PILLS -->
+        <div class="quick-inquiry-strip">
+          <span class="quick-label">⚡ Ask AI:</span>
+          <div class="quick-chips-scroll">
+            <button
+              type="button"
+              class="quick-chip"
+              (click)="sendQuickInquiry('Do you have this in Medium size and what is the fabric?')"
+            >
+              🧵 Size & Fabric
+            </button>
+            <button
+              type="button"
+              class="quick-chip"
+              (click)="sendQuickInquiry('Can I pay Cash on Delivery in Karachi or Lahore?')"
+            >
+              🚚 Cash on Delivery
+            </button>
+            <button
+              type="button"
+              class="quick-chip"
+              (click)="sendQuickInquiry('I want to order this product right now via COD.')"
+            >
+              🛍️ Place COD Order
+            </button>
+            <button
+              type="button"
+              class="quick-chip"
+              (click)="sendQuickInquiry('Can I pay online with card or bank transfer?')"
+            >
+              💳 Online Payment Link
+            </button>
+          </div>
+        </div>
+
+        <!-- CHAT BOTTOM INPUT BAR (WHATSAPP WEB FOOTER) -->
+        <div class="chat-footer-bar">
+          <button type="button" class="btn-chat-tool" (click)="triggerAudioUpload()" title="Upload Voice Note Audio">
+            <ion-icon name="attach-outline"></ion-icon>
+          </button>
+
+          <!-- Voice Recording Microphone Button -->
+          <button
+            type="button"
+            class="btn-chat-tool btn-mic"
+            [class.recording]="isRecording"
+            (click)="toggleVoiceRecording()"
+            [title]="isRecording ? 'Click to stop recording voice message' : 'Record Voice Message with Whisper STT'"
+          >
+            <ion-icon [name]="isRecording ? 'mic-off-outline' : 'mic-outline'"></ion-icon>
+            <span class="rec-timer" *ngIf="isRecording">{{ recordingSeconds }}s</span>
+          </button>
+
+          <form class="chat-form" (submit)="$event.preventDefault(); sendMessage()">
+            <input
+              type="text"
+              class="chat-input"
+              [(ngModel)]="inputText"
+              name="chatInput"
+              [placeholder]="isRecording ? 'Recording voice audio...' : 'Type message in English, Urdu or Roman Urdu...'"
+              [disabled]="isRecording || analytics.isSendingWhatsApp()"
+              autocomplete="off"
+            />
+          </form>
+
+          <button
+            type="button"
+            class="btn-send-message"
+            (click)="sendMessage()"
+            [disabled]="!inputText.trim() || analytics.isSendingWhatsApp() || isRecording"
+            title="Send Message"
+          >
+            <ion-icon name="send"></ion-icon>
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-template #noChatSelected>
+        <div class="no-chat-placeholder">
+          <div class="placeholder-icon">
+            <ion-icon name="logo-whatsapp"></ion-icon>
+          </div>
+          <h3>Select a Customer Conversation</h3>
+          <p>Click on any customer inquiry on the left to inspect the back-and-forth chat history and see how our trained AI model responded.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

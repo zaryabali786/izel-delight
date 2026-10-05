@@ -1,0 +1,340 @@
+<div
+  class="integration-modal-overlay"
+  [class.dark-theme]="authService.isDarkMode()"
+  *ngIf="analytics.showIntegrationConfigModal()"
+  (click)="onBackdropClick($event)"
+  (wheel)="stopPropagation($event)"
+>
+  <div
+    class="integration-modal-dialog"
+    [class.dark-theme]="authService.isDarkMode()"
+    (click)="stopPropagation($event)"
+  >
+    <!-- MODAL HEADER -->
+    <div class="integration-modal-header">
+      <div class="header-left">
+        <!-- BRAND AVATAR LOGO -->
+        <div class="modal-brand-avatar" [ngClass]="analytics.activeConfigIntegration()?.id">
+          <!-- 1. Shopify -->
+          <img
+            *ngIf="analytics.activeConfigIntegration()?.id === 'shopify'"
+            src="assets/logos/shopify_hq.webp"
+            alt="Shopify"
+            class="brand-logo-img"
+          />
+
+          <!-- 2. Meta Ads -->
+          <svg
+            *ngIf="analytics.activeConfigIntegration()?.id === 'meta-ads'"
+            viewBox="0 0 16 16"
+            width="26"
+            height="26"
+            fill="none"
+          >
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.217 5.243C9.145 3.988 10.171 3 11.483 3 13.96 3 16 6.153 16.001 9.907c0 2.29-.986 3.725-2.757 3.725-1.543 0-2.395-.866-3.924-3.424l-.667-1.123-.118-.197a55 55 0 0 0-.53-.877l-1.178 2.08c-1.673 2.925-2.615 3.541-3.923 3.541C1.086 13.632 0 12.217 0 9.973 0 6.388 1.995 3 4.598 3q.477-.001.924.122c.31.086.611.22.913.407.577.359 1.154.915 1.782 1.714m1.516 2.224q-.378-.615-.727-1.133L9 6.326c.845-1.305 1.543-1.954 2.372-1.954 1.723 0 3.102 2.537 3.102 5.653 0 1.188-.39 1.877-1.195 1.877-.773 0-1.142-.51-2.61-2.87zM4.846 4.756c.725.1 1.385.634 2.34 2.001A212 212 0 0 0 5.551 9.3c-1.357 2.126-1.826 2.603-2.581 2.603-.777 0-1.24-.682-1.24-1.9 0-2.602 1.298-5.264 2.846-5.264q.137 0 .27.018" fill="#FFFFFF"/>
+          </svg>
+
+          <!-- 3. Google Ads -->
+          <svg
+            *ngIf="analytics.activeConfigIntegration()?.id === 'google-ads'"
+            viewBox="0 0 24 24"
+            width="26"
+            height="26"
+            fill="none"
+          >
+            <path d="M23.464 16.929L15.463 3.072c-1.105-1.913-3.551-2.569-5.464-1.465-1.914 1.105-2.569 3.551-1.465 5.465l8.001 13.856c1.105 1.914 3.551 2.569 5.465 1.465 1.913-1.104 2.569-3.551 1.464-5.464z" fill="#4285F4"/>
+            <path d="M7.514 4.844L1.565 15.148A4.5 4.5 0 0 1 4 14.43c2.56-.008 4.625 2.158 4.494 4.715l3.217-5.572-3.609-6.25c-.45-.78-.633-1.64-.588-2.479z" fill="#FBBC04"/>
+            <circle cx="4" cy="18.93" r="4" fill="#34A853"/>
+          </svg>
+
+          <!-- 4. TikTok Ads -->
+          <svg
+            *ngIf="analytics.activeConfigIntegration()?.id === 'tiktok-ads'"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="none"
+          >
+            <path d="M19.3 5.56a5.1 5.1 0 0 1-.44-.04 5.8 5.8 0 0 1-4.04-3.63h-2.8v13.57a2.9 2.9 0 1 1-2.06-2.8V9.74a5.84 5.84 0 1 0 4.86 5.73V8.53a8.67 8.67 0 0 0 4.48 1.7V7.31a5.8 5.8 0 0 1 0-1.75z" transform="translate(-1, -0.7)" fill="#00F2FE"/>
+            <path d="M19.3 5.56a5.1 5.1 0 0 1-.44-.04 5.8 5.8 0 0 1-4.04-3.63h-2.8v13.57a2.9 2.9 0 1 1-2.06-2.8V9.74a5.84 5.84 0 1 0 4.86 5.73V8.53a8.67 8.67 0 0 0 4.48 1.7V7.31a5.8 5.8 0 0 1 0-1.75z" transform="translate(1, 0.7)" fill="#FE2C55"/>
+            <path d="M19.3 5.56a5.1 5.1 0 0 1-.44-.04 5.8 5.8 0 0 1-4.04-3.63h-2.8v13.57a2.9 2.9 0 1 1-2.06-2.8V9.74a5.84 5.84 0 1 0 4.86 5.73V8.53a8.67 8.67 0 0 0 4.48 1.7V7.31a5.8 5.8 0 0 1 0-1.75z" fill="#FFFFFF"/>
+          </svg>
+
+          <!-- 5. Snapchat Ads -->
+          <img
+            *ngIf="analytics.activeConfigIntegration()?.id === 'snapchat-ads'"
+            src="assets/logos/snapchat_clean.png"
+            alt="Snapchat"
+            class="brand-logo-img"
+          />
+
+          <!-- 6. WhatsApp Business -->
+          <svg
+            *ngIf="analytics.activeConfigIntegration()?.id === 'whatsapp-business'"
+            viewBox="0 0 24 24"
+            width="26"
+            height="26"
+            fill="none"
+          >
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2Z" fill="#25D366"/>
+            <path d="M17.52 14.33C17.22 14.18 15.76 13.46 15.49 13.36C15.22 13.26 15.02 13.21 14.82 13.51C14.62 13.81 14.05 14.48 13.88 14.68C13.71 14.88 13.53 14.9 13.23 14.75C12.93 14.6 11.97 14.28 10.83 13.27C9.94 12.48 9.34 11.51 9.17 11.21C9 10.91 9.15 10.75 9.3 10.6C9.44 10.46 9.61 10.23 9.76 10.06C9.91 9.89 9.96 9.76 10.06 9.56C10.16 9.36 10.11 9.19 10.03 9.04C9.96 8.89 9.36 7.41 9.11 6.81C8.87 6.22 8.62 6.3 8.44 6.29L7.87 6.28C7.67 6.28 7.35 6.35 7.07 6.65C6.8 6.95 6.02 7.68 6.02 9.16C6.02 10.64 7.1 12.07 7.25 12.27C7.4 12.47 9.37 15.51 12.4 16.82C13.12 17.13 13.69 17.32 14.13 17.46C14.86 17.69 15.52 17.66 16.05 17.58C16.64 17.49 17.86 16.84 18.11 16.14C18.36 15.44 18.36 14.84 18.29 14.71C18.21 14.59 18.01 14.51 17.72 14.36L17.52 14.33Z" fill="#FFFFFF"/>
+          </svg>
+
+          <!-- 7. PostEx Courier -->
+          <svg
+            *ngIf="analytics.activeConfigIntegration()?.id === 'postex-courier'"
+            viewBox="0 0 36 36"
+            width="26"
+            height="26"
+            fill="none"
+            aria-label="PostEx"
+          >
+            <path d="M9 5h9c5.2 0 8.8 3.3 8.8 8s-3.6 8-8.8 8h-3.8v10H9V5zm5.2 4.6v6.8H18c2.4 0 4.2-1.4 4.2-3.4s-1.8-3.4-4.2-3.4h-3.8z" fill="#FFFFFF"/>
+            <circle cx="28.5" cy="27" r="4.2" fill="#00E599"/>
+          </svg>
+
+          <!-- 8. Trax Logistics -->
+          <span *ngIf="analytics.activeConfigIntegration()?.id === 'trax-logistics'" class="text-brand-logo trax-text">
+            TRAX
+          </span>
+
+          <!-- 9. Leopards Courier -->
+          <img
+            *ngIf="analytics.activeConfigIntegration()?.id === 'leopards-courier'"
+            src="assets/logos/leopards_clean.png"
+            alt="Leopards"
+            class="brand-logo-img"
+          />
+
+          <!-- 10. TCS Express -->
+          <span *ngIf="analytics.activeConfigIntegration()?.id === 'tcs-express'" class="text-brand-logo tcs-text">
+            TCS
+          </span>
+
+          <!-- 11. Call Courier -->
+          <span *ngIf="analytics.activeConfigIntegration()?.id === 'call-courier'" class="text-brand-logo call-text">
+            CC
+          </span>
+
+          <!-- 12. M&P Courier -->
+          <span *ngIf="analytics.activeConfigIntegration()?.id === 'mnp-courier'" class="text-brand-logo mnp-text">
+            M&P
+          </span>
+
+          <!-- 13. Rider / Swyft -->
+          <ng-container *ngIf="analytics.activeConfigIntegration()?.id === 'rider-logistics'">
+            <svg
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Rider Logistics"
+            >
+              <polygon points="13,2 4,14 10,14 11,22 20,10 14,10" fill="#00FF66"/>
+            </svg>
+          </ng-container>
+        </div>
+
+        <!-- HEADER TITLES -->
+        <div class="header-titles">
+          <div class="title-row">
+            <h2 class="modal-title">{{ analytics.activeConfigIntegration()?.name }}</h2>
+            <span
+              class="status-pill"
+              [class.status-connected]="analytics.activeConfigIntegration()?.status === 'connected'"
+              [class.status-syncing]="analytics.activeConfigIntegration()?.status === 'syncing'"
+              [class.status-disconnected]="analytics.activeConfigIntegration()?.status === 'not_connected'"
+            >
+              <span class="live-dot" *ngIf="analytics.activeConfigIntegration()?.status === 'connected'"></span>
+              {{ analytics.activeConfigIntegration()?.statusLabel || 'Configure' }}
+            </span>
+          </div>
+          <p class="modal-category">
+            {{ analytics.activeConfigIntegration()?.category }}
+          </p>
+        </div>
+      </div>
+
+      <!-- CLOSE BUTTON -->
+      <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close modal">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
+
+    <!-- MODAL SCROLLABLE BODY -->
+    <div class="integration-modal-body">
+      <!-- DOCUMENTATION & SETUP GUIDE BANNER -->
+      <div class="doc-guide-card">
+        <div class="doc-guide-header">
+          <div class="doc-guide-title">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ analytics.activeConfigData()?.portalName }}</span>
+          </div>
+          <a
+            [href]="analytics.activeConfigData()?.docUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="doc-link-btn"
+          >
+            <span>Official Developer Docs</span>
+            <ion-icon name="open-outline"></ion-icon>
+          </a>
+        </div>
+
+        <p class="doc-guide-desc">{{ analytics.activeConfigIntegration()?.secondaryInfo }}</p>
+
+        <div class="doc-quick-steps">
+          <span class="steps-heading">Integration Handshake Checklist:</span>
+          <div class="step-chips">
+            <div class="step-chip" *ngFor="let step of analytics.activeConfigData()?.guideSteps; let i = index">
+              <span class="step-number">{{ i + 1 }}</span>
+              <span class="step-text">{{ step }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM FIELDS CONTAINER -->
+      <div class="form-fields-section">
+        <div class="section-title-row">
+          <div class="section-title">
+            <ion-icon name="key-outline"></ion-icon>
+            <span>Authentication Keys & Webhook Parameters</span>
+          </div>
+          <span class="fields-count">
+            {{ analytics.activeConfigData()?.fields?.length || 0 }} API Fields Required
+          </span>
+        </div>
+
+        <form class="config-form-grid" (submit)="$event.preventDefault(); saveConfiguration()">
+          <div
+            class="form-field-item"
+            *ngFor="let field of analytics.activeConfigData()?.fields"
+            [class.full-width]="field.type === 'url' || field.id.includes('token') || field.id.includes('secret') || field.id.includes('key')"
+          >
+            <div class="field-label-row">
+              <label [for]="field.id" class="field-label">
+                {{ field.label }}
+              </label>
+              <span class="req-badge" *ngIf="field.required">Required</span>
+              <span class="opt-badge" *ngIf="!field.required">Optional</span>
+            </div>
+
+            <!-- TEXT & URL INPUTS -->
+            <div class="input-wrapper" *ngIf="field.type === 'text' || field.type === 'url'">
+              <ion-icon [name]="field.type === 'url' ? 'link-outline' : 'key-outline'" class="input-icon"></ion-icon>
+              <input
+                [id]="field.id"
+                [type]="field.type"
+                class="form-input"
+                [(ngModel)]="field.value"
+                [name]="field.id"
+                [placeholder]="field.placeholder || ''"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- PASSWORD / SECRET TOKEN INPUTS -->
+            <div class="input-wrapper secret-input-wrapper" *ngIf="field.type === 'password'">
+              <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+              <input
+                [id]="field.id"
+                [type]="isSecretVisible(field.id) ? 'text' : 'password'"
+                class="form-input secret-input"
+                [(ngModel)]="field.value"
+                [name]="field.id"
+                [placeholder]="field.placeholder || ''"
+                autocomplete="new-password"
+              />
+              <button
+                type="button"
+                class="btn-secret-toggle"
+                (click)="toggleSecret(field.id)"
+                [title]="isSecretVisible(field.id) ? 'Hide Secret' : 'Reveal Secret'"
+              >
+                <ion-icon [name]="isSecretVisible(field.id) ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+              </button>
+            </div>
+
+            <!-- SELECT INPUTS -->
+            <div class="input-wrapper select-input-wrapper" *ngIf="field.type === 'select'">
+              <ion-icon name="cube-outline" class="input-icon"></ion-icon>
+              <select
+                [id]="field.id"
+                class="form-select"
+                [(ngModel)]="field.value"
+                [name]="field.id"
+              >
+                <option *ngFor="let opt of field.options" [value]="opt.value">
+                  {{ opt.label }}
+                </option>
+              </select>
+            </div>
+
+            <p class="field-help-text" *ngIf="field.helpText">
+              <ion-icon name="help-circle-outline"></ion-icon>
+              <span>{{ field.helpText }}</span>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- SECURITY NOTICE CALLOUT -->
+      <div class="security-banner">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <div class="security-text">
+          <strong>Enterprise End-to-End Encryption:</strong>
+          <span> All API credentials and merchant tokens are encrypted with AES-256 and authenticated directly with official developer endpoints. Secrets are never exposed to third parties.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL FOOTER -->
+    <div class="integration-modal-footer">
+      <div class="footer-left">
+        <button
+          type="button"
+          class="btn-disconnect"
+          *ngIf="analytics.activeConfigIntegration()?.status === 'connected'"
+          (click)="disconnectService()"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+          <span>Disconnect Pipeline</span>
+        </button>
+      </div>
+
+      <div class="footer-right">
+        <button
+          type="button"
+          class="btn-test"
+          [disabled]="isTesting || isSaving"
+          (click)="testConnection()"
+        >
+          <ion-icon name="sync-outline" [class.spinning]="isTesting" *ngIf="!testSuccess"></ion-icon>
+          <ion-icon name="checkmark-circle-outline" class="text-success" *ngIf="testSuccess"></ion-icon>
+          <span>{{ isTesting ? 'Testing Handshake...' : testSuccess ? 'Handshake 200 OK' : 'Test API Handshake' }}</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="closeModal()"
+          [disabled]="isSaving"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn-primary"
+          (click)="saveConfiguration()"
+          [disabled]="isSaving"
+        >
+          <ion-icon name="sync-outline" class="spinning" *ngIf="isSaving"></ion-icon>
+          <ion-icon name="checkmark-outline" *ngIf="!isSaving"></ion-icon>
+          <span>{{ isSaving ? 'Authenticating...' : 'Save & Authenticate API' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

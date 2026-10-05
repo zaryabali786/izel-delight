@@ -1,0 +1,181 @@
+<ion-content [fullscreen]="true" class="login-content">
+  <!-- Glowing Background Orbs -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <!-- Top Theme Toggle Bar -->
+  <header class="top-nav">
+    <div class="brand-mini">
+      <div class="brand-symbol">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </div>
+      <span class="brand-title">DB Tech <span class="accent-text">Nexus</span></span>
+    </div>
+
+    <button type="button" class="theme-toggle-btn" (click)="authService.toggleTheme()" aria-label="Toggle theme">
+      <ion-icon [name]="authService.isDarkMode() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      <span>{{ authService.isDarkMode() ? 'Light Mode' : 'Dark Mode' }}</span>
+    </button>
+  </header>
+
+  <div class="login-container">
+    <!-- Left Hero Column (Desktop visual) -->
+    <div class="hero-showcase">
+      <div class="badge-pill badge-primary showcase-badge">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        Enterprise Grade v2.5
+      </div>
+
+      <h1 class="hero-heading">
+        Experience next-level <span class="gradient-text">analytics</span> & workflow management.
+      </h1>
+
+      <p class="hero-subtext">
+        Empower your team with high-velocity metrics, real-time insights, and intuitive cloud tooling designed for modern creators.
+      </p>
+
+      <div class="feature-pills">
+        <div class="pill-item">
+          <div class="pill-check">✓</div>
+          <span>Real-time Live Sync</span>
+        </div>
+        <div class="pill-item">
+          <div class="pill-check">✓</div>
+          <span>End-to-End Encryption</span>
+        </div>
+        <div class="pill-item">
+          <div class="pill-check">✓</div>
+          <span>Automated Workflows</span>
+        </div>
+      </div>
+
+      <!-- Mini Preview Stat Floating Card -->
+      <div class="floating-stat-card glass-card">
+        <div class="stat-icon-wrapper">
+          <ion-icon name="flash-outline"></ion-icon>
+        </div>
+        <div class="stat-text-group">
+          <div class="stat-number">99.98%</div>
+          <div class="stat-label">System Performance</div>
+        </div>
+        <div class="badge-pill badge-success stat-delta">+14.2%</div>
+      </div>
+    </div>
+
+    <!-- Right Login Form Column -->
+    <div class="form-wrapper">
+      <div class="auth-card glass-card animate-fade-in">
+        <div class="card-header">
+          <div class="mobile-brand">
+            <div class="brand-symbol">
+              <ion-icon name="sparkles-outline"></ion-icon>
+            </div>
+            <span class="brand-title">DB Tech Nexus</span>
+          </div>
+
+          <h2 class="auth-title">Welcome Back</h2>
+          <p class="auth-subtitle">Enter your credentials to access your dashboard</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <!-- Email Input -->
+          <div class="input-group" [class.has-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <label class="input-label" for="email">Email Address</label>
+            <div class="input-field-wrapper">
+              <ion-icon name="mail-outline" class="leading-icon"></ion-icon>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="name@example.com"
+                autocomplete="email"
+                class="form-input"
+              />
+            </div>
+            <span class="error-msg" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+              <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+              <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+            </span>
+          </div>
+
+          <!-- Password Input -->
+          <div class="input-group" [class.has-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <div class="label-row">
+              <label class="input-label" for="password">Password</label>
+              <button type="button" class="forgot-link" (click)="forgotPassword()">Forgot password?</button>
+            </div>
+            <div class="input-field-wrapper">
+              <ion-icon name="lock-closed-outline" class="leading-icon"></ion-icon>
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                class="form-input"
+              />
+              <button type="button" class="visibility-btn" (click)="togglePasswordVisibility()" aria-label="Toggle password view">
+                <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+              </button>
+            </div>
+            <span class="error-msg" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+              <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+            </span>
+          </div>
+
+          <!-- Remember Me Checkbox -->
+          <div class="form-options">
+            <label class="checkbox-container">
+              <input type="checkbox" [(ngModel)]="rememberMe" [ngModelOptions]="{standalone: true}" />
+              <span class="checkmark"></span>
+              <span class="checkbox-label">Keep me logged in for 30 days</span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="submit-btn" [disabled]="isLoading">
+            <ng-container *ngIf="!isLoading">
+              <span>Sign In to Account</span>
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </ng-container>
+            <ng-container *ngIf="isLoading">
+              <ion-spinner name="crescent"></ion-spinner>
+              <span>Authenticating...</span>
+            </ng-container>
+          </button>
+        </form>
+
+        <!-- Social Logins -->
+        <div class="social-section">
+          <div class="separator-light">
+            <span>Or continue with social</span>
+          </div>
+          <div class="social-buttons">
+            <button type="button" class="social-btn" (click)="socialLogin('Google')">
+              <ion-icon name="logo-google"></ion-icon>
+              <span>Google</span>
+            </button>
+            <button type="button" class="social-btn" (click)="socialLogin('Apple')">
+              <ion-icon name="logo-apple"></ion-icon>
+              <span>Apple</span>
+            </button>
+            <button type="button" class="social-btn" (click)="socialLogin('GitHub')">
+              <ion-icon name="logo-github"></ion-icon>
+              <span>GitHub</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer">
+          <p>
+            Don't have an account?
+            <a routerLink="/signup" class="signup-link">Create Account</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

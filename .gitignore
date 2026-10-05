@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment & local config
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Production & build outputs
+dist/
+**/dist/
+www/
+**/www/
+out-tsc/
+**/out-tsc/
+platforms/
+**/platforms/
+plugins/
+**/plugins/
+.ionic/
+**/.ionic/
+.angular/
+**/.angular/
+.sass-cache/
+
+# Logs
+*.log
+log.txt
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

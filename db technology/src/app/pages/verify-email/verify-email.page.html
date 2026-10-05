@@ -1,0 +1,139 @@
+<ion-content [fullscreen]="true" class="verify-page-root">
+  <!-- Glowing Background Ambient Spheres -->
+  <div class="ambient-glow orb-1"></div>
+  <div class="ambient-glow orb-2"></div>
+
+  <!-- Top Navigation with Theme Toggle -->
+  <div class="top-nav-bar">
+    <div class="brand-mini">
+      <div class="brand-symbol">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </div>
+      <span class="brand-title">DB Tech <span class="accent-text">Nexus</span></span>
+    </div>
+
+    <button type="button" class="theme-toggle-btn" (click)="toggleTheme()">
+      <ion-icon [name]="authService.isDarkMode() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      <span>{{ authService.isDarkMode() ? 'Light Mode' : 'Dark Mode' }}</span>
+    </button>
+  </div>
+
+  <div class="verify-wrapper">
+    <div class="verify-card glass-card animate-fade-in">
+
+      <!-- Brand Header inside card -->
+      <div class="brand-badge-row">
+        <div class="brand-icon">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </div>
+        <div class="brand-name">
+          DB Tech <span class="gradient-text">Nexus</span>
+        </div>
+      </div>
+
+      <!-- State 1: Loading Verification -->
+      <div class="state-view" *ngIf="state() === 'loading'">
+        <div class="status-icon-wrap loading">
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </div>
+        <h2 class="verify-title">Verifying Account</h2>
+        <p class="verify-subtitle">{{ statusMessage() }}</p>
+      </div>
+
+      <!-- State 2: Verification Success -->
+      <div class="state-view" *ngIf="state() === 'success'">
+        <div class="status-icon-wrap success">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </div>
+        <h2 class="verify-title">Email Verified! 🎉</h2>
+        <p class="verify-subtitle">{{ statusMessage() }}</p>
+
+        <div class="success-box">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <span>Your SaaS multi-tenant store is activated and ready to use. Redirecting to login in {{ countdown() }}s...</span>
+        </div>
+
+        <a routerLink="/login" class="btn-primary-action">
+          <span>Go to Login Now</span>
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </a>
+      </div>
+
+      <!-- State 3: Input / OTP Form or Error State -->
+      <div class="state-view" *ngIf="state() === 'input' || state() === 'error'">
+        <div class="status-icon-wrap" [class.error]="state() === 'error'" [class.info]="state() === 'input'">
+          <ion-icon [name]="state() === 'error' ? 'alert-circle-outline' : 'mail-outline'"></ion-icon>
+        </div>
+
+        <h2 class="verify-title">
+          {{ state() === 'error' ? 'Verification Link Expired' : 'Confirm Your Email' }}
+        </h2>
+        <p class="verify-subtitle">
+          {{ statusMessage() || 'Enter your email and the 6-digit OTP code sent to your email.' }}
+        </p>
+
+        <form (ngSubmit)="submitOtp()" class="verify-form">
+          <!-- Email Input -->
+          <div class="input-group">
+            <label class="input-label" for="verify-email-input">Your Email Address</label>
+            <div class="input-field-wrapper">
+              <ion-icon name="mail-outline" class="leading-icon"></ion-icon>
+              <input
+                id="verify-email-input"
+                type="email"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="name@example.com"
+                class="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- 6-Digit OTP Code -->
+          <div class="input-group">
+            <label class="input-label" for="otp-code-input">6-Digit Verification Code (OTP)</label>
+            <div class="input-field-wrapper otp-wrapper">
+              <ion-icon name="key-outline" class="leading-icon"></ion-icon>
+              <input
+                id="otp-code-input"
+                type="text"
+                [(ngModel)]="otpCode"
+                name="otpCode"
+                placeholder="• • • • • •"
+                maxlength="6"
+                class="form-input otp-input"
+                required
+              />
+            </div>
+            <span class="hint-text">Check your inbox or spam folder for the verification code</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-primary-action" [disabled]="isSubmitting()">
+            <ion-spinner name="crescent" *ngIf="isSubmitting()"></ion-spinner>
+            <span *ngIf="!isSubmitting()">Verify Code & Activate</span>
+            <ion-icon name="arrow-forward-outline" *ngIf="!isSubmitting()"></ion-icon>
+          </button>
+
+          <!-- Resend Email Link -->
+          <div class="resend-row">
+            <span>Didn't receive the email?</span>
+            <button type="button" class="btn-text-link" (click)="resendEmail()" [disabled]="isSubmitting()">
+              <ion-icon name="refresh-outline"></ion-icon>
+              <span>Resend Verification Email</span>
+            </button>
+          </div>
+
+          <!-- Back to Login -->
+          <div class="back-link-row">
+            <a routerLink="/login" class="back-link">
+              ← Return to Login
+            </a>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

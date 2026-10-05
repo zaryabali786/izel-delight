@@ -1,0 +1,980 @@
+.ai-analytics-page {
+  padding-bottom: 40px;
+  width: 100%;
+}
+
+.mb-8 { margin-bottom: 8px; }
+.mb-24 { margin-bottom: 24px; }
+.text-success { color: #10b981; }
+.text-danger { color: #f43f5e; }
+
+/* ========================================================================== */
+/* 1. AI HERO BANNER                                                          */
+/* ========================================================================== */
+.ai-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 28px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(168, 85, 247, 0.12) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  margin-bottom: 28px;
+
+  .ai-glow-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+    flex-shrink: 0;
+  }
+
+  .ai-banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .tenant-tag-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+
+    .tenant-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+
+      .pulse-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #10b981;
+        box-shadow: 0 0 8px #10b981;
+        animation: pulse 1.8s infinite;
+      }
+    }
+
+    .model-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+  }
+
+  .ai-banner-text {
+    h2 {
+      margin: 0 0 4px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      letter-spacing: -0.015em;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.8125rem;
+      color: var(--app-subtext);
+      line-height: 1.5;
+    }
+  }
+
+  .re-audit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.45);
+    }
+
+    &:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    ion-icon {
+      font-size: 1.05rem;
+      &.spin {
+        animation: spin 1s linear infinite;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* ========================================================================== */
+/* 2. STATE A: NOT ENOUGH DATA YET CARD                                      */
+/* ========================================================================== */
+.empty-telemetry-card {
+  display: flex;
+  gap: 22px;
+  padding: 32px 30px;
+  border-radius: 20px;
+  background: var(--app-card-bg);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow: var(--app-card-shadow);
+
+  .empty-telemetry-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    flex-shrink: 0;
+  }
+
+  .empty-telemetry-body {
+    flex: 1;
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin: 0 0 8px;
+    }
+
+    .empty-desc {
+      font-size: 0.85rem;
+      color: var(--app-subtext);
+      line-height: 1.6;
+      margin: 0 0 20px;
+      max-width: 820px;
+    }
+
+    .telemetry-checklist {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+
+      .check-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--app-input-bg);
+        border: 1px solid var(--app-card-border);
+        font-size: 0.8rem;
+
+        .check-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #64748b;
+
+          &.active {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+          }
+        }
+
+        .check-lbl {
+          color: var(--app-subtext);
+        }
+
+        strong {
+          color: var(--ion-text-color);
+          margin-left: auto;
+        }
+      }
+    }
+
+    .empty-actions-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      .btn-primary-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+      }
+
+      .btn-secondary-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        border-radius: 10px;
+        background: var(--app-input-bg);
+        color: var(--ion-text-color);
+        font-size: 0.8rem;
+        font-weight: 600;
+        border: 1px solid var(--app-card-border);
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          border-color: rgba(99, 102, 241, 0.4);
+          background: rgba(99, 102, 241, 0.05);
+        }
+      }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 3. EXECUTIVE AI SUMMARY CARD                                              */
+/* ========================================================================== */
+.executive-summary-card {
+  padding: 24px 28px;
+  border-radius: 18px;
+  background: var(--app-card-bg);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.08);
+
+  .exec-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .exec-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--ion-text-color);
+      }
+    }
+
+    .time-stamp {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--app-subtext);
+    }
+  }
+
+  .exec-text {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--ion-text-color);
+  }
+}
+
+/* ========================================================================== */
+/* 4. TELEMETRY KPIS GRID                                                    */
+/* ========================================================================== */
+.telemetry-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+
+  .telemetry-card {
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: var(--app-card-bg);
+    border: 1px solid var(--app-card-border);
+    box-shadow: var(--app-card-shadow);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+      border-color: rgba(99, 102, 241, 0.35);
+    }
+
+    .metric-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+
+      .metric-lbl {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--app-subtext);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .status-pill {
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 2px 7px;
+        border-radius: 999px;
+
+        &.status-good {
+          background: rgba(16, 185, 129, 0.15);
+          color: #10b981;
+          border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        &.status-warn {
+          background: rgba(245, 158, 11, 0.15);
+          color: #f59e0b;
+          border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        &.status-danger {
+          background: rgba(244, 63, 94, 0.15);
+          color: #f43f5e;
+          border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+        &.status-neutral {
+          background: rgba(148, 163, 184, 0.15);
+          color: #94a3b8;
+          border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+      }
+    }
+
+    .metric-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--ion-text-color);
+      margin-bottom: 8px;
+    }
+
+    .metric-advice {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--app-subtext);
+      line-height: 1.45;
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 5. INSIGHTS SECTION                                                       */
+/* ========================================================================== */
+.insights-section {
+  padding: 24px 26px;
+  border-radius: 18px;
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-card-border);
+  box-shadow: var(--app-card-shadow);
+
+  .section-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .section-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--ion-color-primary);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .t-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin: 0 0 4px;
+    }
+
+    .t-desc {
+      font-size: 0.775rem;
+      color: var(--app-subtext);
+      margin: 0;
+    }
+  }
+
+  .insights-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+
+    .insight-box {
+      display: flex;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--app-input-bg);
+      border: 1px solid var(--app-card-border);
+      transition: all 0.2s;
+
+      &:hover {
+        border-color: rgba(99, 102, 241, 0.35);
+        background: rgba(99, 102, 241, 0.03);
+      }
+
+      .insight-number {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--ion-color-primary);
+        opacity: 0.8;
+      }
+
+      .insight-content p {
+        margin: 0;
+        font-size: 0.825rem;
+        color: var(--ion-text-color);
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 6. STRATEGY GRID (OPPORTUNITIES & RISKS)                                  */
+/* ========================================================================== */
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+
+  .strategy-card {
+    padding: 24px 26px;
+    border-radius: 18px;
+    background: var(--app-card-bg);
+    border: 1px solid var(--app-card-border);
+    box-shadow: var(--app-card-shadow);
+
+    &.opp-card {
+      border-top: 3px solid #10b981;
+    }
+
+    &.risk-card {
+      border-top: 3px solid #f43f5e;
+    }
+
+    .strat-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+
+      .strat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+
+        &.opp-icon {
+          background: rgba(16, 185, 129, 0.12);
+          color: #10b981;
+        }
+
+        &.risk-icon {
+          background: rgba(244, 63, 94, 0.12);
+          color: #f43f5e;
+        }
+      }
+
+      h4 {
+        margin: 0 0 3px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--ion-text-color);
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: var(--app-subtext);
+      }
+    }
+
+    .strat-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 0.8125rem;
+        color: var(--ion-text-color);
+        line-height: 1.5;
+
+        ion-icon {
+          font-size: 1.1rem;
+          margin-top: 2px;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 7. SUGGESTIONS LIST                                                       */
+/* ========================================================================== */
+.suggestions-card {
+  padding: 24px 26px;
+  border-radius: 18px;
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-card-border);
+  box-shadow: var(--app-card-shadow);
+
+  .suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+
+    .sugg-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--app-input-bg);
+      border: 1px solid var(--app-card-border);
+      flex-wrap: wrap;
+
+      .sugg-badge {
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #818cf8;
+        background: rgba(99, 102, 241, 0.12);
+        padding: 3px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+
+      .sugg-text {
+        flex: 1;
+        font-size: 0.8125rem;
+        color: var(--ion-text-color);
+        min-width: 200px;
+      }
+
+      .sugg-action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 3px 10px rgba(99, 102, 241, 0.35);
+        }
+      }
+    }
+  }
+}
+
+/* Helper Badge Pills */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.725rem;
+  font-weight: 700;
+
+  &.badge-primary {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+  }
+
+  &.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  &.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+  }
+}
+
+/* ========================================================================== */
+/* 8. MULTI-CHANNEL TABLES & COURIER LOGISTICS                               */
+/* ========================================================================== */
+.table-container {
+  padding: 24px 26px;
+  border-radius: 18px;
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-card-border);
+  box-shadow: var(--app-card-shadow);
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .section-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--ion-color-primary);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .t-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin: 0 0 3px;
+    }
+
+    .t-desc {
+      font-size: 0.775rem;
+      color: var(--app-subtext);
+      margin: 0;
+    }
+  }
+
+  .responsive-table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--app-card-border);
+  }
+
+  .growth-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+
+    thead tr {
+      background: rgba(99, 102, 241, 0.04);
+
+      th {
+        padding: 12px 16px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--app-subtext);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-bottom: 1px solid var(--app-card-border);
+        white-space: nowrap;
+      }
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--app-card-border);
+      transition: background 0.15s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover td {
+        background: rgba(99, 102, 241, 0.03);
+      }
+
+      td {
+        padding: 13px 16px;
+        font-size: 0.8rem;
+        color: var(--ion-text-color);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+    }
+
+    .platform-cell, .courier-cell-group {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      .platform-icon, .courier-icon {
+        font-size: 1.1rem;
+        color: var(--ion-color-primary);
+      }
+    }
+
+    .revenue-cell {
+      font-weight: 700;
+      color: var(--ion-text-color);
+    }
+
+    .roas-pill {
+      font-size: 0.725rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+
+      &.high {
+        background: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+      }
+
+      &.moderate {
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+      }
+    }
+
+    .action-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+
+      &.scale {
+        background: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      &.maintain {
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+      }
+
+      &.optimize {
+        background: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+    }
+
+    .advice-cell {
+      white-space: normal;
+      max-width: 320px;
+
+      .advice-text {
+        font-size: 0.75rem;
+        color: var(--app-subtext);
+        line-height: 1.45;
+      }
+    }
+
+    .rate-progress {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .rate-bar {
+        width: 60px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.2);
+        overflow: hidden;
+
+        .rate-fill {
+          height: 100%;
+          border-radius: 999px;
+          background: #10b981;
+        }
+      }
+
+      .rate-num {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #10b981;
+      }
+    }
+
+    .rto-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+
+      &.low { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+      &.mod { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+      &.high { background: rgba(244, 63, 94, 0.12); color: #f43f5e; }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 9. WHATSAPP CONVERSATIONAL CHANNEL CARD                                   */
+/* ========================================================================== */
+.whatsapp-channel-card {
+  padding: 24px 26px;
+  border-radius: 18px;
+  background: var(--app-card-bg);
+  border: 1px solid rgba(37, 211, 102, 0.25);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.06);
+
+  .channel-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+
+    .channel-title-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      .channel-icon-pill {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+
+        &.whatsapp-bg {
+          background: rgba(37, 211, 102, 0.15);
+          color: #25d366;
+          border: 1px solid rgba(37, 211, 102, 0.3);
+        }
+      }
+
+      h3 {
+        margin: 0 0 3px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--ion-text-color);
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.775rem;
+        color: var(--app-subtext);
+      }
+    }
+
+    .btn-chat-open {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      background: #25d366;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+      transition: all 0.2s;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+      }
+    }
+  }
+
+  .whatsapp-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+
+    .wa-kpi-box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--app-input-bg);
+      border: 1px solid var(--app-card-border);
+
+      .wa-lbl {
+        font-size: 0.72rem;
+        color: var(--app-subtext);
+        font-weight: 600;
+      }
+
+      .wa-val {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--ion-text-color);
+      }
+
+      .wa-sub {
+        font-size: 0.6875rem;
+        color: #25d366;
+        font-weight: 600;
+      }
+    }
+  }
+}
+

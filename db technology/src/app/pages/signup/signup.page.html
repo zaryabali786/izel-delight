@@ -1,0 +1,252 @@
+<ion-content [fullscreen]="true" class="signup-content">
+  <!-- Glowing Background Orbs -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="brand-mini">
+      <div class="brand-symbol">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </div>
+      <span class="brand-title">DB Tech <span class="accent-text">Nexus</span></span>
+    </div>
+
+    <button type="button" class="theme-toggle-btn" (click)="authService.toggleTheme()" aria-label="Toggle theme">
+      <ion-icon [name]="authService.isDarkMode() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      <span>{{ authService.isDarkMode() ? 'Light Mode' : 'Dark Mode' }}</span>
+    </button>
+  </header>
+
+  <div class="signup-container">
+    <!-- Left Hero Column (Desktop visual) -->
+    <div class="hero-showcase">
+      <div class="badge-pill badge-primary showcase-badge">
+        <ion-icon name="ribbon-outline"></ion-icon>
+        Join 10,000+ Teams Worldwide
+      </div>
+
+      <h1 class="hero-heading">
+        Start building your next <span class="gradient-text">masterpiece</span> today.
+      </h1>
+
+      <p class="hero-subtext">
+        Get instant access to automated dashboards, intuitive workflow builders, and enterprise security out of the box.
+      </p>
+
+      <div class="benefit-cards">
+        <div class="benefit-card glass-card">
+          <div class="benefit-icon">
+            <ion-icon name="infiniteOutline"></ion-icon>
+          </div>
+          <div class="benefit-info">
+            <h4>Unlimited Projects</h4>
+            <p>Collaborate with unlimited team members and projects in your workspace.</p>
+          </div>
+        </div>
+
+        <div class="benefit-card glass-card">
+          <div class="benefit-icon">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+          </div>
+          <div class="benefit-info">
+            <h4>Bank-Grade Security</h4>
+            <p>SOC-2 Type II certified and encrypted with AES-256 standard.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Signup Form Column -->
+    <div class="form-wrapper">
+      <div class="auth-card glass-card animate-fade-in">
+        <div class="card-header">
+          <div class="mobile-brand">
+            <div class="brand-symbol">
+              <ion-icon name="sparkles-outline"></ion-icon>
+            </div>
+            <span class="brand-title">DB Tech Nexus</span>
+          </div>
+
+          <h2 class="auth-title">Create Account</h2>
+          <p class="auth-subtitle">Join us and experience state-of-the-art tooling</p>
+        </div>
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+          <!-- Full Name -->
+          <div class="input-group" [class.has-error]="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched">
+            <label class="input-label" for="fullName">Full Name</label>
+            <div class="input-field-wrapper">
+              <ion-icon name="person-outline" class="leading-icon"></ion-icon>
+              <input
+                id="fullName"
+                type="text"
+                formControlName="fullName"
+                placeholder="e.g. Alex Morgan"
+                autocomplete="name"
+                class="form-input"
+              />
+            </div>
+            <span class="error-msg" *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched">
+              <span *ngIf="signupForm.get('fullName')?.errors?.['required']">Full name is required</span>
+              <span *ngIf="signupForm.get('fullName')?.errors?.['minlength']">Name must be at least 2 characters</span>
+            </span>
+          </div>
+
+          <!-- Store / Brand Name -->
+          <div class="input-group" [class.has-error]="signupForm.get('storeName')?.invalid && signupForm.get('storeName')?.touched">
+            <label class="input-label" for="storeName">Store / Brand Name</label>
+            <div class="input-field-wrapper">
+              <ion-icon name="storefront-outline" class="leading-icon"></ion-icon>
+              <input
+                id="storeName"
+                type="text"
+                formControlName="storeName"
+                placeholder="e.g. Izel Apparel or Urban Kicks"
+                class="form-input"
+              />
+            </div>
+            <span class="error-msg" *ngIf="signupForm.get('storeName')?.invalid && signupForm.get('storeName')?.touched">
+              <span *ngIf="signupForm.get('storeName')?.errors?.['required']">Store name is required</span>
+              <span *ngIf="signupForm.get('storeName')?.errors?.['minlength']">Store name must be at least 2 characters</span>
+            </span>
+          </div>
+
+          <!-- Email Address -->
+          <div class="input-group" [class.has-error]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+            <label class="input-label" for="signup-email">Work Email</label>
+            <div class="input-field-wrapper">
+              <ion-icon name="mail-outline" class="leading-icon"></ion-icon>
+              <input
+                id="signup-email"
+                type="email"
+                formControlName="email"
+                placeholder="alex@company.com"
+                autocomplete="email"
+                class="form-input"
+              />
+            </div>
+            <span class="error-msg" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+              <span *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</span>
+              <span *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+            </span>
+          </div>
+
+          <!-- Password -->
+          <div class="input-group" [class.has-error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+            <label class="input-label" for="signup-password">Password</label>
+            <div class="input-field-wrapper">
+              <ion-icon name="lock-closed-outline" class="leading-icon"></ion-icon>
+              <input
+                id="signup-password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Create a strong password"
+                autocomplete="new-password"
+                class="form-input"
+              />
+              <button type="button" class="visibility-btn" (click)="togglePasswordVisibility()" aria-label="Toggle password view">
+                <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+              </button>
+            </div>
+
+            <!-- Password Strength Indicator -->
+            <div class="strength-meter" *ngIf="signupForm.get('password')?.value">
+              <div class="strength-bars">
+                <span class="bar" [class.active]="getPasswordStrength().level >= 1" [style.background-color]="getPasswordStrength().level >= 1 ? getPasswordStrength().color : ''"></span>
+                <span class="bar" [class.active]="getPasswordStrength().level >= 2" [style.background-color]="getPasswordStrength().level >= 2 ? getPasswordStrength().color : ''"></span>
+                <span class="bar" [class.active]="getPasswordStrength().level >= 3" [style.background-color]="getPasswordStrength().level >= 3 ? getPasswordStrength().color : ''"></span>
+              </div>
+              <span class="strength-label" [style.color]="getPasswordStrength().color">
+                Password: {{ getPasswordStrength().label }}
+              </span>
+            </div>
+
+            <span class="error-msg" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+              <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</span>
+              <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+            </span>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="input-group" [class.has-error]="(signupForm.get('confirmPassword')?.touched || signupForm.errors?.['mismatch']) && signupForm.errors?.['mismatch']">
+            <label class="input-label" for="confirmPassword">Confirm Password</label>
+            <div class="input-field-wrapper">
+              <ion-icon name="lock-closed-outline" class="leading-icon"></ion-icon>
+              <input
+                id="confirmPassword"
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                placeholder="Repeat your password"
+                autocomplete="new-password"
+                class="form-input"
+              />
+              <button type="button" class="visibility-btn" (click)="toggleConfirmPasswordVisibility()" aria-label="Toggle confirm password view">
+                <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+              </button>
+            </div>
+            <span class="error-msg" *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.errors?.['mismatch']">
+              Passwords do not match
+            </span>
+            <span class="success-msg" *ngIf="signupForm.get('confirmPassword')?.value && !signupForm.errors?.['mismatch']">
+              <ion-icon name="checkmark-circle-outline"></ion-icon> Passwords match!
+            </span>
+          </div>
+
+          <!-- Terms Checkbox -->
+          <div class="form-options">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="agreeTerms" />
+              <span class="checkmark"></span>
+              <span class="checkbox-label">
+                I agree to the <a href="javascript:void(0)" class="link-inline">Terms of Service</a> & <a href="javascript:void(0)" class="link-inline">Privacy Policy</a>
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="submit-btn" [disabled]="isLoading || signupForm.invalid">
+            <ng-container *ngIf="!isLoading">
+              <span>Create Free Account</span>
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </ng-container>
+            <ng-container *ngIf="isLoading">
+              <ion-spinner name="crescent"></ion-spinner>
+              <span>Creating your account...</span>
+            </ng-container>
+          </button>
+        </form>
+
+        <!-- Social Logins -->
+        <div class="social-section">
+          <div class="separator-light">
+            <span>Or register with</span>
+          </div>
+          <div class="social-buttons">
+            <button type="button" class="social-btn" (click)="socialSignup('Google')">
+              <ion-icon name="logo-google"></ion-icon>
+              <span>Google</span>
+            </button>
+            <button type="button" class="social-btn" (click)="socialSignup('Apple')">
+              <ion-icon name="logo-apple"></ion-icon>
+              <span>Apple</span>
+            </button>
+            <button type="button" class="social-btn" (click)="socialSignup('GitHub')">
+              <ion-icon name="logo-github"></ion-icon>
+              <span>GitHub</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer">
+          <p>
+            Already have an account?
+            <a routerLink="/login" class="login-link">Log In</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

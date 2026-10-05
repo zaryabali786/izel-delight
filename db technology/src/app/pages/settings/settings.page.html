@@ -1,0 +1,84 @@
+<div class="settings-page animate-fade-in">
+  <div class="settings-card glass-card">
+    <div class="settings-header">
+      <div class="header-icon">
+        <ion-icon name="settings-outline"></ion-icon>
+      </div>
+      <div>
+        <h2>Store & Pakistani Multi-Courier API Configuration</h2>
+        <p>Manage your connected storefront endpoints, courier webhooks, automated verification, and team access.</p>
+      </div>
+    </div>
+
+    <div class="settings-form">
+      <div class="setting-group">
+        <label>Primary E-Commerce Storefront</label>
+        <input type="text" [value]="storeService.activeStore()?.domain || 'store.myshopify.com'" class="setting-input" readonly />
+        <span class="setting-hint">Connected Store: {{ storeService.activeStore()?.name || 'Active Store' }} ({{ storeService.activeStore()?.platform || 'Shopify' }})</span>
+      </div>
+
+      <div class="setting-group">
+        <label>PostEx Courier API Key (RTO Engine)</label>
+        <div class="input-with-icon">
+          <input type="password" value="pex_live_sec_892147109283719" class="setting-input" readonly />
+          <ion-icon name="key-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label>Trax Logistics API Key (Sonic COD)</label>
+        <div class="input-with-icon">
+          <input type="password" value="trx_live_sec_992140029381716" class="setting-input" readonly />
+          <ion-icon name="key-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label>Leopards COD Portal Token</label>
+        <div class="input-with-icon">
+          <input type="password" value="lep_api_token_392019482019283" class="setting-input" readonly />
+          <ion-icon name="key-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label>Automated RTO Verification Rules</label>
+        <select class="setting-input">
+          <option selected>Strict: Enforce WhatsApp OTP on orders >PKR 15,000</option>
+          <option>Moderate: Flag orders with >20% cancellation history</option>
+          <option>Permissive: Dispatch all orders without pre-verification</option>
+        </select>
+        <span class="setting-hint">Automated verification reduces nationwide RTO cancellations by up to 5.2%.</span>
+      </div>
+
+      <div class="setting-group">
+        <label>Reporting Currency</label>
+        <div class="currency-pills">
+          <button
+            type="button"
+            class="c-pill"
+            [class.active]="analytics.currency() === 'PKR'"
+            (click)="analytics.currency.set('PKR'); analytics.currencySymbol.set('PKR ')"
+          >
+            Pakistani Rupee - PKR (Rs.)
+          </button>
+          <button
+            type="button"
+            class="c-pill"
+            [class.active]="analytics.currency() === 'USD'"
+            (click)="analytics.currency.set('USD'); analytics.currencySymbol.set('$')"
+          >
+            US Dollar - USD ($)
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-save-row">
+        <button type="button" class="save-btn" (click)="saveSettings()">
+          <ion-icon name="save-outline"></ion-icon>
+          <span>Save Changes</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

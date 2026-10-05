@@ -1,0 +1,781 @@
+.growth-deck-page {
+  padding-bottom: 40px;
+  width: 100%;
+}
+
+/* ========================================================================== */
+/* 1. GROWTH HEADER & SCENARIO SWITCHER                                       */
+/* ========================================================================== */
+.growth-header-card {
+  padding: 24px 26px;
+  border-radius: 18px;
+  margin-bottom: 28px; /* Clean distinct separation */
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.08) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+
+  .scenario-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 22px;
+
+    .tenant-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+
+      .tenant-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+
+        .pulse-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #10b981;
+          box-shadow: 0 0 8px #10b981;
+        }
+      }
+
+      .revenue-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        background: rgba(16, 185, 129, 0.12);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+    }
+
+    .section-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--ion-color-primary);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin: 0 0 4px;
+      letter-spacing: -0.015em;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: var(--app-subtext);
+      margin: 0;
+    }
+  }
+
+  .scenario-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .sc-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--app-subtext);
+    }
+
+    .sc-buttons {
+      display: flex;
+      gap: 6px;
+      background: var(--app-input-bg);
+      padding: 4px;
+      border-radius: 11px;
+      border: 1px solid var(--app-card-border);
+
+      .sc-btn {
+        background: transparent;
+        border: none;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 0.725rem;
+        font-weight: 700;
+        color: var(--app-subtext);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: var(--ion-text-color);
+        }
+
+        &.active {
+          background: linear-gradient(135deg, #6366f1, #a855f7);
+          color: #ffffff;
+          box-shadow: 0 3px 10px rgba(99, 102, 241, 0.35);
+        }
+      }
+    }
+  }
+
+  .forecast-pills-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    padding-top: 18px;
+    border-top: 1px solid var(--app-card-border);
+
+    .f-box {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--app-input-bg);
+      border: 1px solid var(--app-card-border);
+
+      .f-lbl {
+        font-size: 0.6875rem;
+        color: var(--app-subtext);
+        font-weight: 600;
+      }
+
+      .f-val {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--ion-text-color);
+
+        &.text-primary { color: var(--ion-color-primary); }
+        &.text-success { color: #10b981; }
+        &.text-emerald { color: #059669; }
+      }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 2. CAPITAL ALLOCATION ENGINE (Standalone Card)                             */
+/* ========================================================================== */
+.growth-card-section {
+  padding: 24px 26px;
+  border-radius: 18px;
+  margin-bottom: 28px; /* Distinct separation */
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-card-border);
+  box-shadow: var(--app-card-shadow);
+
+  .section-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    .section-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--ion-color-primary);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .t-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin: 0 0 3px;
+    }
+
+    .t-desc {
+      font-size: 0.775rem;
+      color: var(--app-subtext);
+      margin: 0;
+      line-height: 1.45;
+    }
+  }
+}
+
+.reallocation-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.realloc-card {
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: var(--app-input-bg);
+  border: 1px solid var(--app-card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+
+  .realloc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .realloc-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .realloc-name {
+        margin: 0;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--ion-text-color);
+      }
+    }
+  }
+
+  .realloc-platform-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+
+    &.meta { background: #0081fb; color: #fff; }
+    &.tiktok { background: #010101; color: #fff; border: 1px solid rgba(255, 255, 255, 0.25); }
+    &.google { background: #fbbc04; color: #000; }
+    &.snapchat { background: #fffc00; color: #000; }
+  }
+
+  .impact-chip {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+  }
+
+  .realloc-money-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .r-lbl {
+      font-size: 0.65rem;
+      color: var(--app-subtext);
+      font-weight: 600;
+    }
+
+    .r-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ion-color-primary);
+    }
+
+    .r-pct-badge {
+      font-size: 0.725rem;
+      font-weight: 700;
+      color: var(--app-subtext);
+    }
+  }
+
+  .realloc-progress-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.2);
+    overflow: hidden;
+
+    .realloc-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+    }
+  }
+
+  .realloc-stats-grid {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.725rem;
+    padding-top: 6px;
+    border-top: 1px solid var(--app-card-border);
+
+    .rs-lbl { color: var(--app-subtext); margin-right: 4px; }
+  }
+
+  .realloc-desc {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--app-subtext);
+    line-height: 1.45;
+  }
+}
+
+/* ========================================================================== */
+/* 3. 30-60-90 DAY SPRINT ROADMAP (Standalone Card)                           */
+/* ========================================================================== */
+.roadmap-timeline {
+  margin-bottom: 28px; /* Distinct separation */
+
+  .sub-section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    margin: 0 0 16px;
+    letter-spacing: -0.015em;
+  }
+
+  .sprint-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px; /* Distinct card gap */
+  }
+
+  .sprint-card {
+    padding: 22px 24px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--app-card-bg);
+    border: 1px solid var(--app-card-border);
+    box-shadow: var(--app-card-shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .sprint-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .sprint-badge {
+        padding: 3px 9px;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        background: rgba(148, 163, 184, 0.15);
+        color: var(--app-subtext);
+
+        &.active {
+          background: rgba(16, 185, 129, 0.18);
+          color: #10b981;
+          border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+      }
+
+      .sprint-phase {
+        font-size: 0.725rem;
+        color: var(--app-subtext);
+        font-weight: 600;
+      }
+    }
+
+    .sprint-theme {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      line-height: 1.35;
+    }
+
+    .sprint-numbers {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--app-input-bg);
+      border: 1px solid var(--app-card-border);
+
+      .s-sub {
+        font-size: 0.65rem;
+        color: var(--app-subtext);
+        display: block;
+      }
+
+      strong {
+        font-size: 0.85rem;
+        color: var(--ion-text-color);
+      }
+    }
+
+    .sprint-deliverables {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .deliv-item {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        font-size: 0.775rem;
+        color: var(--ion-text-color);
+        line-height: 1.45;
+
+        ion-icon {
+          color: var(--ion-color-primary);
+          font-size: 15px;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+      }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 4. SEASONAL RETAIL CALENDAR TABLE (Standalone Card)                        */
+/* ========================================================================== */
+.table-container {
+  padding: 24px 26px;
+  border-radius: 18px;
+  margin-bottom: 28px; /* Distinct separation from quadrants below */
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-card-border);
+  box-shadow: var(--app-card-shadow);
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    gap: 14px;
+    flex-wrap: wrap;
+
+    .t-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin: 0 0 3px;
+    }
+
+    .t-desc {
+      font-size: 0.775rem;
+      color: var(--app-subtext);
+      margin: 0;
+      line-height: 1.45;
+    }
+  }
+
+  .responsive-table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--app-card-border);
+  }
+
+  .growth-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+
+    thead tr {
+      background: rgba(99, 102, 241, 0.04);
+
+      th {
+        padding: 12px 16px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--app-subtext);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-bottom: 1px solid var(--app-card-border);
+        white-space: nowrap;
+      }
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--app-card-border);
+      transition: background 0.15s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover td {
+        background: rgba(99, 102, 241, 0.03);
+      }
+
+      td {
+        padding: 12px 16px;
+        font-size: 0.8rem;
+        color: var(--ion-text-color);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+    }
+
+    .revenue-cell {
+      font-weight: 700;
+      color: var(--ion-text-color);
+    }
+
+    .date-chip {
+      font-size: 0.725rem;
+      font-weight: 700;
+      color: var(--ion-color-primary);
+      background: rgba(99, 102, 241, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .channel-mix-text {
+      font-size: 0.725rem;
+      color: var(--app-subtext);
+    }
+
+    .lead-time-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.725rem;
+      color: var(--app-subtext);
+
+      ion-icon {
+        font-size: 13px;
+        color: var(--ion-color-primary);
+      }
+    }
+
+    .season-status-badge {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+
+      &.active {
+        background: rgba(16, 185, 129, 0.12);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.25);
+      }
+
+      &.next {
+        background: rgba(245, 158, 11, 0.12);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.25);
+      }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* 5. PRODUCT SCALING QUADRANTS (Distinct Colored Accent Cards)               */
+/* ========================================================================== */
+.growth-quadrant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px; /* Distinct card gap */
+  margin-bottom: 20px;
+
+  .quadrant-card {
+    padding: 22px 24px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--app-card-bg);
+    border: 1px solid var(--app-card-border);
+    box-shadow: var(--app-card-shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+    }
+
+    &.star-card {
+      border-top: 4px solid #10b981;
+    }
+
+    &.optimize-card {
+      border-top: 4px solid #f59e0b;
+    }
+
+    &.rto-risk-card {
+      border-top: 4px solid #f43f5e;
+    }
+
+    .quadrant-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .q-icon { font-size: 22px; }
+
+      h3 {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--ion-text-color);
+        flex: 1;
+      }
+
+      .q-badge {
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: var(--app-input-bg);
+        color: var(--app-subtext);
+        border: 1px solid var(--app-card-border);
+      }
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.785rem;
+      color: var(--app-subtext);
+      line-height: 1.45;
+    }
+
+    .q-prod-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--app-card-border);
+
+      .q-item {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        font-size: 0.775rem;
+        padding: 8px 10px;
+        border-radius: 9px;
+        background: var(--app-input-bg);
+        border: 1px solid var(--app-card-border);
+
+        strong { color: var(--ion-text-color); }
+        span { color: var(--app-subtext); font-size: 0.7rem; }
+      }
+    }
+  }
+}
+
+/* ========================================================================== */
+/* EMPTY STATE: NOT ENOUGH DATA YET                                           */
+/* ========================================================================== */
+.empty-growth-card {
+  display: flex;
+  gap: 22px;
+  padding: 30px;
+  border-radius: 20px;
+  background: var(--app-card-bg);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow: var(--app-card-shadow);
+
+  .empty-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .empty-content {
+    flex: 1;
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ion-text-color);
+      margin: 0 0 6px;
+    }
+
+    .empty-text {
+      font-size: 0.825rem;
+      color: var(--app-subtext);
+      line-height: 1.6;
+      margin: 0 0 18px;
+      max-width: 800px;
+    }
+
+    .store-stats-pills {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+
+      .stat-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 10px;
+        background: var(--app-input-bg);
+        border: 1px solid var(--app-card-border);
+        font-size: 0.775rem;
+        color: var(--app-subtext);
+
+        strong {
+          color: var(--ion-text-color);
+        }
+
+        .stat-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #64748b;
+
+          &.active {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+          }
+        }
+      }
+    }
+
+    .empty-action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+      }
+    }
+  }
+}
+
