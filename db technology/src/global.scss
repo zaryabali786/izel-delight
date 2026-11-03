@@ -203,3 +203,15 @@ body.modal-backdrop-active {
   }
 }
 
+
+/* Connectors dialog: keep the page behind it from scrolling */
+body.cn-dialog-open { overflow: hidden; }
+
+/* Connectors dialog lives on <body> (portal), so its dark tokens must be global: component styles cannot see body.dark */
+body.dark .cn-overlay {
+  --ink-ok: #34d399; --ink-warn: #fbbf24; --ink-bad: #f87171; --ink-accent: #a5b4fc;
+  --d-bg: #121a2b; --d-bg-2: #0e1524; --d-line: rgba(148, 163, 184, 0.18); --d-text: #f1f5f9; --d-sub: #94a3b8; --d-input: #0b1220;
+}
+
+/* dark brand buttons (TikTok, X, Klaviyo) would vanish on the dark dialog without an edge */
+body.dark .cn-overlay .btn.brand { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28), 0 4px 14px rgba(0, 0, 0, 0.35); }

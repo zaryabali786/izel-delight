@@ -305,4 +305,95 @@ export interface AiGrowthInsights {
   };
 }
 
+// ── Omnichannel Support Channels (DelightChat Style) ─────────────────────────
+
+export interface SupportChannelItem {
+  id: string;
+  store_id: string;
+  channel_type: 'shopify' | 'facebook' | 'instagram' | 'whatsapp' | 'email';
+  name: string;
+  account_id: string;
+  status: 'connected' | 'disconnected' | 'needs_reauth' | 'error' | 'syncing';
+  webhook_verified: boolean;
+  settings: Record<string, any>;
+  last_synced_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface UnifiedCustomer {
+  id: string;
+  store_id?: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  avatar_url?: string;
+  shopify_customer_id?: string;
+  facebook_psid?: string;
+  instagram_id?: string;
+  whatsapp_phone?: string;
+  orders_count: number;
+  total_spent: number;
+  city?: string;
+  metadata?: Record<string, any>;
+}
+
+export interface ConversationMessageItem {
+  id: string;
+  conversation_id: string;
+  sender_type: 'customer' | 'agent' | 'ai' | 'system';
+  sender_name?: string;
+  sender_id?: string;
+  message_text: string;
+  message_type: 'text' | 'image' | 'video' | 'audio' | 'document' | 'comment';
+  attachments?: any[];
+  status: 'sent' | 'delivered' | 'read' | 'failed';
+  is_private_note?: boolean;
+  metadata?: Record<string, any>;
+  created_at: string;
+}
+
+export interface ShopifyCustomerContext {
+  customer_id?: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  total_orders: number;
+  total_spent: number;
+  recent_orders: StoreOrder[];
+}
+
+export interface OmnichannelConversation {
+  id: string;
+  store_id: string;
+  channel_id?: string;
+  channel_type: 'whatsapp' | 'facebook_messenger' | 'facebook_comment' | 'facebook_ad_comment' | 'instagram_dm' | 'instagram_comment' | 'instagram_ad_comment' | 'email';
+  customer_id?: string;
+  customer?: UnifiedCustomer;
+  channel?: { name: string; type: string; account_id: string };
+  external_thread_id?: string;
+  subject?: string;
+  status: 'open' | 'pending' | 'resolved' | 'closed';
+  priority: 'normal' | 'high' | 'urgent';
+  assigned_agent?: string;
+  last_message_at: string;
+  last_message_preview: string;
+  unread_count: number;
+  metadata?: {
+    post_id?: string;
+    ad_id?: string;
+    ad_name?: string;
+    is_ad?: boolean;
+    permalink_url?: string;
+    comment_id?: string;
+    can_reply_privately?: boolean;
+    to_email?: string;
+    from_email?: string;
+    ai_paused?: boolean;
+  };
+  messages?: ConversationMessageItem[];
+  shopifyContext?: ShopifyCustomerContext;
+}
+
+
 

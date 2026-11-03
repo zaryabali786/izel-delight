@@ -24,7 +24,10 @@ import {
   WhatsAppChatMessage,
   WhatsAppCustomerConversation,
   StoreOrder,
-  AiGrowthInsights
+  AiGrowthInsights,
+  SupportChannelItem,
+  ShopifyCustomerContext,
+  ConversationMessageItem
 } from '../models/analytics.models';
 
 @Injectable({
@@ -71,6 +74,15 @@ export class AnalyticsService {
 
   // WhatsApp Sending & Voice Processing State
   isSendingWhatsApp = signal<boolean>(false);
+
+  // ── Omnichannel Support Channels (DelightChat Style) ───────────────────────
+  supportChannels = signal<SupportChannelItem[]>([]);
+  isLoadingChannels = signal<boolean>(false);
+  showAddChannelModal = signal<boolean>(false);
+  showEmailConnectModal = signal<boolean>(false);
+  showShopifyConnectModal = signal<boolean>(false);
+  createdEmailChannel = signal<SupportChannelItem | null>(null);
+
 
   // Multi-Channel Marketing Attribution & Ad Spend ROAS
   channelAttributions = signal<ChannelAttribution[]>([
@@ -1417,6 +1429,11 @@ export class AnalyticsService {
             this.loadStoreMetrics(activeStore.id);
           }
         }
+      } else if (evt.event === 'channels:updated') {
+        const activeStore = this.storeService.activeStore();
+        if (activeStore?.id) {
+          this.loadSupportChannels(activeStore.id);
+        }
       }
     });
 
@@ -1425,6 +1442,7 @@ export class AnalyticsService {
       const activeStore = this.storeService.activeStore();
       if (activeStore?.id) {
         this.loadStoreIntegrations(activeStore.id);
+        this.loadSupportChannels(activeStore.id);
         this.loadStoreCatalog(activeStore.id);
         this.loadStoreMetrics(activeStore.id);
         this.loadStoreWhatsAppConversations(activeStore.id);
@@ -2035,6 +2053,88 @@ export class AnalyticsService {
       }
     } catch (err) {
       console.warn('[AnalyticsService] loadStoreOrders warning:', err);
+    }
+  }
+
+  async loadSupportChannels(storeId: string): Promise<void> {
+    this.isLoadingChannels.set(true);
+    try {
+      const token = this.authService.getAccessToken();
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      });
+
+      const res: any = await firstValueFrom(
+        this.http.get(`${environment.apiUrl}/support-channels/${storeId}`, { headers })
+      );
+
+      this.supportChannels.set(res?.success && Array.isArray(res.channels) ? res.channels : []);
+    } catch (err) {
+      console.warn('[AnalyticsService] loadSupportChannels warning:', err);
+    } finally {
+      this.isLoadingChannels.set(false);
+    }
+  }
+
+  private authHeaders(): HttpHeaders {
+    const token = this.authService.getAccessToken();
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    });
+  }
+
+  private async toastMessage(message: string, color: 'success' | 'danger' | 'warning' = 'success'): Promise<void> {
+    const toast = await this.toastCtrl.create({ message, duration: 2600, position: 'top', color });
+    await toast.present();
+  }
+
+  // ── Support Channels actions ────────────────────────────────────────────────
+
+  async connectMetaChannels(): Promise<void> {
+    const storeId = this.storeService.activeStore()?.id;
+    if (!storeId) return;
+    try {
+      const res: any = await firstValueFrom(
+        this.http.get(`${environment.apiUrl}/support-channels/${storeId}/meta/oauth-url`, { headers: this.authHeaders() })
+      );
+      if (res?.authUrl) window.location.href = res.authUrl;
+    } catch (err: any) {
+      await this.toastMessage(err?.error?.error || 'Meta connection is not configured on the server.', 'danger');
+    }
+  }
+
+  async connectEmailChannel(email: string, displayName: string): Promise<boolean> {
+    const storeId = this.storeService.activeStore()?.id;
+    if (!storeId || !email.trim()) return false;
+    try {
+      const res: any = await firstValueFrom(
+        this.http.post(
+          `${environment.apiUrl}/support-channels/${storeId}/email/connect`,
+          { email: email.trim(), displayName: displayName.trim() },
+          { headers: this.authHeaders() }
+        )
+      );
+      this.createdEmailChannel.set(res?.channel || null);
+      await this.loadSupportChannels(storeId);
+      return true;
+    } catch (err: any) {
+      await this.toastMessage(err?.error?.error || 'Email channel could not be connected.', 'danger');
+      return false;
+    }
+  }
+
+  async disconnectSupportChannel(channel: SupportChannelItem): Promise<void> {
+    const storeId = this.storeService.activeStore()?.id;
+    if (!storeId) return;
+    try {
+      await firstValueFrom(
+        this.http.post(`${environment.apiUrl}/support-channels/${storeId}/${channel.id}/disconnect`, {}, { headers: this.authHeaders() })
+      );
+      await this.loadSupportChannels(storeId);
+    } catch (err: any) {
+      await this.toastMessage(err?.error?.error || 'Disconnect failed.', 'danger');
     }
   }
 

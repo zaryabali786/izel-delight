@@ -1,0 +1,194 @@
+<div class="ai-page animate-fade-in">
+  <header class="hero">
+    <div>
+      <h2>AI Settings</h2>
+      <p>One place to control how AI answers customers on every channel. These settings apply to WhatsApp, Facebook and Instagram, and email alike.</p>
+    </div>
+    @if (draft()) {
+      <div class="summary">
+        <span class="big">{{ activeChannels() }}<small>/4</small></span>
+        <span>channels with AI on</span>
+      </div>
+    }
+  </header>
+
+  @if (error()) {<div class="banner error">{{ error() }}</div>}
+  @if (loading() && !draft()) {<div class="empty">Loading…</div>}
+
+  @if (draft(); as d) {
+    <nav class="jump" aria-label="Sections">
+      @for (s of sections; track s.id) {
+        <a [href]="'#ai-' + s.id" (click)="$event.preventDefault(); scrollTo(s.id)">{{ s.label }}</a>
+      }
+    </nav>
+
+    <!-- ═════ Automation ═════ -->
+    <section class="card" id="ai-automation">
+      <div class="card-head"><h3>Automation by channel</h3><p>Turn AI on or off for each channel separately. <b>Suggest</b> keeps a person in control, <b>Automatic</b> sends replies on its own.</p></div>
+
+      @for (c of channels; track c.key) {
+        <div class="chan" [class.on]="mode(c.key) !== 'off'">
+          <span class="chan-ico" [style.background]="c.tint"><ion-icon [name]="c.icon"></ion-icon></span>
+          <div class="chan-main">
+            <div class="chan-top">
+              <div>
+                <b>{{ c.title }}</b>
+                <span class="sub">{{ c.subtitle }}</span>
+              </div>
+              <div class="seg" role="radiogroup" [attr.aria-label]="c.title">
+                @for (m of modes; track m.id) {
+                  <button type="button" role="radio" [attr.aria-checked]="mode(c.key) === m.id" [class.on]="mode(c.key) === m.id" [class.auto]="m.id === 'auto'" (click)="setMode(c.key, m.id)">{{ m.label }}</button>
+                }
+              </div>
+            </div>
+            <p class="hint">{{ modeHint(c.key) }}</p>
+            <p class="note"><ion-icon name="information-circle-outline"></ion-icon>{{ c.note }}</p>
+            @if (c.key === 'comments' && mode('comments') !== 'off') {
+              <label class="check"><input type="checkbox" [ngModel]="d.channels.comments.private_reply" (ngModelChange)="setPrivateReply($event)" /> Also send the commenter a private message after a public reply (automatic mode)</label>
+            }
+            @if (!isConnected(c) && mode(c.key) !== 'off') {
+              <p class="warn"><ion-icon name="warning-outline"></ion-icon>This channel is not connected yet, so there is nothing to answer. <a routerLink="/dashboard/integrations">Connect it</a></p>
+            }
+          </div>
+        </div>
+      }
+    </section>
+
+    <!-- ═════ Instructions ═════ -->
+    <section class="card" id="ai-instructions">
+      <div class="card-head"><h3>Instructions for the AI</h3><p>Who the AI is and how it should behave. Keep it short and concrete.</p></div>
+      <textarea rows="5" [ngModel]="d.instructions" (ngModelChange)="mutate(n => n.instructions = $event)" maxlength="4000" placeholder="You are the friendly sales assistant of … Never discuss competitors. Always offer Cash on Delivery."></textarea>
+      <div class="meta">{{ d.instructions.length }}/4000</div>
+    </section>
+
+    <!-- ═════ Business info ═════ -->
+    <section class="card" id="ai-business">
+      <div class="card-head"><h3>Business information</h3><p>Facts the AI may quote. It will not make up anything that is not written here, in your FAQs or in your product catalog.</p></div>
+      <div class="grid2">
+        <label class="field wide">About your business<textarea rows="3" [ngModel]="d.business.about" (ngModelChange)="mutate(n => n.business.about = $event)" maxlength="1500" placeholder="What you sell, where you are based…"></textarea></label>
+        <label class="field">Opening hours<textarea rows="2" [ngModel]="d.business.hours" (ngModelChange)="mutate(n => n.business.hours = $event)" maxlength="1500" placeholder="Mon–Sat, 10am to 8pm"></textarea></label>
+        <label class="field">Delivery<textarea rows="2" [ngModel]="d.business.delivery" (ngModelChange)="mutate(n => n.business.delivery = $event)" maxlength="1500" placeholder="3–5 working days, free above Rs 5,000"></textarea></label>
+        <label class="field">Returns and exchanges<textarea rows="2" [ngModel]="d.business.returns" (ngModelChange)="mutate(n => n.business.returns = $event)" maxlength="1500" placeholder="7-day exchange on unworn items"></textarea></label>
+        <label class="field">Payment methods<textarea rows="2" [ngModel]="d.business.payments" (ngModelChange)="mutate(n => n.business.payments = $event)" maxlength="1500" placeholder="Cash on Delivery, bank transfer, JazzCash"></textarea></label>
+        <label class="field wide">Contact details<textarea rows="2" [ngModel]="d.business.contact" (ngModelChange)="mutate(n => n.business.contact = $event)" maxlength="1500" placeholder="Phone, email, store address"></textarea></label>
+      </div>
+    </section>
+
+    <!-- ═════ FAQs ═════ -->
+    <section class="card" id="ai-faqs">
+      <div class="card-head row">
+        <div><h3>FAQs <span class="count">{{ d.faqs.length }}</span></h3><p>Approved answers to common questions. The AI uses them as the source of truth.</p></div>
+        <button type="button" class="btn" (click)="showBulk.set(!showBulk())">{{ showBulk() ? 'Close import' : 'Import many' }}</button>
+      </div>
+
+      @if (showBulk()) {
+        <div class="bulk">
+          <textarea rows="5" [ngModel]="bulk()" (ngModelChange)="bulk.set($event)" placeholder="One per line:&#10;Do you offer Cash on Delivery? | Yes, in all cities of Pakistan.&#10;How long does delivery take? | 3 to 5 working days."></textarea>
+          <button type="button" class="btn primary" (click)="importBulk()">Add these FAQs</button>
+        </div>
+      }
+
+      <div class="faq-new">
+        <input type="text" placeholder="Question, e.g. Do you offer Cash on Delivery?" [ngModel]="newQ()" (ngModelChange)="newQ.set($event)" maxlength="300" />
+        <textarea rows="2" placeholder="Answer" [ngModel]="newA()" (ngModelChange)="newA.set($event)" maxlength="2000"></textarea>
+        <button type="button" class="btn primary" [disabled]="!newQ().trim() || !newA().trim()" (click)="addFaq()"><ion-icon name="add-outline"></ion-icon> Add FAQ</button>
+      </div>
+
+      @if (d.faqs.length > 6) {<input class="search" type="search" placeholder="Search FAQs" [ngModel]="faqSearch()" (ngModelChange)="faqSearch.set($event)" />}
+
+      <ul class="faqs">
+        @for (f of filteredFaqs(); track f.id) {
+          <li>
+            @if (editingId() === f.id) {
+              <input type="text" [ngModel]="f.question" (ngModelChange)="updateFaq(f.id, 'question', $event)" maxlength="300" />
+              <textarea rows="3" [ngModel]="f.answer" (ngModelChange)="updateFaq(f.id, 'answer', $event)" maxlength="2000"></textarea>
+              <div class="row-actions"><button type="button" class="btn small" (click)="editingId.set(null)"><ion-icon name="checkmark-outline"></ion-icon> Done</button></div>
+            } @else {
+              <div class="faq-text"><b>{{ f.question }}</b><p>{{ f.answer }}</p></div>
+              <div class="row-actions">
+                <button type="button" class="icon" (click)="editingId.set(f.id)" aria-label="Edit FAQ"><ion-icon name="create-outline"></ion-icon></button>
+                <button type="button" class="icon danger" (click)="removeFaq(f.id)" aria-label="Delete FAQ"><ion-icon name="trash-outline"></ion-icon></button>
+              </div>
+            }
+          </li>
+        }
+      </ul>
+      @if (d.faqs.length === 0) {<div class="empty small">No FAQs yet. Add your most common questions so replies stay accurate.</div>}
+    </section>
+
+    <!-- ═════ Style ═════ -->
+    <section class="card" id="ai-style">
+      <div class="card-head"><h3>Reply style</h3></div>
+      <div class="grid3">
+        <label class="field">Tone
+          <select [ngModel]="d.preferences.tone" (ngModelChange)="mutate(n => n.preferences.tone = $event)">@for (t of tones; track t) {<option [value]="t">{{ t | titlecase }}</option>}</select>
+        </label>
+        <label class="field">Language
+          <select [ngModel]="d.preferences.language" (ngModelChange)="mutate(n => n.preferences.language = $event)">@for (l of languages; track l.id) {<option [value]="l.id">{{ l.label }}</option>}</select>
+        </label>
+        <label class="field">Length
+          <select [ngModel]="d.preferences.length" (ngModelChange)="mutate(n => n.preferences.length = $event)">@for (l of lengths; track l) {<option [value]="l">{{ l | titlecase }}</option>}</select>
+        </label>
+        <label class="field wide3">Email signature
+          <textarea rows="2" [ngModel]="d.preferences.signature" (ngModelChange)="mutate(n => n.preferences.signature = $event)" maxlength="300" placeholder="Regards,&#10;Team Izel"></textarea>
+        </label>
+      </div>
+      <label class="check"><input type="checkbox" [ngModel]="d.preferences.send_product_images" (ngModelChange)="mutate(n => n.preferences.send_product_images = $event)" /> Attach the product photo when a customer asks about an item</label>
+    </section>
+
+    <!-- ═════ Rules ═════ -->
+    <section class="card" id="ai-rules">
+      <div class="card-head"><h3>Automation rules</h3><p>Safety limits for automatic replies.</p></div>
+      <label class="field">Hand off to a person when the customer says
+        <input type="text" [ngModel]="d.rules.handoff_keywords" (ngModelChange)="mutate(n => n.rules.handoff_keywords = $event)" maxlength="500" placeholder="refund, complaint, human, manager" />
+        <small>Comma separated. The AI does not answer these; the conversation is flagged <b>Needs a person</b>.</small>
+      </label>
+      <div class="rules">
+        <label class="check"><input type="checkbox" [ngModel]="d.rules.pause_when_agent_replies" (ngModelChange)="mutate(n => n.rules.pause_when_agent_replies = $event)" /> Stop the AI in a conversation once a team member replies</label>
+        <label class="check"><input type="checkbox" [ngModel]="d.rules.business_hours_only" (ngModelChange)="mutate(n => n.rules.business_hours_only = $event)" /> Only reply automatically during business hours</label>
+        @if (d.rules.business_hours_only) {
+          <div class="hours">
+            <label class="field">From<input type="time" [ngModel]="d.rules.business_hours.start" (ngModelChange)="mutate(n => n.rules.business_hours.start = $event)" /></label>
+            <label class="field">To<input type="time" [ngModel]="d.rules.business_hours.end" (ngModelChange)="mutate(n => n.rules.business_hours.end = $event)" /></label>
+            <label class="field">Time zone<select [ngModel]="d.rules.business_hours.tz" (ngModelChange)="mutate(n => n.rules.business_hours.tz = $event)">@for (z of timezones; track z) {<option [value]="z">{{ z }}</option>}</select></label>
+          </div>
+        }
+        <label class="field narrow">Maximum automatic replies per conversation
+          <input type="number" min="1" max="20" [ngModel]="d.rules.max_auto_replies_per_conversation" (ngModelChange)="mutate(n => n.rules.max_auto_replies_per_conversation = +$event)" />
+          <small>After this many, the conversation is handed to a person.</small>
+        </label>
+      </div>
+    </section>
+
+    <!-- ═════ Test ═════ -->
+    <section class="card" id="ai-test">
+      <div class="card-head"><h3>Try it</h3><p>See what the AI would answer using your <b>saved</b> settings. Nothing is sent to anyone.</p></div>
+      @if (dirty()) {<div class="banner">You have unsaved changes. Save first to test them.</div>}
+      <div class="test-row">
+        <select class="sel" [ngModel]="testChannel()" (ngModelChange)="testChannel.set($event)">@for (c of channels; track c.key) {<option [value]="c.key">{{ c.title }}</option>}</select>
+        <input type="text" placeholder="Type a customer message, e.g. Do you deliver to Quetta?" [ngModel]="testMessage()" (ngModelChange)="testMessage.set($event)" (keydown.enter)="runTest()" maxlength="500" />
+        <button type="button" class="btn primary" [disabled]="testing() || !testMessage().trim()" (click)="runTest()"><ion-icon name="play-outline"></ion-icon> {{ testing() ? 'Thinking…' : 'Test' }}</button>
+      </div>
+      @if (testError()) {<div class="banner error">{{ testError() }}</div>}
+      @if (testResult(); as r) {
+        <div class="result" [class.handoff]="r.handoff">
+          @if (r.reply) {<p class="reply">{{ r.reply }}</p>}
+          @if (r.handoff) {<p class="handoff-note"><ion-icon name="hand-left-outline"></ion-icon> {{ r.handoff_reason }}</p>}
+          @if (r.used_faqs.length) {<p class="src"><b>FAQs used:</b> {{ r.used_faqs.join(' · ') }}</p>}
+          @if (r.matched_products.length) {<p class="src"><b>Products considered:</b> {{ r.matched_products.join(' · ') }}</p>}
+        </div>
+      }
+    </section>
+  }
+
+  @if (toast(); as t) {<div class="toast" [class.error]="t.kind === 'error'" role="status">{{ t.text }}</div>}
+
+  @if (dirty()) {
+    <div class="savebar" role="region" aria-label="Unsaved changes">
+      <span>You have unsaved changes</span>
+      <span class="spacer"></span>
+      <button type="button" class="btn" (click)="discard()" [disabled]="saving()">Discard</button>
+      <button type="button" class="btn primary" (click)="save()" [disabled]="saving()">{{ saving() ? 'Saving…' : 'Save changes' }}</button>
+    </div>
+  }
+</div>

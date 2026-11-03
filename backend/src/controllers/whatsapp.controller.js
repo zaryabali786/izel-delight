@@ -1,5 +1,7 @@
 const StoreService = require('../services/store.service');
 const AIService = require('../services/ai.service');
+const WhatsAppService = require('../services/whatsapp.service');
+const { verifyMetaSignature } = require('../utils/crypto');
 
 const WhatsAppController = {
   /**
@@ -205,29 +207,43 @@ const WhatsAppController = {
    * Meta Cloud API Incoming Messages Webhook (POST)
    */
   async handleMetaWebhook(req, res) {
+    // Authenticate first: this endpoint triggers AI replies and outbound WhatsApp messages.
+    const secret = process.env.WHATSAPP_APP_SECRET || process.env.META_APP_SECRET;
+    if (secret) {
+      if (!verifyMetaSignature(req.rawBody, secret, req.headers['x-hub-signature-256'])) {
+        return res.status(403).send('Invalid signature');
+      }
+    } else if (process.env.NODE_ENV === 'production') {
+      console.error('[WhatsAppController] META_APP_SECRET / WHATSAPP_APP_SECRET is not set: refusing unsigned webhooks in production.');
+      return res.status(403).send('Webhook secret not configured');
+    }
+    // Acknowledge immediately; Meta retries if we take longer than a few seconds.
+    res.status(200).send('EVENT_RECEIVED');
     try {
       const body = req.body;
-      if (body.object === 'whatsapp_business_account') {
-        const entry = body.entry?.[0];
-        const changes = entry?.changes?.[0]?.value;
-        const message = changes?.messages?.[0];
-        const contact = changes?.contacts?.[0];
-        const phoneNumberId = changes?.metadata?.phone_number_id;
+      if (body.object !== 'whatsapp_business_account') return;
 
-        if (message && phoneNumberId) {
-          const from = message.from;
-          const customerName = contact?.profile?.name || 'WhatsApp Customer';
-
-          // Find store associated with this phoneNumberId
-          const db = require('../services/store.service').getStoreIntegrations; // or find store
-          // Process message asynchronously
-          console.log(`💬 [WhatsAppController] Incoming Meta message from ${from}:`, message.type);
+      for (const entry of body.entry || []) {
+        for (const change of entry.changes || []) {
+          const value = change.value || {};
+          const phoneNumberId = value.metadata?.phone_number_id;
+          for (const status of value.statuses || []) {
+            try {
+              WhatsAppService.applyStatus(status);
+            } catch (err) {
+              console.error('[WhatsAppController] status update error:', err.message);
+            }
+          }
+          for (const message of value.messages || []) {
+            const contact = (value.contacts || []).find((c) => c.wa_id === message.from);
+            WhatsAppService.handleIncoming({ phoneNumberId, message, contact }).catch((err) =>
+              console.error('[WhatsAppController] handleIncoming error:', err.response?.data?.error?.message || err.message)
+            );
+          }
         }
       }
-      return res.status(200).send('EVENT_RECEIVED');
     } catch (err) {
       console.error('[WhatsAppController] Meta webhook error:', err.message);
-      return res.status(200).send('EVENT_RECEIVED');
     }
   },
 };

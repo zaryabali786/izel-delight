@@ -1,0 +1,74 @@
+<div class="mk-page animate-fade-in">
+  <header class="mk-head">
+    <div>
+      <h2>Marketing Intelligence</h2>
+      <p>Blended performance, attribution, incrementality and audiences, computed from your real orders, ad spend and storefront pixel.</p>
+    </div>
+
+    <div class="range">
+      <div class="presets">
+        @for (p of presets; track p.days) {
+          <button type="button" [class.on]="preset() === p.days" (click)="setPreset(p.days)">{{ p.label }}</button>
+        }
+      </div>
+      <label class="date"><ion-icon name="calendar-outline"></ion-icon>
+        <input type="date" [ngModel]="from()" (ngModelChange)="setFrom($event)" [max]="to()" aria-label="From date" />
+        <span>to</span>
+        <input type="date" [ngModel]="to()" (ngModelChange)="setTo($event)" [min]="from()" aria-label="To date" />
+      </label>
+    </div>
+  </header>
+
+  <!-- Ask the analyst -->
+  <section class="ask">
+    <form (ngSubmit)="ask()">
+      <ion-icon name="sparkles-outline"></ion-icon>
+      <input type="text" name="q" placeholder="Ask about your marketing, e.g. “Which channel has the best MER this month?”" [ngModel]="question()" (ngModelChange)="question.set($event)" [disabled]="asking()" />
+      <button type="submit" [disabled]="asking() || !question().trim()"><ion-icon name="send-outline"></ion-icon>{{ asking() ? 'Thinking…' : 'Ask' }}</button>
+    </form>
+    @if (!answer() && !asking() && !askError()) {
+      <div class="examples">
+        @for (e of examples; track e) {<button type="button" (click)="ask(e)">{{ e }}</button>}
+      </div>
+    }
+    @if (askError()) {<div class="ask-out error">{{ askError() }}</div>}
+    @if (answer(); as a) {
+      <div class="ask-out">
+        <p>{{ a.text }}</p>
+        @if (a.sources.length) {<small>Based on: {{ a.sources.join(', ') }}</small>}
+      </div>
+    }
+  </section>
+
+  <!-- Anomaly alerts -->
+  @if (alerts().length && !alertsDismissed()) {
+    <section class="alerts">
+      @for (a of alerts(); track a.metric) {
+        <div class="alert" [class.critical]="a.severity === 'critical'" [class.warning]="a.severity === 'warning'" [class.info]="a.severity === 'info'">
+          <ion-icon [name]="a.severity === 'info' ? 'information-circle-outline' : 'warning-outline'"></ion-icon>
+          <span>{{ a.message }}</span>
+        </div>
+      }
+      <button type="button" class="dismiss" (click)="alertsDismissed.set(true)" aria-label="Dismiss alerts"><ion-icon name="close-outline"></ion-icon></button>
+    </section>
+  }
+
+  <nav class="tabs" role="tablist">
+    @for (t of tabs; track t.id) {
+      <button type="button" role="tab" [attr.aria-selected]="tab() === t.id" [class.on]="tab() === t.id" (click)="tab.set(t.id)">{{ t.label }}</button>
+    }
+  </nav>
+
+  @if (!storeKey()) {
+    <div class="mk-empty">Select a store to see marketing data.</div>
+  } @else {
+    @switch (tab()) {
+      @case ('overview') {<app-overview-tab [from]="from()" [to]="to()" [currency]="currency()" [storeKey]="storeKey()" (goto)="tab.set($event)" />}
+      @case ('attribution') {<app-attribution-tab [from]="from()" [to]="to()" [currency]="currency()" [storeKey]="storeKey()" (goto)="tab.set($event)" />}
+      @case ('incrementality') {<app-incrementality-tab [currency]="currency()" [storeKey]="storeKey()" />}
+      @case ('customers') {<app-customers-tab [from]="from()" [to]="to()" [currency]="currency()" [storeKey]="storeKey()" />}
+      @case ('activate') {<app-activate-tab [currency]="currency()" [storeKey]="storeKey()" />}
+      @case ('connect') {<app-connect-tab [currency]="currency()" [storeKey]="storeKey()" />}
+    }
+  }
+</div>

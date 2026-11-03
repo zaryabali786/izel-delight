@@ -1,0 +1,248 @@
+<div class="ib" [class.show-thread]="mobilePane() === 'thread'">
+  <!-- ═════ Channel rail ═════ -->
+  <aside class="rail" aria-label="Channels">
+    <div class="rail-title">Inbox</div>
+    @for (g of groups; track g.id) {
+      <button type="button" class="rail-item" [class.on]="inbox.group() === g.id && inbox.view() === 'conversations'" (click)="pickGroup(g.id)">
+        <ion-icon [name]="g.icon"></ion-icon>
+        <span>{{ g.label }}</span>
+        @if (groupCount(g.id) > 0) {<em>{{ groupCount(g.id) }}</em>}
+      </button>
+    }
+    <div class="rail-sep"></div>
+    <button type="button" class="rail-item" [class.on]="inbox.view() === 'posts'" (click)="showPosts()">
+      <ion-icon name="images-outline"></ion-icon><span>Posts &amp; comments</span>
+    </button>
+    <a class="rail-item link" routerLink="/dashboard/ai-settings"><ion-icon name="sparkles-outline"></ion-icon><span>AI settings</span></a>
+    <a class="rail-item link" routerLink="/dashboard/integrations"><ion-icon name="settings-outline"></ion-icon><span>Connect channels</span></a>
+  </aside>
+
+  <!-- ═════ Conversation / post list ═════ -->
+  <section class="list" aria-label="Conversations">
+    <header class="list-head">
+      @if (inbox.postKey()) {
+        <button type="button" class="back" (click)="inbox.postKey.set(null)"><ion-icon name="chevron-back-outline"></ion-icon> All posts</button>
+      } @else {
+        <h3>{{ listTitle() }}</h3>
+      }
+      <span class="spacer"></span>
+      <button type="button" class="icon-btn" (click)="inbox.reload()" title="Refresh" aria-label="Refresh"><ion-icon name="refresh-outline"></ion-icon></button>
+      <button type="button" class="btn small" [disabled]="inbox.syncing()" (click)="sync()" title="Import recent posts and comments from Facebook and Instagram">{{ inbox.syncing() ? 'Syncing…' : 'Sync posts' }}</button>
+    </header>
+
+    @if (notice(); as n) {<div class="notice" [class.error]="n.kind === 'error'" role="status">{{ n.text }}<button type="button" (click)="notice.set(null)" aria-label="Dismiss"><ion-icon name="close-outline"></ion-icon></button></div>}
+
+    @if (selectedPost(); as sp) {
+      <div class="post-head">
+        <b>{{ sp.post.is_ad ? (sp.post.ad_name || 'Ad') : (sp.platform === 'instagram' ? 'Instagram post' : 'Facebook post') }}</b>
+        <p>{{ sp.post.message || 'No caption' }}</p>
+        @if (sp.post.permalink_url) {<a [href]="sp.post.permalink_url" target="_blank" rel="noopener">Open post <ion-icon name="open-outline"></ion-icon></a>}
+      </div>
+    }
+    @if (inbox.view() === 'conversations' || inbox.postKey()) {
+      <label class="search"><ion-icon name="search-outline"></ion-icon><input type="search" placeholder="Search customer or message" [ngModel]="searchText()" (ngModelChange)="onSearch($event)" /></label>
+      <div class="kinds" role="group" aria-label="Type">
+        @for (k of kinds; track k.id) {<button type="button" [class.on]="inbox.kind() === k.id" (click)="pickKind(k.id)">{{ k.label }}</button>}
+      </div>
+      <div class="tabs" role="tablist">
+        @for (s of states; track s.id) {
+          <button type="button" role="tab" [attr.aria-selected]="inbox.state() === s.id" [class.on]="inbox.state() === s.id" (click)="pickState(s.id)">{{ s.label }}@if (s.id !== 'all' && stateCount(s.id) > 0) {<em>{{ stateCount(s.id) }}</em>}</button>
+        }
+      </div>
+
+      <div class="rows">
+        @if (inbox.loadError()) {<div class="empty error">{{ inbox.loadError() }}</div>}
+        @if (!inbox.loading() && inbox.visible().length === 0 && !inbox.loadError()) {
+          <div class="empty">
+            @if (inbox.counts().all === 0) {
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+              <b>No conversations yet</b>
+              <p>Connect WhatsApp, Facebook, Instagram or email. New messages and comments appear here on their own.</p>
+              <a class="btn primary small" routerLink="/dashboard/integrations">Connect a channel</a>
+            } @else {
+              <b>Nothing matches these filters</b>
+            }
+          </div>
+        }
+        @for (c of inbox.visible(); track c.id) {
+          <button type="button" class="row" [class.active]="inbox.active()?.id === c.id" [class.unread]="c.unread" (click)="select(c)">
+            <span class="avatar">{{ initial(c) }}<i class="badge" [style.background]="look(c.channel_type).color"><ion-icon [name]="look(c.channel_type).icon"></ion-icon></i></span>
+            <span class="body">
+              <span class="top"><b>{{ c.customer.name || 'Customer' }}</b><small>{{ timeAgo(c.last_message_at) }}</small></span>
+              <span class="preview">{{ c.last_message_preview }}</span>
+              <span class="chips">
+                <em class="chip" [class.new]="c.reply_state === 'new'" [class.replied]="c.reply_state === 'replied'">{{ stateLabel(c) }}</em>
+                <em class="chip muted">{{ look(c.channel_type).label }}</em>
+                @if (c.metadata.ai_draft) {<em class="chip ai"><ion-icon name="sparkles-outline"></ion-icon> AI draft</em>}
+                @if (c.metadata.needs_human) {<em class="chip warn"><ion-icon name="hand-left-outline"></ion-icon> Needs a person</em>}
+                @if (c.metadata.is_ad) {<em class="chip muted">Ad</em>}
+              </span>
+            </span>
+            @if (c.unread_count > 0) {<span class="count">{{ c.unread_count }}</span>}
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="rows">
+        @if (inbox.posts().length === 0) {
+          <div class="empty">
+            <ion-icon name="images-outline"></ion-icon>
+            <b>No posts with comments yet</b>
+            <p>Comments appear here as customers write them. Press <b>Sync posts</b> to import recent posts and their comments from Facebook and Instagram.</p>
+          </div>
+        }
+        @for (p of inbox.posts(); track p.key) {
+          <button type="button" class="post" (click)="openPost(p)">
+            <span class="thumb" [class.empty-thumb]="!p.post.picture">
+              @if (p.post.picture) {<img [src]="p.post.picture" alt="" loading="lazy" (error)="$any($event.target).style.display = 'none'" />} @else {<ion-icon name="images-outline"></ion-icon>}
+              <i class="badge" [style.background]="p.platform === 'instagram' ? '#E1306C' : '#1877F2'"><ion-icon [name]="p.platform === 'instagram' ? 'logo-instagram' : 'logo-facebook'"></ion-icon></i>
+            </span>
+            <span class="body">
+              <span class="top"><b>{{ p.post.is_ad ? (p.post.ad_name || 'Ad') : (p.channel_name || 'Post') }}</b><small>{{ timeAgo(p.last_activity) }}</small></span>
+              <span class="preview">{{ p.post.message || (p.post.unavailable ? 'Post details are not available' : 'No caption') }}</span>
+              <span class="chips">
+                <em class="chip muted">{{ p.total }} comment{{ p.total === 1 ? '' : 's' }}</em>
+                @if (p.unreplied > 0) {<em class="chip new">{{ p.unreplied }} to answer</em>}
+                @if (p.unread > 0) {<em class="chip ai">{{ p.unread }} unread</em>}
+              </span>
+            </span>
+          </button>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- ═════ Thread ═════ -->
+  <section class="thread" aria-label="Conversation">
+    @if (inbox.active(); as c) {
+      <header class="thread-head">
+        <button type="button" class="back mobile-only" (click)="back()" aria-label="Back to list"><ion-icon name="chevron-back-outline"></ion-icon></button>
+        <span class="avatar sm">{{ initial(c) }}<i class="badge" [style.background]="look(c.channel_type).color"><ion-icon [name]="look(c.channel_type).icon"></ion-icon></i></span>
+        <div class="who"><b>{{ c.customer.name || 'Customer' }}</b><small>{{ look(c.channel_type).label }}@if (c.channel?.name) { · {{ c.channel?.name }}}@if (c.subject && c.channel_type === 'email') { · {{ c.subject }}}</small></div>
+        <span class="spacer"></span>
+        <button type="button" class="btn small" (click)="inbox.setPaused(!c.metadata.ai_paused)" [title]="c.metadata.ai_paused ? 'Let the AI answer this conversation again' : 'Stop the AI from answering this conversation'">
+          <ion-icon [name]="c.metadata.ai_paused ? 'play-circle-outline' : 'pause-circle-outline'"></ion-icon> {{ c.metadata.ai_paused ? 'Resume AI' : 'Pause AI' }}
+        </button>
+        @if (c.status !== 'resolved') {<button type="button" class="btn small ok" (click)="inbox.setStatus('resolved')"><ion-icon name="checkmark-done-outline"></ion-icon> Resolve</button>}
+        @else {<button type="button" class="btn small" (click)="inbox.setStatus('open')">Reopen</button>}
+      </header>
+
+      @if (c.metadata.needs_human; as h) {
+        <div class="alert warn"><ion-icon name="hand-left-outline"></ion-icon><div><b>Needs a person.</b> {{ h.reason }}. The AI will not answer this conversation until you resume it.</div></div>
+      }
+
+      <div class="messages">
+        @if (isComment(c) && c.metadata.post; as post) {
+          <article class="post-card">
+            @if (post.picture) {<img [src]="post.picture" alt="" loading="lazy" (error)="$any($event.target).style.display = 'none'" />}
+            <div>
+              <div class="post-meta"><span>{{ post.platform === 'instagram' ? 'Instagram' : 'Facebook' }} {{ post.is_ad ? 'ad' : 'post' }}@if (post.ad_name) { · {{ post.ad_name }}}</span>@if (post.created_time) {<small>{{ post.created_time | date: 'mediumDate' }}</small>}</div>
+              <p>{{ post.message || (post.unavailable ? 'The post text could not be loaded (permissions or deleted post).' : 'No caption') }}</p>
+              @if (post.permalink_url) {<a [href]="post.permalink_url" target="_blank" rel="noopener">View on {{ post.platform === 'instagram' ? 'Instagram' : 'Facebook' }} <ion-icon name="open-outline"></ion-icon></a>}
+            </div>
+          </article>
+          <div class="comment-actions">
+            <button type="button" class="btn small" (click)="commentAction('like')"><ion-icon name="thumbs-up-outline"></ion-icon> Like</button>
+            <button type="button" class="btn small danger" (click)="commentAction('delete')"><ion-icon name="trash-outline"></ion-icon> Delete comment</button>
+          </div>
+        }
+
+        @for (m of c.messages ?? []; track m.id) {
+          <div class="msg" [class.mine]="m.sender_type !== 'customer'" [class.note]="m.is_private_note" [class.ai]="m.sender_type === 'ai'">
+            <div class="bubble">
+              <span class="who-line">
+                @if (m.sender_type === 'ai') {<ion-icon name="sparkles-outline"></ion-icon>}
+                @if (m.is_private_note) {<ion-icon name="lock-closed-outline"></ion-icon>}
+                {{ m.sender_type === 'ai' ? 'Store AI' : m.is_private_note ? 'Private note' : m.sender_name || (m.sender_type === 'customer' ? c.customer.name : 'Team') }}
+              </span>
+              <p>{{ m.message_text }}</p>
+              @for (a of m.attachments ?? []; track $index) {
+                @if (a.url && (a.type === 'image' || !a.type)) {<img class="att" [src]="a.url" [alt]="a.caption || 'attachment'" loading="lazy" />}
+              }
+              <small>
+                {{ m.created_at | date: 'MMM d, h:mm a' }}
+                @if (m.sender_type !== 'customer' && !m.is_private_note) {<span class="tick" [class.read]="m.status === 'read'" [class.failed]="m.status === 'failed'" [title]="m.status">@if (m.status === 'failed') {<ion-icon name="warning-outline"></ion-icon>} @else if (m.status === 'sent') {<ion-icon name="checkmark-outline"></ion-icon>} @else {<ion-icon name="checkmark-done-outline"></ion-icon>}</span>}
+              </small>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Composer -->
+      <div class="composer">
+        @if (c.metadata.ai_draft; as d) {
+          <div class="draft-banner">
+            <ion-icon name="sparkles-outline"></ion-icon>
+            <div><b>AI suggested a reply.</b> Review it, edit if needed, then send.<small>@if (d.sources?.post) { Used the post. } @if (d.sources?.faq_ids?.length) { Used {{ d.sources?.faq_ids?.length }} FAQ{{ d.sources?.faq_ids?.length === 1 ? '' : 's' }}. }</small></div>
+            <button type="button" class="btn small" (click)="dismissDraft()">Dismiss</button>
+          </div>
+        }
+        @if (windowClosed()) {
+          <div class="alert info"><ion-icon name="time-outline"></ion-icon><div>It has been more than 24 hours since this customer wrote. WhatsApp only allows replies within 24 hours, so sending will be refused until they message again.</div></div>
+        }
+        @if (sendError(); as e) {<div class="alert error"><ion-icon name="warning-outline"></ion-icon><div>{{ e.text }}</div></div>}
+
+        <textarea rows="3" [placeholder]="composerPlaceholder(c)" [ngModel]="reply()" (ngModelChange)="reply.set($event)" [class.note-box]="asNote()" (keydown.control.enter)="send()" (keydown.meta.enter)="send()"></textarea>
+
+        <div class="bar">
+          <button type="button" class="btn small ai" [disabled]="inbox.suggesting()" (click)="suggest()"><ion-icon name="sparkles-outline"></ion-icon> {{ inbox.suggesting() ? 'Writing…' : 'AI suggest' }}</button>
+          <div class="faq-wrap">
+            <button type="button" class="btn small" (click)="faqMenu.set(!faqMenu())" [disabled]="faqs().length === 0" [title]="faqs().length ? 'Insert a saved FAQ answer' : 'No FAQs yet. Add some in AI settings.'"><ion-icon name="help-circle-outline"></ion-icon> FAQs</button>
+            @if (faqMenu()) {
+              <div class="faq-menu">
+                @for (f of faqs(); track f.id) {<button type="button" (click)="insertFaq(f)"><b>{{ f.question }}</b><span>{{ f.answer }}</span></button>}
+              </div>
+            }
+          </div>
+          <label class="note-toggle"><input type="checkbox" [ngModel]="asNote()" (ngModelChange)="asNote.set($event)" /> <ion-icon name="lock-closed-outline"></ion-icon> Private note</label>
+          <span class="spacer"></span>
+          @if (isComment(c) && !asNote()) {<button type="button" class="btn small" [disabled]="!reply().trim()" (click)="privateDm()"><ion-icon name="mail-unread-outline"></ion-icon> Reply privately</button>}
+          <button type="button" class="btn primary" [disabled]="inbox.sending() || !reply().trim()" (click)="send()"><ion-icon name="send-outline"></ion-icon> {{ inbox.sending() ? 'Sending…' : sendLabel(c) }}</button>
+        </div>
+      </div>
+    } @else {
+      <div class="blank">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <b>Select a conversation</b>
+        <p>Replies you send here go out on the customer's own channel: WhatsApp, Messenger, Instagram, a public comment or email.</p>
+      </div>
+    }
+  </section>
+
+  <!-- ═════ Customer ═════ -->
+  @if (inbox.active(); as c) {
+    <aside class="side" aria-label="Customer">
+      <div class="side-card center">
+        <span class="avatar lg">{{ initial(c) }}</span>
+        <b>{{ c.customer.name || 'Customer' }}</b>
+        @if (c.customer.phone) {<span class="muted">{{ c.customer.phone }}</span>}
+        @if (c.customer.email) {<span class="muted">{{ c.customer.email }}</span>}
+      </div>
+
+      <div class="side-card">
+        <h4>Conversation</h4>
+        <dl>
+          <div><dt>Status</dt><dd>{{ c.status | titlecase }}</dd></div>
+          <div><dt>Reply state</dt><dd>{{ stateLabel(c) }}</dd></div>
+          <div><dt>AI</dt><dd>{{ c.metadata.ai_paused ? 'Paused here' : 'Follows AI settings' }}</dd></div>
+        </dl>
+        <a class="link" routerLink="/dashboard/ai-settings">Change AI settings</a>
+      </div>
+
+      <div class="side-card">
+        <h4>Orders</h4>
+        @if (c.shopifyContext && c.shopifyContext.total_orders > 0) {
+          <dl>
+            <div><dt>Orders</dt><dd>{{ c.shopifyContext.total_orders }}</dd></div>
+            <div><dt>Total spent</dt><dd>{{ c.shopifyContext.total_spent | number }}</dd></div>
+          </dl>
+          @for (o of c.shopifyContext.recent_orders; track o.id) {
+            <div class="order"><ion-icon name="receipt-outline"></ion-icon><div><b>#{{ o.order_number || o.id }}</b><small>{{ o.order_status }} · {{ o.total_amount | number }}</small>@if (o.tracking_number) {<small>{{ o.courier_name }} {{ o.tracking_number }}</small>}</div></div>
+          }
+        } @else {
+          <p class="muted">No orders found for this customer.</p>
+        }
+      </div>
+    </aside>
+  }
+</div>

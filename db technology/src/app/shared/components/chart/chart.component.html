@@ -1,0 +1,92 @@
+<figure class="chart">
+  <figcaption class="chart-head">
+    <div>
+      <b>{{ title() }}</b>
+      @if (subtitle()) {<span class="sub">{{ subtitle() }}</span>}
+    </div>
+    <button type="button" class="tbl-btn" (click)="showTable.set(!showTable())">{{ showTable() ? 'Chart' : 'Table' }}</button>
+  </figcaption>
+
+  @if (series().length > 1 || band()) {
+    <ul class="legend">
+      @for (p of paths(); track p.name) {
+        <li><span class="swatch line" [class.dashed]="p.dashed" [style.--c]="'var(--s' + p.slot + ')'"></span>{{ p.name }}</li>
+      }
+      @if (band()) {<li><span class="swatch band"></span>{{ band()?.label || 'Range' }}</li>}
+    </ul>
+  }
+
+  @if (!hasData()) {
+    <div class="empty" [style.height.px]="height()">No data in this period.</div>
+  } @else if (showTable()) {
+    <div class="table-wrap" [style.max-height.px]="height() + 20">
+      <table>
+        <thead>
+          <tr><th></th>@for (s of series(); track s.name) {<th>{{ s.name }}</th>}</tr>
+        </thead>
+        <tbody>
+          @for (r of tableRows(); track r.label) {
+            <tr><td>{{ shortLabel(r.label) }}</td>@for (c of r.cells; track $index) {<td>{{ c }}</td>}</tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="plot">
+      <svg
+        [attr.viewBox]="'0 0 ' + W() + ' ' + height()"
+        role="img"
+        [attr.aria-label]="title()"
+        (mousemove)="onMove($event)"
+        (touchmove)="onMove($event)"
+        (mouseleave)="onLeave()"
+      >
+        @for (t of yTicks(); track t.y) {
+          <line class="grid" [attr.x1]="PAD.l" [attr.x2]="W() - PAD.r" [attr.y1]="t.y" [attr.y2]="t.y" />
+          <text class="axis" [attr.x]="PAD.l - 8" [attr.y]="t.y + 4" text-anchor="end">{{ fmt(t.value) }}</text>
+        }
+        @for (t of xTicks(); track t.i) {
+          <text class="axis" [attr.x]="t.x" [attr.y]="height() - 8" text-anchor="middle">{{ t.label }}</text>
+        }
+
+        @if (yMin() < 0) {<line class="zero" [attr.x1]="PAD.l" [attr.x2]="W() - PAD.r" [attr.y1]="zeroY()" [attr.y2]="zeroY()" />}
+
+        @if (bandPath()) {<path class="band" [attr.d]="bandPath()" />}
+
+        @if (markerX() !== null) {
+          <line class="marker" [attr.x1]="markerX()" [attr.x2]="markerX()" [attr.y1]="PAD.t" [attr.y2]="height() - PAD.b" />
+          <text class="marker-label" [attr.x]="(markerX() || 0) + 6" [attr.y]="PAD.t + 10">{{ marker()?.label }}</text>
+        }
+
+        @if (type() === 'bar') {
+          @for (b of bars(); track b.i) {
+            @if (b.d) {<path [attr.d]="b.d" [class.dim]="hoverIndex() !== null && hoverIndex() !== b.i" [style.fill]="'var(--s' + (series()[0].slot || 1) + ')'" />}
+          }
+        } @else {
+          @for (p of paths(); track p.name) {
+            <path class="ln" [class.dashed]="p.dashed" [attr.d]="p.d" [style.stroke]="'var(--s' + p.slot + ')'" />
+          }
+        }
+
+        @if (tooltip(); as tip) {
+          @if (type() === 'line') {
+            <line class="cross" [attr.x1]="tip.x" [attr.x2]="tip.x" [attr.y1]="PAD.t" [attr.y2]="height() - PAD.b" />
+            @for (r of tip.rows; track r.name) {
+              @if (r.value !== null) {<circle class="dot" r="4" [attr.cx]="tip.x" [attr.cy]="yPos(r.value)" [style.fill]="'var(--s' + r.slot + ')'" />}
+            }
+          }
+        }
+      </svg>
+
+      @if (tooltip(); as tip) {
+        <div class="tip" [style.left.%]="tip.leftPct" [class.flip]="tip.leftPct > 60">
+          <b>{{ shortLabel(tip.label) }}</b>
+          @for (r of tip.rows; track r.name) {
+            <div class="row"><span class="swatch dot" [style.--c]="'var(--s' + r.slot + ')'"></span><span>{{ r.name }}</span><em>{{ r.value === null ? '–' : fmt(r.value) }}</em></div>
+          }
+          @if (tip.band) {<div class="row muted"><span class="swatch band"></span><span>{{ tip.bandLabel }}</span><em>{{ tip.band }}</em></div>}
+        </div>
+      }
+    </div>
+  }
+</figure>

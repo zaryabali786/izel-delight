@@ -1,0 +1,104 @@
+<div class="channels-page animate-fade-in">
+  <div class="channels-head glass-card">
+    <div>
+      <h2>Support Channels</h2>
+      <p>
+        Connect every place customers talk to <b>{{ activeStore()?.name || 'your store' }}</b>. Messages, comments and ad comments flow into one
+        <a routerLink="/dashboard/inbox">Inbox</a>, and your AI can answer them using your product catalog.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Shopify -->
+    <section class="card glass-card">
+      <header>
+        <span class="logo" style="background: #95bf47"><ion-icon name="bag-handle-outline"></ion-icon></span>
+        <div><h3>Shopify</h3><span class="muted">Orders, tracking and customers inside every conversation</span></div>
+        <span class="state" [class.on]="shopify().length > 0">{{ shopify().length > 0 ? 'Connected' : 'Not connected' }}</span>
+      </header>
+      <p class="hint">Connect your store from <a routerLink="/dashboard/integrations">Integrations</a>. Agents then see the customer's orders next to the chat.</p>
+    </section>
+
+    <!-- WhatsApp -->
+    <section class="card glass-card">
+      <header>
+        <span class="logo" style="background: #25d366"><ion-icon name="logo-whatsapp"></ion-icon></span>
+        <div><h3>WhatsApp</h3><span class="muted">Official WhatsApp Cloud API</span></div>
+        <span class="state" [class.on]="whatsappIntegration()?.status === 'connected'">
+          {{ whatsappIntegration()?.status === 'connected' ? 'Connected' : 'Not connected' }}
+        </span>
+      </header>
+      <p class="hint">
+        The AI answers every WhatsApp message from your catalog, sends the product photo and price, and books the order. Set the webhook URL
+        <code>/api/whatsapp/webhook</code> in your Meta app.
+      </p>
+      <button type="button" class="btn-primary" (click)="openWhatsAppSetup()">
+        <ion-icon name="link-outline"></ion-icon> {{ whatsappIntegration()?.status === 'connected' ? 'Manage' : 'Connect WhatsApp' }}
+      </button>
+    </section>
+
+    <!-- Facebook & Instagram -->
+    <section class="card glass-card wide">
+      <header>
+        <span class="logo" style="background: linear-gradient(135deg, #1877f2, #e1306c)"><ion-icon name="logo-facebook"></ion-icon></span>
+        <div><h3>Facebook & Instagram</h3><span class="muted">Messenger, Instagram DMs, post comments and ad comments</span></div>
+        <button type="button" class="btn-primary" (click)="analytics.connectMetaChannels()">
+          <ion-icon name="link-outline"></ion-icon> {{ facebook().length + instagram().length ? 'Reconnect / add page' : 'Connect with Meta' }}
+        </button>
+      </header>
+
+      <div class="empty" *ngIf="facebook().length + instagram().length === 0">
+        No Facebook page or Instagram account connected yet. After connecting, turn on AI replies in AI Settings.
+      </div>
+
+      <div class="channel-row" *ngFor="let ch of facebook().concat(instagram())">
+        <div class="row-top">
+          <span class="mini-logo" [style.background]="ch.channel_type === 'instagram' ? '#e1306c' : '#1877f2'">
+            <ion-icon [name]="ch.channel_type === 'instagram' ? 'logo-instagram' : 'logo-facebook'"></ion-icon>
+          </span>
+          <b>{{ ch.name }}</b>
+          <span class="state on">{{ ch.status }}</span>
+          <span class="spacer"></span>
+          <button type="button" class="btn-link danger" (click)="analytics.disconnectSupportChannel(ch)">Disconnect</button>
+        </div>
+
+        <p class="ai-link">AI replies for this account are set in <a routerLink="/dashboard/ai-settings">AI Settings</a>, together with your FAQs and business information.</p>
+
+      </div>
+    </section>
+
+    <!-- Email -->
+    <section class="card glass-card wide">
+      <header>
+        <span class="logo" style="background: #f59e0b"><ion-icon name="mail-outline"></ion-icon></span>
+        <div><h3>Email</h3><span class="muted">Support@ your domain as a shared inbox</span></div>
+        <button type="button" class="btn-primary" (click)="showEmailForm.set(!showEmailForm())">
+          <ion-icon [name]="showEmailForm() ? 'close-outline' : 'mail-outline'"></ion-icon> {{ showEmailForm() ? 'Cancel' : 'Add email' }}
+        </button>
+      </header>
+
+      <form class="email-form" *ngIf="showEmailForm()" (ngSubmit)="saveEmail()">
+        <input type="email" name="email" placeholder="support@yourstore.com" [ngModel]="emailAddress()" (ngModelChange)="emailAddress.set($event)" required />
+        <input type="text" name="name" placeholder="Display name (optional)" [ngModel]="emailName()" (ngModelChange)="emailName.set($event)" />
+        <button type="submit" class="btn-primary" [disabled]="!emailAddress().trim()">Save channel</button>
+      </form>
+
+      <div class="channel-row" *ngFor="let ch of email()">
+        <div class="row-top">
+          <span class="mini-logo" style="background: #f59e0b"><ion-icon name="mail-outline"></ion-icon></span>
+          <b>{{ ch.account_id }}</b>
+          <span class="state on">{{ ch.status }}</span>
+          <span class="spacer"></span>
+          <button type="button" class="btn-link danger" (click)="analytics.disconnectSupportChannel(ch)">Disconnect</button>
+        </div>
+        <p class="hint" *ngIf="ch.settings?.['inbound_address']">
+          Forward customer mail to
+          <code>{{ ch.settings['inbound_address'] }}</code>
+          <button type="button" class="btn-link" (click)="copy(ch.settings['inbound_address'])"><ion-icon name="copy-outline"></ion-icon> Copy</button>
+        </p>
+      </div>
+      <div class="empty" *ngIf="email().length === 0 && !showEmailForm()">No email channel yet.</div>
+    </section>
+  </div>
+</div>

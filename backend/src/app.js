@@ -19,6 +19,12 @@ const integrationsRoutes = require('./routes/integrations.routes');
 const whatsappRoutes = require('./routes/whatsapp.routes');
 const ordersRoutes = require('./routes/orders.routes');
 const aiRoutes = require('./routes/ai.routes');
+const supportChannelsRoutes = require('./routes/support-channels.routes');
+const inboxRoutes = require('./routes/inbox.routes');
+const marketingRoutes = require('./routes/marketing.routes');
+const pixelRoutes = require('./routes/pixel.routes');
+const connectionsRoutes = require('./routes/connections.routes');
+const aiSettingsRoutes = require('./routes/ai-settings.routes');
 
 // ─── Middleware Imports ──────────────────────────────────────────
 const { errorHandler, notFoundHandler } = require('./middleware/error.middleware');
@@ -29,11 +35,29 @@ const app = express();
 // Trust reverse proxies (Cloudflare, Nginx, AWS ALB, Vercel)
 app.set('trust proxy', 1);
 
+// ─── Public storefront pixel (cross-origin by design, mounted before helmet/CORS) ─────
+app.use('/api/pixel', pixelRoutes);
+
 // ─── High-Traffic Performance & Security Middleware ──────────────
 app.use(helmet()); // Security headers
+// FRONTEND_URL may be a comma-separated list of allowed origins
+const allowedOrigins = [
+  ...(process.env.FRONTEND_URL || 'http://localhost:8100').split(','),
+  'http://localhost:8100',
+  'http://127.0.0.1:8100',
+  'http://localhost:4200',
+  'http://127.0.0.1:4200',
+]
+  .map((o) => o.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || '*',
+    origin: (origin, cb) => {
+      // Allow non-browser clients (no Origin header) and whitelisted origins
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(new Error(`CORS: origin ${origin} not allowed`));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -95,6 +119,11 @@ app.use('/api/integrations', integrationsRoutes);
 app.use('/api/whatsapp', whatsappRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/support-channels', supportChannelsRoutes);
+app.use('/api/inbox', inboxRoutes);
+app.use('/api/marketing', marketingRoutes);
+app.use('/api/connections', connectionsRoutes);
+app.use('/api/ai-settings', aiSettingsRoutes);
 
 // ─── 404 & Error Handlers (must be LAST) ─────────────────────────
 app.use(notFoundHandler);

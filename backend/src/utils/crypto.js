@@ -85,9 +85,25 @@ function verifyHmacSha256(data, secret, expectedHmac) {
   }
 }
 
+/**
+ * Verify Meta's X-Hub-Signature-256 header ("sha256=<hex of HMAC-SHA256(rawBody, appSecret)>").
+ * Used for Messenger / Instagram / WhatsApp webhooks. Always false when anything is missing.
+ */
+function verifyMetaSignature(rawBody, appSecret, header) {
+  if (!rawBody || !appSecret || !header || !String(header).startsWith('sha256=')) return false;
+  try {
+    const expected = Buffer.from(crypto.createHmac('sha256', appSecret).update(rawBody).digest('hex'));
+    const given = Buffer.from(String(header).slice('sha256='.length));
+    return given.length === expected.length && crypto.timingSafeEqual(given, expected);
+  } catch (_) {
+    return false;
+  }
+}
+
 module.exports = {
   encrypt,
   decrypt,
   maskSecret,
   verifyHmacSha256,
+  verifyMetaSignature,
 };

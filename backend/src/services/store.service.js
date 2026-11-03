@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const { supabaseAdmin } = require('../config/supabase');
 
 const DATA_DIR = path.join(__dirname, '../../data');
-const LOCAL_STORES_FILE = path.join(DATA_DIR, 'stores_db.json');
+const LOCAL_STORES_FILE = process.env.STORES_DB_FILE || path.join(DATA_DIR, 'stores_db.json'); // tests point this at a temp copy
 
 // Ensure local fallback data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -18,10 +18,13 @@ function readLocalDb() {
       return {
         stores: [],
         integrations: [],
+        support_channels: [],
+        customers: [],
+        conversations: [],
+        conversation_messages: [],
         products: [],
         metrics: [],
         orders: [],
-        conversations: [],
         shipments: [],
         ad_metrics: [],
       };
@@ -30,10 +33,13 @@ function readLocalDb() {
     const data = JSON.parse(raw);
     if (!data.stores) data.stores = [];
     if (!data.integrations) data.integrations = [];
+    if (!data.support_channels) data.support_channels = [];
+    if (!data.customers) data.customers = [];
+    if (!data.conversations) data.conversations = [];
+    if (!data.conversation_messages) data.conversation_messages = [];
     if (!data.products) data.products = [];
     if (!data.metrics) data.metrics = [];
     if (!data.orders) data.orders = [];
-    if (!data.conversations) data.conversations = [];
     if (!data.shipments) data.shipments = [];
     if (!data.ad_metrics) data.ad_metrics = [];
     return data;
@@ -42,10 +48,13 @@ function readLocalDb() {
     return {
       stores: [],
       integrations: [],
+      support_channels: [],
+      customers: [],
+      conversations: [],
+      conversation_messages: [],
       products: [],
       metrics: [],
       orders: [],
-      conversations: [],
       shipments: [],
       ad_metrics: [],
     };
@@ -98,119 +107,37 @@ function normalizeProviderId(provider) {
   return map[provider] || provider;
 }
 
-function getDefaultIntegrations(storeId, userId, isNewSubStore = false, storeDomain = '') {
-  if (isNewSubStore) {
-    // New secondary store starts with completely clean unlinked integrations
-    return [
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'shopify', status: 'not_connected', config: { shop_domain: storeDomain || 'store.myshopify.com' }, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'meta-ads', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'google-ads', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'tiktok-ads', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'snapchat-ads', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'whatsapp-business', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'postex-courier', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'trax-logistics', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'leopards-courier', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'tcs-courier', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'call-courier', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'mnp-courier', status: 'not_connected', config: {}, last_synced_at: null },
-      { id: crypto.randomUUID(), store_id: storeId, user_id: userId, provider: 'rider-courier', status: 'not_connected', config: {}, last_synced_at: null },
-    ];
-  }
+const DEFAULT_PROVIDERS = [
+  'shopify',
+  'meta-ads',
+  'google-ads',
+  'tiktok-ads',
+  'snapchat-ads',
+  'whatsapp-business',
+  'postex-courier',
+  'trax-logistics',
+  'leopards-courier',
+  'tcs-courier',
+  'call-courier',
+  'mnp-courier',
+  'rider-courier',
+];
 
-  // Primary store default showcase
-  return [
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'shopify',
-      status: 'connected',
-      config: {
-        shop_domain: storeDomain || 'store.myshopify.com',
-        synced_products: 1450,
-        webhook_active: true,
-      },
-      last_synced_at: new Date().toISOString(),
-    },
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'meta-ads',
-      status: 'connected',
-      config: {
-        pixel_id: '908234120938471',
-        roas_sync: true,
-      },
-      last_synced_at: new Date().toISOString(),
-    },
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'tiktok-ads',
-      status: 'connected',
-      config: {
-        pixel_id: 'TT-76541289',
-        reels_tracking: true,
-      },
-      last_synced_at: new Date().toISOString(),
-    },
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'postex-courier',
-      status: 'connected',
-      config: {
-        merchant_code: 'PX-9921',
-        auto_fraud_detect: true,
-      },
-      last_synced_at: new Date().toISOString(),
-    },
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'trax-logistics',
-      status: 'not_connected',
-      config: {},
-      last_synced_at: null,
-    },
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'google-ads',
-      status: 'connected',
-      config: {
-        conversion_id: 'AW-9812034',
-      },
-      last_synced_at: new Date().toISOString(),
-    },
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'snapchat-ads',
-      status: 'not_connected',
-      config: {},
-      last_synced_at: null,
-    },
-    {
-      id: crypto.randomUUID(),
-      store_id: storeId,
-      user_id: userId,
-      provider: 'whatsapp-business',
-      status: 'connected',
-      config: {
-        phone_number_id: '109284719283719',
-        bot_active: true,
-      },
-      last_synced_at: new Date().toISOString(),
-    },
-  ];
+/**
+ * Every store starts with nothing connected. (An earlier version pre-marked Meta, TikTok, PostEx,
+ * Google and WhatsApp as "connected" on a user's first store as demo data; for a SaaS that told every
+ * new customer they had integrations they never made.) Only real connections are ever "connected".
+ */
+function getDefaultIntegrations(storeId, userId, _isNewSubStore = true, storeDomain = '') {
+  return DEFAULT_PROVIDERS.map((provider) => ({
+    id: crypto.randomUUID(),
+    store_id: storeId,
+    user_id: userId,
+    provider,
+    status: 'not_connected',
+    config: provider === 'shopify' && storeDomain ? { shop_domain: storeDomain } : {},
+    last_synced_at: null,
+  }));
 }
 
 function getDefaultMetrics(storeId) {
@@ -1078,6 +1005,491 @@ const StoreService = {
     }
     writeLocalDb(db);
     return updatedMetrics;
+  },
+
+  // ── Omnichannel Support Channels (DelightChat Style) ───────────────────────
+
+  async getStoreSupportChannels(storeId) {
+    const db = readLocalDb();
+    const channels = db.support_channels.filter((c) => c.store_id === storeId);
+    // Sanitize credentials from output
+    return channels.map((c) => ({
+      id: c.id,
+      store_id: c.store_id,
+      channel_type: c.channel_type,
+      name: c.name,
+      account_id: c.account_id,
+      status: c.status,
+      webhook_verified: !!c.webhook_verified,
+      settings: c.settings || {},
+      last_synced_at: c.last_synced_at,
+      created_at: c.created_at,
+      updated_at: c.updated_at,
+    }));
+  },
+
+  async getSupportChannelById(storeId, channelId) {
+    const db = readLocalDb();
+    return db.support_channels.find((c) => c.id === channelId && c.store_id === storeId) || null;
+  },
+
+  async findSupportChannelByAccount(storeId, channelType, accountId) {
+    const db = readLocalDb();
+    return (
+      db.support_channels.find(
+        (c) =>
+          c.store_id === storeId &&
+          c.channel_type === channelType &&
+          String(c.account_id).toLowerCase() === String(accountId).toLowerCase()
+      ) || null
+    );
+  },
+
+  async findSupportChannelGlobal(channelType, accountId) {
+    const db = readLocalDb();
+    return (
+      db.support_channels.find(
+        (c) =>
+          c.channel_type === channelType &&
+          String(c.account_id).toLowerCase() === String(accountId).toLowerCase()
+      ) || null
+    );
+  },
+
+  async findSupportChannelByInboundEmail(toAddress) {
+    const db = readLocalDb();
+    const cleanTo = (toAddress || '').toLowerCase();
+    return (
+      db.support_channels.find((c) => {
+        if (c.channel_type !== 'email') return false;
+        const inbound = c.settings?.inbound_address?.toLowerCase();
+        const account = c.account_id?.toLowerCase();
+        return (inbound && cleanTo.includes(inbound)) || (account && cleanTo.includes(account));
+      }) || null
+    );
+  },
+
+  readLocalDb() {
+    return readLocalDb();
+  },
+
+  writeLocalDb(data) {
+    return writeLocalDb(data);
+  },
+
+  async upsertSupportChannel(storeId, userId, channelData) {
+    const db = readLocalDb();
+    const cleanAccount = String(channelData.account_id || '').trim().toLowerCase();
+    const index = db.support_channels.findIndex(
+      (c) =>
+        c.store_id === storeId &&
+        c.channel_type === channelData.channel_type &&
+        String(c.account_id || '').toLowerCase() === cleanAccount
+    );
+
+    const now = new Date().toISOString();
+    const channelRecord = {
+      id: index >= 0 ? db.support_channels[index].id : crypto.randomUUID(),
+      store_id: storeId,
+      user_id: userId,
+      channel_type: channelData.channel_type,
+      name: channelData.name || channelData.channel_type,
+      account_id: channelData.account_id,
+      status: channelData.status || 'connected',
+      credentials_encrypted: channelData.credentials_encrypted || null,
+      webhook_verified: channelData.webhook_verified !== undefined ? channelData.webhook_verified : true,
+      settings: channelData.settings || {},
+      last_synced_at: now,
+      created_at: index >= 0 ? db.support_channels[index].created_at : now,
+      updated_at: now,
+    };
+
+    if (index >= 0) {
+      db.support_channels[index] = channelRecord;
+    } else {
+      db.support_channels.push(channelRecord);
+    }
+
+    writeLocalDb(db);
+    return channelRecord;
+  },
+
+  async updateSupportChannel(storeId, channelId, updates) {
+    const db = readLocalDb();
+    const index = db.support_channels.findIndex((c) => c.id === channelId && c.store_id === storeId);
+    if (index === -1) return null;
+
+    db.support_channels[index] = {
+      ...db.support_channels[index],
+      ...updates,
+      updated_at: new Date().toISOString(),
+    };
+    writeLocalDb(db);
+    return db.support_channels[index];
+  },
+
+  async deleteSupportChannel(storeId, channelId) {
+    const db = readLocalDb();
+    const index = db.support_channels.findIndex((c) => c.id === channelId && c.store_id === storeId);
+    if (index >= 0) {
+      const removed = db.support_channels.splice(index, 1)[0];
+      writeLocalDb(db);
+      return removed;
+    }
+    return null;
+  },
+
+  // ── Unified Customer Resolution Layer ──────────────────────────────────────
+
+  async getStoreCustomers(storeId) {
+    const db = readLocalDb();
+    return db.customers.filter((c) => c.store_id === storeId);
+  },
+
+  async findCustomerById(storeId, customerId) {
+    const db = readLocalDb();
+    return db.customers.find((c) => c.id === customerId && c.store_id === storeId) || null;
+  },
+
+  /** Fill in a real name / avatar once the platform tells us who a placeholder customer is. */
+  async updateCustomerProfile(storeId, customerId, { name, avatar_url } = {}) {
+    const db = readLocalDb();
+    const c = db.customers.find((x) => x.id === customerId && x.store_id === storeId);
+    if (!c) return null;
+    if (name) c.name = name;
+    if (avatar_url) c.avatar_url = avatar_url;
+    c.updated_at = new Date().toISOString();
+    writeLocalDb(db);
+    return c;
+  },
+
+  async findOrCreateCustomer(storeId, customerData) {
+    const db = readLocalDb();
+    const email = (customerData.email || '').trim().toLowerCase();
+    const phone = (customerData.phone || customerData.whatsapp_phone || '').replace(/[^0-9]/g, '');
+    const shopifyId = customerData.shopify_customer_id ? String(customerData.shopify_customer_id) : null;
+    const psid = customerData.facebook_psid ? String(customerData.facebook_psid) : null;
+    const igId = customerData.instagram_id ? String(customerData.instagram_id) : null;
+
+    // Multi-identifier resolution
+    let customer = db.customers.find((c) => {
+      if (c.store_id !== storeId) return false;
+      if (email && c.email && c.email.toLowerCase() === email) return true;
+      if (phone && c.phone && c.phone.replace(/[^0-9]/g, '').includes(phone)) return true;
+      if (phone && c.whatsapp_phone && c.whatsapp_phone.replace(/[^0-9]/g, '').includes(phone)) return true;
+      if (shopifyId && String(c.shopify_customer_id) === shopifyId) return true;
+      if (psid && String(c.facebook_psid) === psid) return true;
+      if (igId && String(c.instagram_id) === igId) return true;
+      return false;
+    });
+
+    const now = new Date().toISOString();
+
+    if (customer) {
+      // Update with any additional newly resolved identifiers
+      let updated = false;
+      if (email && !customer.email) { customer.email = email; updated = true; }
+      if (phone && !customer.phone) { customer.phone = phone; updated = true; }
+      if (customerData.whatsapp_phone && !customer.whatsapp_phone) { customer.whatsapp_phone = customerData.whatsapp_phone; updated = true; }
+      if (shopifyId && !customer.shopify_customer_id) { customer.shopify_customer_id = shopifyId; updated = true; }
+      if (psid && !customer.facebook_psid) { customer.facebook_psid = psid; updated = true; }
+      if (igId && !customer.instagram_id) { customer.instagram_id = igId; updated = true; }
+      if (customerData.name && (!customer.name || customer.name === 'Guest' || customer.name === 'Customer')) {
+        customer.name = customerData.name;
+        updated = true;
+      }
+      if (customerData.city && !customer.city) { customer.city = customerData.city; updated = true; }
+      if (customerData.total_spent) { customer.total_spent = Number(customerData.total_spent); updated = true; }
+      if (customerData.orders_count) { customer.orders_count = Number(customerData.orders_count); updated = true; }
+
+      if (updated) {
+        customer.updated_at = now;
+        writeLocalDb(db);
+      }
+      return customer;
+    }
+
+    // Create new unified customer
+    const newCustomer = {
+      id: crypto.randomUUID(),
+      store_id: storeId,
+      name: customerData.name || 'Customer',
+      email: email || null,
+      phone: customerData.phone || customerData.whatsapp_phone || null,
+      avatar_url: customerData.avatar_url || null,
+      shopify_customer_id: shopifyId,
+      facebook_psid: psid,
+      instagram_id: igId,
+      whatsapp_phone: customerData.whatsapp_phone || null,
+      orders_count: Number(customerData.orders_count) || 0,
+      total_spent: Number(customerData.total_spent) || 0,
+      city: customerData.city || 'Karachi',
+      metadata: customerData.metadata || {},
+      created_at: now,
+      updated_at: now,
+    };
+
+    db.customers.unshift(newCustomer);
+    writeLocalDb(db);
+    return newCustomer;
+  },
+
+  // ── Unified Omnichannel Conversations & Messages ──────────────────────────
+
+  /**
+   * Conversation list for the inbox. Each row carries a derived reply state:
+   *   new      - nobody has replied yet
+   *   replied  - the last message came from us (agent or AI)
+   *   awaiting - the customer wrote again after our last reply
+   * `unread` is separate: the customer has written something no agent has opened yet.
+   */
+  async getStoreConversations(storeId, filters = {}) {
+    const db = readLocalDb();
+    const msgsByConv = new Map();
+    for (const m of db.conversation_messages) {
+      if (m.store_id !== storeId || m.is_private_note) continue;
+      const list = msgsByConv.get(m.conversation_id) || [];
+      list.push(m);
+      msgsByConv.set(m.conversation_id, list);
+    }
+
+    const rows = db.conversations
+      .filter((c) => c.store_id === storeId)
+      .map((conv) => {
+        const msgs = (msgsByConv.get(conv.id) || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        const last = msgs[msgs.length - 1];
+        const hasReply = msgs.some((m) => m.sender_type === 'agent' || m.sender_type === 'ai');
+        const replyState = !hasReply ? 'new' : last && last.sender_type !== 'customer' ? 'replied' : 'awaiting';
+        const customer = conv.customer_id ? db.customers.find((c) => c.id === conv.customer_id) : null;
+        const channel = conv.channel_id ? db.support_channels.find((ch) => ch.id === conv.channel_id) : null;
+        return {
+          ...conv,
+          reply_state: replyState,
+          unread: (conv.unread_count || 0) > 0,
+          customer: customer || { name: 'Customer', email: '', phone: '' },
+          channel: channel ? { name: channel.name, type: channel.channel_type, account_id: channel.account_id } : null,
+        };
+      });
+
+    const group = (t) => (t === 'whatsapp' ? 'whatsapp' : t === 'email' ? 'email' : String(t).includes('comment') ? 'comments' : 'dms');
+    const platform = (t) => (String(t).startsWith('facebook') ? 'facebook' : String(t).startsWith('instagram') ? 'instagram' : null);
+    const counts = { all: rows.length, unread: 0, new: 0, replied: 0, by_channel: { whatsapp: 0, dms: 0, comments: 0, email: 0, facebook: 0, instagram: 0 } };
+    for (const r of rows) {
+      if (r.unread) counts.unread++;
+      if (r.reply_state === 'new') counts.new++;
+      if (r.reply_state === 'replied') counts.replied++;
+      counts.by_channel[group(r.channel_type)]++;
+      if (platform(r.channel_type)) counts.by_channel[platform(r.channel_type)]++;
+    }
+
+    let list = rows;
+    if (filters.channel_type && filters.channel_type !== 'all') {
+      list = list.filter((c) => c.channel_type === filters.channel_type || group(c.channel_type) === filters.channel_type || platform(c.channel_type) === filters.channel_type);
+    }
+    // Within a platform: only direct messages, or only comments
+    if (filters.kind === 'messages') list = list.filter((c) => group(c.channel_type) === 'dms');
+    else if (filters.kind === 'comments') list = list.filter((c) => group(c.channel_type) === 'comments');
+    if (filters.status && filters.status !== 'all') list = list.filter((c) => c.status === filters.status);
+    if (filters.state === 'unread') list = list.filter((c) => c.unread);
+    else if (filters.state === 'new') list = list.filter((c) => c.reply_state === 'new');
+    else if (filters.state === 'replied') list = list.filter((c) => c.reply_state === 'replied');
+    if (filters.search) {
+      const q = String(filters.search).toLowerCase();
+      list = list.filter(
+        (c) =>
+          (c.subject && c.subject.toLowerCase().includes(q)) ||
+          (c.last_message_preview && c.last_message_preview.toLowerCase().includes(q)) ||
+          (c.customer && String(c.customer.name || '').toLowerCase().includes(q))
+      );
+    }
+    list.sort((a, b) => new Date(b.last_message_at || b.updated_at) - new Date(a.last_message_at || a.updated_at));
+    return { conversations: list, counts };
+  },
+
+  async getConversationWithDetails(storeId, conversationId) {
+    const db = readLocalDb();
+    const conv = db.conversations.find((c) => c.id === conversationId && c.store_id === storeId);
+    if (!conv) return null;
+
+    const customer = conv.customer_id ? db.customers.find((c) => c.id === conv.customer_id) : null;
+    const channel = conv.channel_id ? db.support_channels.find((ch) => ch.id === conv.channel_id) : null;
+    const messages = db.conversation_messages
+      .filter((m) => m.conversation_id === conversationId && m.store_id === storeId)
+      .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+    // Retrieve real Shopify orders for customer
+    let shopifyContext = null;
+    if (customer) {
+      const customerOrders = db.orders.filter(
+        (o) =>
+          o.store_id === storeId &&
+          ((customer.phone && o.customer_phone && o.customer_phone.includes(customer.phone.replace(/[^0-9]/g, ''))) ||
+            (customer.email && o.customer_email && o.customer_email.toLowerCase() === customer.email.toLowerCase()))
+      );
+
+      const totalSpent = customerOrders.reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
+      shopifyContext = {
+        customer_id: customer.shopify_customer_id,
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+        total_orders: customerOrders.length,
+        total_spent: totalSpent,
+        recent_orders: customerOrders.slice(0, 5),
+      };
+    }
+
+    return {
+      ...conv,
+      customer,
+      channel,
+      messages,
+      shopifyContext,
+    };
+  },
+
+  async findOrCreateConversation(storeId, convData) {
+    const db = readLocalDb();
+    let conv = null;
+
+    if (convData.external_thread_id) {
+      conv = db.conversations.find(
+        (c) => c.store_id === storeId && c.external_thread_id === String(convData.external_thread_id)
+      );
+    }
+
+    if (!conv && convData.customer_id && convData.channel_type) {
+      conv = db.conversations.find(
+        (c) =>
+          c.store_id === storeId &&
+          c.customer_id === convData.customer_id &&
+          c.channel_type === convData.channel_type &&
+          c.status !== 'closed'
+      );
+    }
+
+    const now = new Date().toISOString();
+
+    if (!conv) {
+      conv = {
+        id: crypto.randomUUID(),
+        store_id: storeId,
+        channel_id: convData.channel_id || null,
+        channel_type: convData.channel_type, // 'whatsapp', 'facebook_messenger', 'facebook_comment', 'facebook_ad_comment', 'instagram_dm', 'instagram_comment', 'instagram_ad_comment', 'email'
+        customer_id: convData.customer_id || null,
+        external_thread_id: convData.external_thread_id ? String(convData.external_thread_id) : null,
+        subject: convData.subject || null,
+        status: convData.status || 'open',
+        priority: convData.priority || 'normal',
+        assigned_agent: convData.assigned_agent || null,
+        last_message_at: convData.created_at || now,
+        last_message_preview: convData.last_message_preview || '',
+        unread_count: convData.unread_count !== undefined ? convData.unread_count : 1,
+        metadata: convData.metadata || {},
+        created_at: convData.created_at || now,
+        updated_at: convData.created_at || now,
+      };
+      db.conversations.unshift(conv);
+      writeLocalDb(db);
+    } else {
+      if (convData.last_message_preview) {
+        conv.last_message_preview = convData.last_message_preview;
+        conv.last_message_at = now;
+        conv.updated_at = now;
+        if (convData.is_incoming) {
+          conv.unread_count = (conv.unread_count || 0) + 1;
+        }
+        writeLocalDb(db);
+      }
+    }
+
+    return conv;
+  },
+
+  async updateConversation(storeId, conversationId, updates) {
+    const db = readLocalDb();
+    const index = db.conversations.findIndex((c) => c.id === conversationId && c.store_id === storeId);
+    if (index === -1) return null;
+
+    db.conversations[index] = {
+      ...db.conversations[index],
+      ...updates,
+      updated_at: new Date().toISOString(),
+    };
+    writeLocalDb(db);
+    return db.conversations[index];
+  },
+
+  async addConversationMessage(storeId, conversationId, messageData) {
+    const db = readLocalDb();
+    const convIndex = db.conversations.findIndex((c) => c.id === conversationId && c.store_id === storeId);
+    if (convIndex === -1) {
+      throw new Error(`Conversation ${conversationId} not found in store ${storeId}`);
+    }
+
+    const now = messageData.created_at || new Date().toISOString();
+    const newMsg = {
+      id: crypto.randomUUID(),
+      store_id: storeId,
+      conversation_id: conversationId,
+      external_message_id: messageData.external_message_id ? String(messageData.external_message_id) : null,
+      sender_type: messageData.sender_type, // 'customer', 'agent', 'ai', 'system'
+      sender_name: messageData.sender_name || (messageData.sender_type === 'ai' ? 'Store AI' : 'Agent'),
+      sender_id: messageData.sender_id || null,
+      message_text: messageData.message_text || '',
+      message_type: messageData.message_type || 'text',
+      attachments: Array.isArray(messageData.attachments) ? messageData.attachments : [],
+      status: messageData.status || 'delivered',
+      is_private_note: !!messageData.is_private_note,
+      metadata: messageData.metadata || {},
+      created_at: now,
+    };
+
+    db.conversation_messages.push(newMsg);
+
+    // Historical import (sync from the platform): keep the thread in order but do not touch unread state or notify.
+    if (messageData.silent) {
+      const c = db.conversations[convIndex];
+      if (!c.last_message_at || new Date(now) >= new Date(c.last_message_at)) {
+        c.last_message_at = now;
+        c.last_message_preview = newMsg.message_text.slice(0, 140);
+      }
+      writeLocalDb(db);
+      return newMsg;
+    }
+
+    // Update conversation preview
+    db.conversations[convIndex].last_message_at = now;
+    db.conversations[convIndex].last_message_preview = newMsg.message_text.slice(0, 140);
+    db.conversations[convIndex].updated_at = now;
+    if (messageData.sender_type === 'customer') {
+      db.conversations[convIndex].unread_count = (db.conversations[convIndex].unread_count || 0) + 1;
+      if (db.conversations[convIndex].status === 'resolved' || db.conversations[convIndex].status === 'closed') {
+        db.conversations[convIndex].status = 'open'; // Reopen on customer reply
+      }
+    } else {
+      db.conversations[convIndex].unread_count = 0; // Clear unread on agent/AI reply
+    }
+
+    writeLocalDb(db);
+
+    // Emit realtime event via Socket.IO
+    const { emitToStore } = require('./realtime.service');
+    emitToStore(storeId, 'inbox:new_message', {
+      storeId,
+      conversationId,
+      message: newMsg,
+      conversation: db.conversations[convIndex],
+    });
+
+    return newMsg;
+  },
+
+  async getConversationMessages(storeId, conversationId) {
+    const db = readLocalDb();
+    return db.conversation_messages
+      .filter((m) => m.conversation_id === conversationId && m.store_id === storeId)
+      .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
   },
 };
 

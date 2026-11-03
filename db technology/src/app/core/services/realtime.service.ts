@@ -1,5 +1,6 @@
 import { Injectable, effect, signal } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { StoreService } from './store.service';
@@ -18,6 +19,10 @@ export class RealtimeService {
   private socket: Socket | null = null;
   isConnected = signal<boolean>(false);
   lastEvent = signal<RealtimeEvent | null>(null);
+
+  /** Every event as a stream: unlike `lastEvent`, two events in the same tick are both delivered. */
+  private bus = new Subject<RealtimeEvent>();
+  readonly events$: Observable<RealtimeEvent> = this.bus.asObservable();
 
   constructor(
     private authService: AuthService,
@@ -85,6 +90,13 @@ export class RealtimeService {
 
     // ── Multichannel Integrations Listeners ───────────────────────────────────
     this.registerEventListener('integration:status_changed');
+
+    // ── Unified inbox: new messages, AI drafts, hand-offs, delivery receipts ───
+    this.registerEventListener('inbox:new_message');
+    this.registerEventListener('inbox:draft');
+    this.registerEventListener('inbox:handoff');
+    this.registerEventListener('inbox:message_status');
+    this.registerEventListener('channels:updated');
   }
 
   private registerEventListener(eventName: string): void {
@@ -92,12 +104,14 @@ export class RealtimeService {
 
     this.socket.on(eventName, (payload) => {
       console.log(`📡 [Realtime Event: ${eventName}]`, payload);
-      this.lastEvent.set({
+      const evt: RealtimeEvent = {
         event: eventName,
         storeId: payload?.storeId || '',
         data: payload,
         timestamp: new Date().toISOString()
-      });
+      };
+      this.lastEvent.set(evt);
+      this.bus.next(evt);
     });
   }
 

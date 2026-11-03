@@ -58,39 +58,53 @@ export class StoreService {
   /**
    * Load all stores owned by authenticated user
    */
+  /** True after every attempt to load the user's stores failed (server down or restarting). */
+  loadFailed = signal<boolean>(false);
+
   async loadStores(): Promise<Store[]> {
     if (!this.authService.isAuthenticated()) return [];
     this.isLoading.set(true);
+    this.loadFailed.set(false);
 
-    try {
-      const res = await firstValueFrom(
-        this.http.get<ApiResponse<Store[]>>(`${this.apiUrl}/stores`, {
-          headers: this.getAuthHeaders()
-        })
-      );
+    // The API can be briefly unreachable (a dev server restarting, a deploy). Retry a few times with a growing
+    // pause instead of leaving the app on "Loading Store…" forever. Auth errors are not retried.
+    const delays = [0, 800, 2000, 4500, 9000];
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      if (delays[attempt]) await new Promise((r) => setTimeout(r, delays[attempt]));
+      try {
+        const res = await firstValueFrom(
+          this.http.get<ApiResponse<Store[]>>(`${this.apiUrl}/stores`, {
+            headers: this.getAuthHeaders()
+          })
+        );
 
-      if (res.success && Array.isArray(res.data)) {
-        this.stores.set(res.data);
+        if (res.success && Array.isArray(res.data)) {
+          this.stores.set(res.data);
 
-        // Determine active store
-        const savedId = localStorage.getItem(ACTIVE_STORE_KEY);
-        let selected = res.data.find((s) => s.id === savedId);
-        if (!selected && res.data.length > 0) {
-          selected = res.data[0];
+          // Determine active store
+          const savedId = localStorage.getItem(ACTIVE_STORE_KEY);
+          let selected = res.data.find((s) => s.id === savedId);
+          if (!selected && res.data.length > 0) {
+            selected = res.data[0];
+          }
+
+          if (selected) {
+            this.setActiveStore(selected);
+          }
+          this.isLoading.set(false);
+          return res.data;
         }
-
-        if (selected) {
-          this.setActiveStore(selected);
-        }
-        return res.data;
+        this.isLoading.set(false);
+        return [];
+      } catch (err: any) {
+        const status = err?.status;
+        console.error(`[StoreService] loadStores attempt ${attempt + 1} failed:`, err);
+        if (status === 401 || status === 403) break; // not a connectivity problem
       }
-      return [];
-    } catch (err) {
-      console.error('[StoreService] loadStores error:', err);
-      return [];
-    } finally {
-      this.isLoading.set(false);
     }
+    this.loadFailed.set(true);
+    this.isLoading.set(false);
+    return [];
   }
 
   /**

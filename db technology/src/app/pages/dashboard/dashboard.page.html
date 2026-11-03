@@ -63,6 +63,55 @@
             <span class="growth-delta">+34%</span>
           </a>
 
+          <!-- Marketing Intelligence -->
+          <a
+            routerLink="/dashboard/marketing"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="analytics-outline"></ion-icon>
+            </div>
+            <span class="item-label">Marketing</span>
+          </a>
+
+          <!-- Unified Support Inbox -->
+          <a
+            routerLink="/dashboard/inbox"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+            </div>
+            <span class="item-label">Inbox</span>
+            <span class="orders-count-pill" *ngIf="inbox.unreadTotal() > 0">{{ inbox.unreadTotal() }}</span>
+          </a>
+
+          <!-- AI Settings -->
+          <a
+            routerLink="/dashboard/ai-settings"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="sparkles-outline"></ion-icon>
+            </div>
+            <span class="item-label">AI Settings</span>
+          </a>
+
+          <!-- Support Channels -->
+          <a
+            routerLink="/dashboard/channels"
+            routerLinkActive="active"
+            class="nav-item-btn"
+          >
+            <div class="item-icon-box">
+              <ion-icon name="git-network-outline"></ion-icon>
+            </div>
+            <span class="item-label">Channels</span>
+          </a>
+
           <!-- 4. Orders Pipeline (Shopify & WhatsApp) -->
           <a
             routerLink="/dashboard/orders"
@@ -386,6 +435,12 @@
 
       <!-- Child Page Work Viewport -->
       <div class="content-scroll-container">
+        @if (storeService.loadFailed() && !storeService.activeStore()) {
+          <div class="store-load-banner" role="alert">
+            <span>We could not load your store. The server may be restarting or unreachable.</span>
+            <button type="button" (click)="storeService.loadStores()" [disabled]="storeService.isLoading()">{{ storeService.isLoading() ? 'Trying…' : 'Try again' }}</button>
+          </div>
+        }
         <router-outlet></router-outlet>
       </div>
     </div>

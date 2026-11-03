@@ -8,7 +8,8 @@ const AIService = require('./ai.service');
 const SHOPIFY_API_VERSION = process.env.SHOPIFY_API_VERSION || '2024-10';
 const SHOPIFY_CLIENT_ID = process.env.SHOPIFY_CLIENT_ID || '';
 const SHOPIFY_CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET || '';
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
+const { backendUrl } = require('../utils/urls');
+const BACKEND_URL = backendUrl();
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:8100';
 
 // In-memory idempotency cache for processed webhook IDs (expires in 1 hour)
@@ -101,7 +102,7 @@ const ShopifyService = {
   /**
    * 1. Generate Shopify OAuth Install URL
    */
-  generateAuthUrl(shopDomain, storeId, userId) {
+  generateAuthUrl(shopDomain, storeId, userId, { popup = false } = {}) {
     const shop = cleanShopDomain(shopDomain);
     if (!shop) throw new Error('Invalid Shopify store domain.');
 
@@ -119,7 +120,7 @@ const ShopifyService = {
     const redirectUri = `${BACKEND_URL}/api/shopify/callback`;
 
     // State contains storeId and userId with cryptographic signature
-    const statePayload = JSON.stringify({ storeId, userId, timestamp: Date.now() });
+    const statePayload = JSON.stringify({ storeId, userId, popup, timestamp: Date.now() });
     const stateSig = crypto.createHmac('sha256', SHOPIFY_CLIENT_SECRET || 'secret').update(statePayload).digest('hex');
     const state = Buffer.from(JSON.stringify({ payload: statePayload, sig: stateSig })).toString('base64');
 
@@ -175,7 +176,11 @@ const ShopifyService = {
     // Save encrypted token in store integrations
     await this.connectStore(storeId, userId, cleanShop, accessToken);
 
-    return { storeId, shop: cleanShop };
+    // Same follow-up as the token flow: register webhooks and pull the catalog in the background.
+    this.registerEssentialWebhooks(cleanShop, accessToken).catch((e) => console.warn('[ShopifyService] Webhook auto-registration notice:', e.message));
+    this.syncFullCatalog(storeId, cleanShop, accessToken).catch((e) => console.error('[ShopifyService] Initial sync error:', e.message));
+
+    return { storeId, shop: cleanShop, popup: !!stateData.popup };
   },
 
   /**
@@ -248,12 +253,33 @@ const ShopifyService = {
       platform: 'Shopify',
     });
 
+    // Also register as an Omnichannel Support Channel
+    await StoreService.upsertSupportChannel(storeId, userId, {
+      channel_type: 'shopify',
+      name: `Shopify: ${shopInfo.name || shop}`,
+      account_id: shop,
+      status: 'connected',
+      credentials_encrypted: encryptedToken,
+      webhook_verified: true,
+      settings: {
+        domain: shop,
+        shop_name: shopInfo.name || shop,
+        currency: shopInfo.currency || 'PKR',
+        installed_at: new Date().toISOString(),
+      },
+    });
+
     // Notify connected frontend
     emitToStore(storeId, 'shopify:connected', {
       shop,
       shopName: shopInfo.name || shop,
       currency: shopInfo.currency || 'PKR',
     });
+
+    // Background deep synchronization of Catalog, Customers & Orders
+    this.syncFullCatalog(storeId, shop, accessToken).catch((e) => console.warn('[Shopify] Catalog sync error:', e.message));
+    this.syncShopifyCustomers(storeId, shop, accessToken).catch((e) => console.warn('[Shopify] Customer sync error:', e.message));
+    this.syncShopifyOrders(storeId, shop, accessToken).catch((e) => console.warn('[Shopify] Orders sync error:', e.message));
   },
 
   /**
@@ -423,6 +449,100 @@ const ShopifyService = {
       console.error('[ShopifyService] Catalog sync error:', err.message);
       emitToStore(storeId, 'shopify:sync_failed', { storeId, error: err.message });
       throw err;
+    }
+  },
+
+  /**
+   * Sync real Shopify Customers into unified customers layer
+   */
+  async syncShopifyCustomers(storeId, shop, accessToken) {
+    try {
+      const res = await makeShopifyRequest({
+        shop,
+        accessToken,
+        endpoint: '/customers.json',
+        params: { limit: 50 },
+      });
+      const customers = res.data?.customers || [];
+      for (const c of customers) {
+        const fullName = `${c.first_name || ''} ${c.last_name || ''}`.trim() || 'Shopify Customer';
+        await StoreService.findOrCreateCustomer(storeId, {
+          shopify_customer_id: String(c.id),
+          name: fullName,
+          email: c.email,
+          phone: c.phone || c.default_address?.phone,
+          city: c.default_address?.city || 'Karachi',
+          orders_count: c.orders_count || 0,
+          total_spent: parseFloat(c.total_spent || '0'),
+          metadata: {
+            tags: c.tags,
+            currency: c.currency,
+            state: c.state,
+          },
+        });
+      }
+      console.log(`✅ [ShopifyService] Synced ${customers.length} real customers for store ${storeId}.`);
+    } catch (err) {
+      console.warn('[ShopifyService] syncShopifyCustomers notice:', err.message);
+    }
+  },
+
+  /**
+   * Sync real Shopify Orders
+   */
+  async syncShopifyOrders(storeId, shop, accessToken) {
+    try {
+      const res = await makeShopifyRequest({
+        shop,
+        accessToken,
+        endpoint: '/orders.json',
+        params: { limit: 50, status: 'any' },
+      });
+      const orders = res.data?.orders || [];
+      for (const o of orders) {
+        const orderNum = o.name || o.order_number ? String(o.name || o.order_number) : `ORD-${o.id}`;
+        const customerName = o.customer
+          ? `${o.customer.first_name || ''} ${o.customer.last_name || ''}`.trim()
+          : o.shipping_address?.name || 'Shopify Customer';
+        const customerPhone = o.customer?.phone || o.shipping_address?.phone || '';
+        const customerEmail = o.customer?.email || '';
+        const address = o.shipping_address ? `${o.shipping_address.address1 || ''} ${o.shipping_address.city || ''}` : '';
+
+        // Also ensure customer exists in unified table
+        if (customerEmail || customerPhone) {
+          await StoreService.findOrCreateCustomer(storeId, {
+            shopify_customer_id: o.customer?.id ? String(o.customer.id) : null,
+            name: customerName,
+            email: customerEmail,
+            phone: customerPhone,
+            city: o.shipping_address?.city || 'Karachi',
+          });
+        }
+
+        await StoreService.createStoreOrder(storeId, {
+          order_number: orderNum,
+          channel: 'shopify',
+          shopify_order_id: String(o.id),
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          customer_email: customerEmail,
+          address,
+          city: o.shipping_address?.city || 'Karachi',
+          total_amount: parseFloat(o.total_price || '0'),
+          payment_method: o.gateway?.toLowerCase().includes('cod') ? 'cod' : 'online',
+          payment_status: o.financial_status === 'paid' ? 'paid' : 'pending',
+          order_status: o.fulfillment_status === 'fulfilled' ? 'delivered' : 'unfulfilled',
+          items: (o.line_items || []).map((li) => ({
+            title: li.title,
+            price: parseFloat(li.price || '0'),
+            quantity: li.quantity || 1,
+            sku: li.sku || '',
+          })),
+        });
+      }
+      console.log(`✅ [ShopifyService] Synced ${orders.length} orders for store ${storeId}.`);
+    } catch (err) {
+      console.warn('[ShopifyService] syncShopifyOrders notice:', err.message);
     }
   },
 

@@ -42,6 +42,22 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/growth-deck/growth-deck.page').then((m) => m.GrowthDeckPage)
       },
       {
+        path: 'marketing',
+        loadComponent: () => import('./pages/marketing/marketing.page').then((m) => m.MarketingPage)
+      },
+      {
+        path: 'inbox',
+        loadComponent: () => import('./pages/inbox/inbox.page').then((m) => m.InboxPage)
+      },
+      {
+        path: 'ai-settings',
+        loadComponent: () => import('./pages/ai-settings/ai-settings.page').then((m) => m.AiSettingsPage)
+      },
+      {
+        path: 'channels',
+        loadComponent: () => import('./pages/channels/channels.page').then((m) => m.ChannelsPage)
+      },
+      {
         path: 'orders',
         loadComponent: () => import('./pages/orders/orders.page').then((m) => m.OrdersPage)
       },
@@ -51,7 +67,7 @@ export const routes: Routes = [
       },
       {
         path: 'integrations',
-        loadComponent: () => import('./pages/integrations/integrations.page').then((m) => m.IntegrationsPage)
+        loadComponent: () => import('./pages/connectors/connectors.page').then((m) => m.ConnectorsPage)
       },
       {
         path: 'settings',

@@ -266,6 +266,7 @@ const IntegrationsService = {
       'refreshToken',
       'webhookSecret',
       'developerToken',
+      'apiSecret',
     ];
 
     for (const [key, val] of Object.entries(rawFields)) {

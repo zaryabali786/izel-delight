@@ -1,5 +1,15 @@
 const ShopifyService = require('../services/shopify.service');
 const StoreService = require('../services/store.service');
+const Connections = require('../services/oauth/connections');
+
+/** The state is only signed (not encrypted); read the popup flag without trusting it for anything but UI. */
+function wantsPopup(state) {
+  try {
+    return !!JSON.parse(JSON.parse(Buffer.from(String(state), 'base64').toString('utf8')).payload).popup;
+  } catch (_) {
+    return false;
+  }
+}
 
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:8100';
 
@@ -57,11 +67,17 @@ const ShopifyController = {
         query: req.query,
       });
 
+      if (result.popup) {
+        return res.type('html').send(Connections.popupPage({ ok: true, provider: 'shopify', message: `${result.shop} connected. Syncing your catalog…` }));
+      }
       return res.redirect(
         `${FRONTEND_URL}/dashboard?shopify=connected&shop=${encodeURIComponent(result.shop)}&storeId=${result.storeId}`
       );
     } catch (err) {
       console.error('[ShopifyController] OAuth callback error:', err.message);
+      if (wantsPopup(req.query.state)) {
+        return res.type('html').send(Connections.popupPage({ ok: false, provider: 'shopify', message: err.message }));
+      }
       return res.redirect(`${FRONTEND_URL}/dashboard?shopify_error=${encodeURIComponent(err.message)}`);
     }
   },

@@ -1,0 +1,302 @@
+<div class="cn-page animate-fade-in">
+  <header class="cn-head">
+    <div class="title">
+      <h2>Connectors</h2>
+      <span class="store">{{ stores.activeStore()?.name }}</span>
+    </div>
+    <div class="chips" role="tablist">
+      @for (c of categories(); track c) {
+        <button type="button" role="tab" [attr.aria-selected]="category() === c" [class.on]="category() === c" (click)="category.set(c)">{{ c }}</button>
+      }
+    </div>
+    <label class="search">
+      <ion-icon name="search-outline"></ion-icon>
+      <input type="search" placeholder="Search for a connector…" [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    </label>
+  </header>
+
+  @if (error()) {<div class="banner error">{{ error() }}</div>}
+  @if (loading() && cards().length === 0) {<div class="empty">Loading connectors…</div>}
+
+  @for (s of sections(); track s.name) {
+    <section class="sec">
+      <div class="sec-head">
+        <h3>{{ s.name }}</h3>
+        <label class="only">
+          <span>Show configured connectors only</span>
+          <input type="checkbox" [checked]="s.only" (change)="toggleOnly(s.name)" />
+          <i class="knob"></i>
+        </label>
+      </div>
+
+      @if (s.items.length === 0) {<div class="empty small">Nothing connected in this group yet.</div>}
+
+      <div class="grid">
+        @for (c of s.items; track c.id) {
+          <article class="card" [class.off]="!c.configured" [class.dim]="c.auth === 'planned'">
+            <div class="top">
+              <div class="txt">
+                <b>{{ c.name }}</b>
+                <span class="desc">{{ c.description }}</span>
+              </div>
+              <span class="logo" [style.background]="tileBg(c)">
+                @if (logoSrc(c); as src) {
+                  <img [src]="src" [alt]="c.name + ' logo'" loading="lazy" />
+                } @else if (brand(c).icon) {
+                  <ion-icon [name]="brand(c).icon!"></ion-icon>
+                } @else {
+                  <b class="mono">{{ initials(c) }}</b>
+                }
+                @if (accountCount(c) > 0) {<em class="badge">{{ accountCount(c) }}</em>}
+              </span>
+            </div>
+
+            <div class="state" [class.ok]="statusTone(c) === 'ok'" [class.warn]="statusTone(c) === 'warn'">
+              @if (statusTone(c) === 'ok') {<ion-icon name="checkmark-circle-outline"></ion-icon>}
+              @if (statusTone(c) === 'warn') {<ion-icon name="warning-outline"></ion-icon>}
+              {{ statusText(c) }}
+            </div>
+
+            <div class="actions">
+              <button type="button" class="btn" [class.primary]="(!c.configured || c.needs_reauth) && c.auth !== 'planned' && !unavailable(c)" [disabled]="unavailable(c)" (click)="onPrimary(c)">
+                {{ primaryLabel(c) }}
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  @if (!loading() && sections().length === 0 && cards().length > 0) {<div class="empty">No connector matches “{{ search() }}”.</div>}
+</div>
+
+<!-- ═════════ Connect / Configure dialog ═════════ -->
+@if (dlg(); as d) {
+  @if (activeCard(); as a) {
+    <div class="overlay cn-overlay" appPortal (click)="onBackdrop($event)">
+      <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="cn-dlg-title" [style.--brand]="brand(a).color" [style.--brand-ink]="brand(a).ink || '#fff'">
+        <header class="dlg-head">
+          <span class="logo lg" [style.background]="tileBg(a)">
+            @if (logoSrc(a); as src) {
+              <img [src]="src" [alt]="a.name + ' logo'" />
+            } @else if (brand(a).icon) {
+              <ion-icon [name]="brand(a).icon!"></ion-icon>
+            } @else {
+              <b class="mono">{{ initials(a) }}</b>
+            }
+          </span>
+          <div class="ttl">
+            <h3 id="cn-dlg-title">{{ a.name }}</h3>
+            <p>
+              <span>{{ a.category }}</span>
+              <i class="dot"></i>
+              <span class="pill" [class.ok]="statusTone(a) === 'ok'" [class.warn]="statusTone(a) === 'warn'">{{ statusText(a) }}</span>
+            </p>
+          </div>
+          <button type="button" class="x" (click)="closeDialog()" [disabled]="waiting() || busy()" aria-label="Close"><ion-icon name="close-outline"></ion-icon></button>
+        </header>
+
+        <div class="dlg-body">
+          @if (flash(); as f) {
+            <div class="flash" [class.ok]="f.kind === 'ok'" [class.error]="f.kind === 'error'" [class.info]="f.kind === 'info'" role="status">
+              <ion-icon [name]="f.kind === 'ok' ? 'checkmark-circle-outline' : f.kind === 'error' ? 'warning-outline' : 'information-circle-outline'"></ion-icon>
+              <span>{{ f.text }}</span>
+            </div>
+          }
+
+          @if (waiting()) {
+            <div class="waiting">
+              <span class="spinner" aria-hidden="true"></span>
+              <div>
+                <b>Finish signing in in the window that opened</b>
+                <p>Complete the steps there. This dialog updates automatically when you are done. If you do not see a window, allow pop-ups for this site.</p>
+              </div>
+            </div>
+          } @else {
+
+            <!-- ───────── CONNECT (OAuth, not yet connected) ───────── -->
+            @if (d.mode === 'connect') {
+              @if (hasAccounts(a)) {
+                <ol class="steps-rail" aria-label="Steps">
+                  <li class="on"><i>1</i><span>Sign in with {{ brand(a).label || a.name }}</span></li>
+                  <li><i>2</i><span>Choose accounts</span></li>
+                  <li><i>3</i><span>Done</span></li>
+                </ol>
+              }
+              <p class="lead">{{ a.description }}. You will sign in on {{ brand(a).label || a.name }}'s own page. We never see your password.</p>
+              @if (a.hint) {<div class="flash info"><ion-icon name="information-circle-outline"></ion-icon><span>{{ a.hint }}</span></div>}
+
+              @if (a.access.length) {
+                <h4>What {{ a.name }} will be able to do</h4>
+                <ul class="access">
+                  @for (x of a.access; track x) {<li><ion-icon name="checkmark-outline"></ion-icon><span>{{ x }}</span></li>}
+                </ul>
+              }
+
+              @if (needShop()) {
+                <label class="field">Your Shopify store address
+                  <input type="text" placeholder="your-store.myshopify.com" [ngModel]="shopDomain()" (ngModelChange)="shopDomain.set($event)" (keydown.enter)="startOAuth(a)" autocomplete="off" />
+                </label>
+              }
+
+              <p class="secure"><ion-icon name="lock-closed-outline"></ion-icon> Access tokens are encrypted before they are stored. You can disconnect at any time.</p>
+            }
+
+            <!-- ───────── MANAGE (OAuth, connected) ───────── -->
+            @if (d.mode === 'manage' && a.connection; as cn) {
+              @if (hasAccounts(a) && justConnected()) {
+                <ol class="steps-rail" aria-label="Steps">
+                  <li class="done"><i><ion-icon name="checkmark-outline"></ion-icon></i><span>Signed in</span></li>
+                  <li class="on"><i>2</i><span>Choose accounts</span></li>
+                  <li><i>3</i><span>Done</span></li>
+                </ol>
+              }
+
+              <dl class="facts">
+                @if (cn.identity) {<div><dt>{{ a.id === 'shopify' ? 'Store' : 'Signed in as' }}</dt><dd>{{ cn.identity }}</dd></div>}
+                @if (a.sync_supported) {<div><dt>Last synced</dt><dd>{{ fmtDate(cn.last_synced_at) }}</dd></div>}
+                @if (cn.expires_at) {<div><dt>Connection valid until</dt><dd>{{ fmtDate(cn.expires_at) }}</dd></div>}
+              </dl>
+
+              @if (a.needs_reauth) {<div class="flash error"><ion-icon name="warning-outline"></ion-icon><span>This connection has expired. Reconnect to keep syncing.</span></div>}
+              @if (cn.account_error) {<div class="flash error"><ion-icon name="warning-outline"></ion-icon><span>Could not list accounts: {{ cn.account_error }}</span></div>}
+              @if (a.note) {<div class="flash info"><ion-icon name="information-circle-outline"></ion-icon><span>{{ a.note }}</span></div>}
+
+              @if (cn.accounts.length > 0 && cn.accounts_readonly) {
+                <h4>Connected accounts</h4>
+                <ul class="accts">
+                  @for (x of cn.accounts; track x.id) {<li><label><ion-icon name="checkmark-circle-outline"></ion-icon><span>{{ x.name }}</span></label></li>}
+                </ul>
+              } @else if (cn.accounts.length > 0) {
+                <div class="accts-head">
+                  <h4>Accounts to include</h4>
+                  <button type="button" class="link" (click)="toggleAll(a)">{{ allSelected(a) ? 'Clear all' : 'Select all' }}</button>
+                </div>
+                @if (cn.accounts.length > 8) {
+                  <input class="search-in" type="search" placeholder="Filter accounts" [ngModel]="accountFilter()" (ngModelChange)="accountFilter.set($event)" />
+                }
+                <ul class="accts">
+                  @for (x of visibleAccounts(a); track x.id) {
+                    <li>
+                      <label>
+                        <input type="checkbox" [checked]="selected().has(x.id)" (change)="toggleAccount(x.id)" />
+                        <span>{{ accountLabel(x) }}</span>
+                        <span class="muted mono">{{ x.id }}</span>
+                        @if (x.active === false) {<span class="pill warn">inactive</span>}
+                      </label>
+                    </li>
+                  }
+                </ul>
+              } @else if (!cn.account_error && a.category === 'Advertising') {
+                <p class="muted">No ad accounts were found for this login.</p>
+              }
+
+              @if (a.sync_supported) {
+                <div class="inline-row">
+                  <span class="muted">Sync period</span>
+                  <select class="sel" [ngModel]="syncDays()" (ngModelChange)="syncDays.set(+$event)"><option [value]="7">Last 7 days</option><option [value]="30">Last 30 days</option><option [value]="90">Last 90 days</option></select>
+                  <button type="button" class="btn" [disabled]="busy()" (click)="syncNow(a)"><ion-icon name="refresh-outline"></ion-icon> Sync now</button>
+                </div>
+              }
+              @if (a.id === 'shopify') {
+                <div class="inline-row"><span class="muted">Orders, customers and products sync automatically.</span><button type="button" class="btn" [disabled]="busy()" (click)="syncShopify()"><ion-icon name="refresh-outline"></ion-icon> Sync catalog now</button></div>
+              }
+            }
+
+            <!-- ───────── TOKEN (couriers, WhatsApp) ───────── -->
+            @if (d.mode === 'token' && tokenSchema(); as schema) {
+              @if (a.embedded && a.embedded_ready && !a.configured && !manualToken()) {
+                <p class="lead">{{ a.description }}. Meta's secure window lets you pick or create your WhatsApp Business number. Nothing to copy or paste.</p>
+                @if (a.access.length) {
+                  <h4>What {{ a.name }} will be able to do</h4>
+                  <ul class="access">@for (x of a.access; track x) {<li><ion-icon name="checkmark-outline"></ion-icon><span>{{ x }}</span></li>}</ul>
+                }
+                <p class="secure"><ion-icon name="lock-closed-outline"></ion-icon> Access tokens are encrypted before they are stored.</p>
+              } @else {
+                @if (a.configured && a.connection?.verification) {
+                  <div class="flash" [class.ok]="a.connection?.verification === 'live'" [class.info]="a.connection?.verification !== 'live'">
+                    <ion-icon [name]="a.connection?.verification === 'live' ? 'shield-checkmark-outline' : 'information-circle-outline'"></ion-icon>
+                    <span>{{ a.connection?.verification === 'live' ? 'Credentials are saved and were verified with ' + a.name + '. Enter new values below to replace them.' : 'Credentials are saved (encrypted) but could not be verified live. Enter new values below to replace them.' }}</span>
+                  </div>
+                }
+                @if (schema.verify === 'none') {
+                  <div class="flash info"><ion-icon name="information-circle-outline"></ion-icon><span>{{ a.name }} credentials cannot be verified live yet. They are stored as entered, so please double-check them.</span></div>
+                }
+                @if (schema.guide.length) {
+                  <h4>How to get your credentials</h4>
+                  <ol class="guide">@for (g of schema.guide; track g) {<li>{{ g }}</li>}</ol>
+                }
+                <div class="fields">
+                  @for (f of schema.fields; track f.id) {
+                    <label class="field"><span>{{ f.label }}@if (f.required) {<i class="req"> *</i>}</span>
+                      <span class="inp">
+                        <input [type]="f.secret && !revealed()[f.id] ? 'password' : 'text'" [placeholder]="a.configured && f.secret ? 'Saved. Enter a new value to replace' : f.placeholder" [ngModel]="tokenValues()[f.id] || ''" (ngModelChange)="setField(f.id, $event)" autocomplete="off" />
+                        @if (f.secret) {<button type="button" (click)="toggleReveal(f.id)" [attr.aria-label]="revealed()[f.id] ? 'Hide' : 'Show'"><ion-icon [name]="revealed()[f.id] ? 'eye-off-outline' : 'eye-outline'"></ion-icon></button>}
+                      </span>
+                      @if (f.help) {<small>{{ f.help }}</small>}
+                    </label>
+                  }
+                </div>
+                <p class="secure"><ion-icon name="lock-closed-outline"></ion-icon> Credentials are encrypted before they are stored. {{ a.name }} has no one-click sign-in, so the details come from your {{ a.name }} account.</p>
+              }
+            }
+
+            <!-- ───────── SETUP (operator only) ───────── -->
+            @if (d.mode === 'setup') {
+              <p class="lead">One-click sign-in for <b>{{ a.name }}</b> needs a developer app that you register once. After that, your customers only press <b>Connect</b>.</p>
+              <ol class="guide">
+                <li>Create the app in the platform's developer console @if (a.docs) {(<a [href]="a.docs" target="_blank" rel="noopener">open console <ion-icon name="open-outline"></ion-icon></a>)}.</li>
+                <li>Add this redirect URI to the app:
+                  <span class="copyrow"><code>{{ a.redirect_uri }}</code><button type="button" class="btn small" (click)="copy('uri', a.redirect_uri || '')">{{ copied() === 'uri' ? 'Copied' : 'Copy' }}</button></span>
+                </li>
+                <li>Put the credentials in <span class="mono">backend/.env</span> and restart the backend:
+                  <span class="copyrow block"><code>{{ a.missing_env.join('=\n') }}=</code><button type="button" class="btn small" (click)="copy('env', a.missing_env.join('=\n') + '=')">{{ copied() === 'env' ? 'Copied' : 'Copy' }}</button></span>
+                </li>
+              </ol>
+              <p class="muted">Customers do not see this screen: they are told the connector is not available yet until you enable it.</p>
+            }
+          }
+        </div>
+
+        <footer class="dlg-foot">
+          @if (d.mode === 'manage' || (d.mode === 'token' && a.configured)) {
+            <button type="button" class="btn danger" [disabled]="busy() || waiting()" (click)="disconnect(a)">Disconnect</button>
+          }
+          <span class="spacer"></span>
+
+          @if (d.mode === 'connect') {
+            <button type="button" class="btn" (click)="closeDialog()" [disabled]="waiting()">Cancel</button>
+            <button type="button" class="btn brand" [disabled]="waiting() || (needShop() && !shopDomain().trim())" (click)="startOAuth(a)">
+              {{ waiting() ? 'Waiting…' : a.needs_reauth ? 'Reconnect with ' + (brand(a).label || a.name) : 'Continue with ' + (brand(a).label || a.name) }}
+            </button>
+          }
+
+          @if (d.mode === 'manage') {
+            <button type="button" class="btn" [disabled]="busy() || waiting()" (click)="startOAuth(a)">{{ a.id === 'meta-messaging' || a.id === 'instagram-inbox' ? 'Add more accounts' : 'Reconnect' }}</button>
+            @if (a.id === 'meta-messaging' || a.id === 'instagram-inbox') {
+              <button type="button" class="btn brand" (click)="manageChannels()">Open AI settings</button>
+            } @else if (a.connection?.accounts?.length && !a.connection?.accounts_readonly) {
+              <button type="button" class="btn brand" [disabled]="busy() || waiting()" (click)="saveAccounts(a)">{{ busy() ? 'Saving…' : 'Save accounts' }}</button>
+            } @else {
+              <button type="button" class="btn brand" (click)="closeDialog()">Done</button>
+            }
+          }
+
+          @if (d.mode === 'token') {
+            @if (a.embedded && a.embedded_ready && !a.configured && !manualToken()) {
+              <button type="button" class="btn" (click)="manualToken.set(true)">Enter token manually</button>
+              <button type="button" class="btn brand" [disabled]="waiting()" (click)="startWhatsApp(a)">Continue with WhatsApp</button>
+            } @else {
+              @if (a.embedded && a.embedded_ready) {<button type="button" class="btn" [disabled]="waiting() || busy()" (click)="startWhatsApp(a)">Reconnect with WhatsApp</button>}
+              <button type="button" class="btn" (click)="closeDialog()" [disabled]="busy()">{{ justConnected() ? 'Close' : 'Cancel' }}</button>
+              <button type="button" class="btn brand" [disabled]="!canSaveToken() || busy()" (click)="saveToken(a)">{{ busy() ? 'Verifying…' : tokenSchema()?.verify === 'live' ? 'Verify & connect' : 'Save credentials' }}</button>
+            }
+          }
+
+          @if (d.mode === 'setup') {<button type="button" class="btn brand" (click)="closeDialog()">Close</button>}
+        </footer>
+      </div>
+    </div>
+  }
+}

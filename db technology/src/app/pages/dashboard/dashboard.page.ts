@@ -41,11 +41,15 @@ import {
   trashOutline,
   globeOutline,
   swapHorizontalOutline,
-  receiptOutline
+  receiptOutline,
+  chatbubblesOutline,
+  gitNetworkOutline,
+  analyticsOutline
 } from 'ionicons/icons';
 import { AuthService, User } from '../../core/services/auth.service';
 import { StoreService } from '../../core/services/store.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { InboxService } from '../../core/services/inbox.service';
 import { Store } from '../../core/models/store.models';
 
 @Component({
@@ -79,6 +83,7 @@ export class DashboardPage implements OnInit {
     public authService: AuthService,
     public storeService: StoreService,
     public analytics: AnalyticsService,
+    public inbox: InboxService,
     private router: Router,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController
@@ -106,7 +111,10 @@ export class DashboardPage implements OnInit {
       trashOutline,
       globeOutline,
       swapHorizontalOutline,
-      receiptOutline
+      receiptOutline,
+      chatbubblesOutline,
+      gitNetworkOutline,
+      analyticsOutline
     });
 
     this.currentRoute = this.router.url;
